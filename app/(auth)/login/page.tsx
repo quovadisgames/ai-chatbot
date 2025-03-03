@@ -1,67 +1,58 @@
-'use client';
-
+import { Suspense } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useActionState, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
 import { AuthForm } from '@/components/auth-form';
-import { SubmitButton } from '@/components/submit-button';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { signIn } from '@/app/(auth)/auth';
 
-import { login, type LoginActionState } from '../actions';
-
-export default function Page() {
+export default function LoginPage() {
+  const [isPending, setIsPending] = useState(false);
   const router = useRouter();
 
-  const [email, setEmail] = useState('');
-  const [isSuccessful, setIsSuccessful] = useState(false);
+  async function onSubmit(formData: FormData) {
+    try {
+      setIsPending(true);
+      const result = await signIn('credentials', {
+        email: formData.get('email') as string,
+        password: formData.get('password') as string,
+        redirect: false,
+      });
 
-  const [state, formAction] = useActionState<LoginActionState, FormData>(
-    login,
-    {
-      status: 'idle',
-    },
-  );
+      if (result?.error) {
+        toast.error('Invalid credentials');
+        return;
+      }
 
-  useEffect(() => {
-    if (state.status === 'failed') {
-      toast.error('Invalid credentials!');
-    } else if (state.status === 'invalid_data') {
-      toast.error('Failed validating your submission!');
-    } else if (state.status === 'success') {
-      setIsSuccessful(true);
+      router.push('/');
       router.refresh();
+    } catch (error) {
+      toast.error('Something went wrong');
+    } finally {
+      setIsPending(false);
     }
-  }, [state.status, router]);
-
-  const handleSubmit = (formData: FormData) => {
-    setEmail(formData.get('email') as string);
-    formAction(formData);
-  };
+  }
 
   return (
-    <div className="flex h-dvh w-screen items-start pt-12 md:pt-0 md:items-center justify-center bg-background">
-      <div className="w-full max-w-md overflow-hidden rounded-2xl flex flex-col gap-12">
-        <div className="flex flex-col items-center justify-center gap-2 px-4 text-center sm:px-16">
-          <h3 className="text-xl font-semibold dark:text-zinc-50">Sign In</h3>
-          <p className="text-sm text-gray-500 dark:text-zinc-400">
-            Use your email and password to sign in
-          </p>
+    <div className="flex min-h-screen items-center justify-center">
+      <Card className="w-full max-w-md space-y-6 p-6">
+        <div className="space-y-2 text-center">
+          <h1 className="text-3xl font-bold">Login</h1>
+          <p className="text-gray-500">Enter your credentials to continue</p>
         </div>
-        <AuthForm action={handleSubmit} defaultEmail={email}>
-          <SubmitButton isSuccessful={isSuccessful}>Sign in</SubmitButton>
-          <p className="text-center text-sm text-gray-600 mt-4 dark:text-zinc-400">
-            {"Don't have an account? "}
-            <Link
-              href="/register"
-              className="font-semibold text-gray-800 hover:underline dark:text-zinc-200"
-            >
-              Sign up
-            </Link>
-            {' for free.'}
-          </p>
-        </AuthForm>
-      </div>
+        <Suspense>
+          <AuthForm isPending={isPending} onSubmit={onSubmit} />
+        </Suspense>
+        <div className="text-center text-sm">
+          Don&apos;t have an account?{' '}
+          <Link href="/register" className="font-medium underline">
+            Register
+          </Link>
+        </div>
+      </Card>
     </div>
   );
 }

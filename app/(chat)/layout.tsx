@@ -5,6 +5,7 @@ import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 
 import { auth } from '../(auth)/auth';
 import Script from 'next/script';
+import { appConfig } from '@/lib/config';
 
 export const experimental_ppr = true;
 
@@ -13,7 +14,11 @@ export default async function Layout({
 }: {
   children: React.ReactNode;
 }) {
-  const [session, cookieStore] = await Promise.all([auth(), cookies()]);
+  const [session, cookieStore] = await Promise.all([
+    appConfig.auth.required ? auth() : null,
+    cookies()
+  ]);
+  
   const isCollapsed = cookieStore.get('sidebar:state')?.value !== 'true';
 
   return (

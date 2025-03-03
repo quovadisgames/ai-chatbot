@@ -20,18 +20,18 @@ export const {
     CredentialsProvider({
       credentials: {},
       async authorize(credentials: any) {
-        const response = await fetch('/api/auth/verify-credentials', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(credentials),
-        });
+        try {
+          const response = await fetch('/api/auth/verify-credentials', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(credentials),
+          });
 
-        if (!response.ok) {
+          if (!response.ok) return null;
+          return await response.json();
+        } catch (error) {
           return null;
         }
-
-        const user = await response.json();
-        return user;
       },
     }),
   ],

@@ -1,26 +1,28 @@
 import type { NextAuthConfig } from 'next-auth';
 import { appConfig } from '@/lib/config';
 
-export const authConfig = {
+export const authConfig: NextAuthConfig = {
   pages: {
     signIn: '/login',
     newUser: '/',
   },
   providers: [],
   callbacks: {
-    async authorized({ auth, request: { nextUrl } }) {
+    authorized({ auth, request }) {
       const isLoggedIn = !!auth?.user;
-      const isOnChat = nextUrl.pathname.startsWith('/');
-      const isOnRegister = nextUrl.pathname.startsWith('/register');
-      const isOnLogin = nextUrl.pathname.startsWith('/login');
-
+      const { pathname } = request.nextUrl;
+      
       // Skip auth check if not required
       if (!appConfig.auth.required) {
         return true;
       }
 
+      const isOnChat = pathname.startsWith('/');
+      const isOnRegister = pathname.startsWith('/register');
+      const isOnLogin = pathname.startsWith('/login');
+
       if (isLoggedIn && (isOnLogin || isOnRegister)) {
-        return Response.redirect(new URL('/', nextUrl));
+        return Response.redirect(new URL('/', request.nextUrl));
       }
 
       if (isOnRegister || isOnLogin) {
@@ -34,4 +36,4 @@ export const authConfig = {
       return true;
     },
   },
-} satisfies NextAuthConfig;
+};

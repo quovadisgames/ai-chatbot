@@ -17,23 +17,15 @@ export const authConfig: NextAuthConfig = {
         return true;
       }
 
-      const isOnChat = pathname.startsWith('/');
-      const isOnRegister = pathname.startsWith('/register');
-      const isOnLogin = pathname.startsWith('/login');
-
-      if (isLoggedIn && (isOnLogin || isOnRegister)) {
+      if (isLoggedIn && (pathname.startsWith('/login') || pathname.startsWith('/register'))) {
         return Response.redirect(new URL('/', request.nextUrl));
       }
 
-      if (isOnRegister || isOnLogin) {
+      if (pathname.startsWith('/login') || pathname.startsWith('/register')) {
         return true;
       }
 
-      if (isOnChat) {
-        return isLoggedIn;
-      }
-
-      return true;
+      return isLoggedIn;
     },
   },
 };

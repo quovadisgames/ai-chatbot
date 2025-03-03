@@ -1,8 +1,6 @@
 import { NextResponse } from 'next/server';
-import { NextRequest } from 'next/server';
+import type { NextRequest } from 'next/server';
 import { appConfig } from '@/lib/config';
-import { authConfig } from '@/app/(auth)/auth.config';
-import NextAuth from 'next-auth';
 
 export default async function middleware(request: NextRequest) {
   // If auth is not required, allow access
@@ -14,9 +12,10 @@ export default async function middleware(request: NextRequest) {
 
   // Always check auth for protected pages
   if (appConfig.auth.protectedPages.includes(pathname)) {
-    const auth = await NextAuth(authConfig);
-    const session = await auth.auth(request);
-    
+    // Check session via API route
+    const response = await fetch(new URL('/api/auth/session', request.url));
+    const session = await response.json();
+
     if (!session) {
       return NextResponse.redirect(new URL('/login', request.url));
     }

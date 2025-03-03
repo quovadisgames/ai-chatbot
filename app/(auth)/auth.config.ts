@@ -8,7 +8,7 @@ export const authConfig = {
   },
   providers: [],
   callbacks: {
-    authorized({ auth, request: { nextUrl } }) {
+    async authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
       const isOnChat = nextUrl.pathname.startsWith('/');
       const isOnRegister = nextUrl.pathname.startsWith('/register');
@@ -28,12 +28,7 @@ export const authConfig = {
       }
 
       if (isOnChat) {
-        if (isLoggedIn) return true;
-        return false;
-      }
-
-      if (isLoggedIn) {
-        return Response.redirect(new URL('/', nextUrl));
+        return isLoggedIn;
       }
 
       return true;

@@ -1,22 +1,23 @@
-import NextAuth from 'next-auth';
+import { NextResponse } from 'next/server';
 import { appConfig } from '@/lib/config';
-import { auth } from '@/app/(auth)/auth';
 
-export default async function middleware(request: Request) {
-  // If auth is not required, skip authentication check
-  if (!appConfig.auth.required) {
-    return NextAuth(auth).auth(request);
-  }
-
+export async function middleware(request: Request) {
   const pathname = new URL(request.url).pathname;
-  
-  // Always check auth for protected pages even if auth is not required
-  if (appConfig.auth.protectedPages.includes(pathname)) {
-    return NextAuth(auth).auth(request);
+
+  // If auth is not required, allow access
+  if (!appConfig.auth.required) {
+    return NextResponse.next();
   }
 
-  // For other routes, skip auth when not required
-  return NextAuth(auth).auth(request);
+  // Always check auth for protected pages
+  if (appConfig.auth.protectedPages.includes(pathname)) {
+    const session = await fetch('/api/auth/session');
+    if (!session.ok) {
+      return NextResponse.redirect(new URL('/login', request.url));
+    }
+  }
+
+  return NextResponse.next();
 }
 
 export const config = {

@@ -26,6 +26,7 @@ import { updateDocument } from '@/lib/ai/tools/update-document';
 import { requestSuggestions } from '@/lib/ai/tools/request-suggestions';
 import { getWeather } from '@/lib/ai/tools/get-weather';
 import { appConfig } from '@/lib/config';
+import { Session } from 'next-auth';
 
 export const maxDuration = 60;
 
@@ -38,9 +39,15 @@ export async function POST(request: Request) {
     await request.json();
 
   try {
+    // Create a proper Session object
+    const defaultSession: Session = {
+      user: appConfig.auth.defaultUser,
+      expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString() // 30 days from now
+    };
+
     const session = appConfig.auth.required ? 
       await auth() : 
-      { user: appConfig.auth.defaultUser };
+      defaultSession;
 
     const userId = session?.user?.id || appConfig.auth.defaultUser.id;
 
@@ -86,15 +93,15 @@ export async function POST(request: Request) {
           tools: {
             getWeather,
             createDocument: createDocument({ 
-              session: { ...session, user: { ...session.user, id: userId } }, 
+              session: defaultSession,
               dataStream 
             }),
             updateDocument: updateDocument({ 
-              session: { ...session, user: { ...session.user, id: userId } }, 
+              session: defaultSession,
               dataStream 
             }),
             requestSuggestions: requestSuggestions({
-              session: { ...session, user: { ...session.user, id: userId } },
+              session: defaultSession,
               dataStream,
             }),
           },

@@ -1,5 +1,17 @@
 import type { NextAuthConfig } from 'next-auth';
+import type { NextRequest } from 'next/server';
 import { appConfig } from '@/lib/config';
+
+interface AuthContext {
+  auth: {
+    user?: {
+      id?: string;
+      name?: string;
+      email?: string;
+    };
+  } | null;
+  request: NextRequest;
+}
 
 export const authConfig: NextAuthConfig = {
   pages: {
@@ -8,7 +20,7 @@ export const authConfig: NextAuthConfig = {
   },
   providers: [],
   callbacks: {
-    authorized({ auth, request }) {
+    authorized({ auth, request }: AuthContext) {
       const isLoggedIn = !!auth?.user;
       const { pathname } = request.nextUrl;
       

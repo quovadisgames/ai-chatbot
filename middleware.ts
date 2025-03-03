@@ -3,9 +3,14 @@ import type { NextRequest } from 'next/server';
 import { appConfig } from '@/lib/config';
 
 export default async function middleware(request: NextRequest) {
-  // If auth is not required, allow access
+  // If auth is not required, inject default user session
   if (!appConfig.auth.required) {
-    return NextResponse.next();
+    const response = NextResponse.next();
+    // Add default session cookie
+    response.cookies.set('session', JSON.stringify({
+      user: appConfig.auth.defaultUser
+    }));
+    return response;
   }
 
   const pathname = new URL(request.url).pathname;

@@ -18,19 +18,8 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
     notFound();
   }
 
-  const session = await auth();
-
-  if (appConfig.auth.required && chat.visibility === 'private') {
-    if (!session || !session.user) {
-      return notFound();
-    }
-
-    if (session.user.id !== chat.userId) {
-      return notFound();
-    }
-  }
-
-  const userId = session?.user?.id || 'anonymous';
+  const session = appConfig.auth.required ? await auth() : { user: appConfig.auth.defaultUser };
+  const userId = session?.user?.id || appConfig.auth.defaultUser.id;
 
   const messagesFromDb = await getMessagesByChatId({
     id,

@@ -42,7 +42,9 @@ export async function POST(request: Request) {
       await auth() : 
       { user: appConfig.auth.defaultUser };
 
-    if (!session?.user) {
+    const userId = session?.user?.id || appConfig.auth.defaultUser.id;
+
+    if (!userId) {
       return new Response('Unauthorized', { status: 401 });
     }
 
@@ -56,7 +58,7 @@ export async function POST(request: Request) {
 
     if (!chat) {
       const title = await generateTitleFromUserMessage({ message: userMessage });
-      await saveChat({ id, userId: session.user.id, title });
+      await saveChat({ id, userId, title });
     }
 
     await saveMessages({
@@ -83,35 +85,37 @@ export async function POST(request: Request) {
           experimental_generateMessageId: generateUUID,
           tools: {
             getWeather,
-            createDocument: createDocument({ session, dataStream }),
-            updateDocument: updateDocument({ session, dataStream }),
+            createDocument: createDocument({ 
+              session: { ...session, user: { ...session.user, id: userId } }, 
+              dataStream 
+            }),
+            updateDocument: updateDocument({ 
+              session: { ...session, user: { ...session.user, id: userId } }, 
+              dataStream 
+            }),
             requestSuggestions: requestSuggestions({
-              session,
+              session: { ...session, user: { ...session.user, id: userId } },
               dataStream,
             }),
           },
           onFinish: async ({ response, reasoning }) => {
-            if (session.user?.id) {
-              try {
-                const sanitizedResponseMessages = sanitizeResponseMessages({
-                  messages: response.messages,
-                  reasoning,
-                });
+            try {
+              const sanitizedResponseMessages = sanitizeResponseMessages({
+                messages: response.messages,
+                reasoning,
+              });
 
-                await saveMessages({
-                  messages: sanitizedResponseMessages.map((message) => {
-                    return {
-                      id: message.id,
-                      chatId: id,
-                      role: message.role,
-                      content: message.content,
-                      createdAt: new Date(),
-                    };
-                  }),
-                });
-              } catch (error) {
-                console.error('Failed to save chat');
-              }
+              await saveMessages({
+                messages: sanitizedResponseMessages.map((message) => ({
+                  id: message.id,
+                  chatId: id,
+                  role: message.role,
+                  content: message.content,
+                  createdAt: new Date(),
+                })),
+              });
+            } catch (error) {
+              console.error('Failed to save chat');
             }
           },
           experimental_telemetry: {
@@ -127,7 +131,7 @@ export async function POST(request: Request) {
         });
       },
       onError: () => {
-        return 'Oops, an error occured!';
+        return 'Oops, an error occurred!';
       },
     });
   } catch (error) {
@@ -145,16 +149,20 @@ export async function DELETE(request: Request) {
     return new Response('Not Found', { status: 404 });
   }
 
-  const session = await auth();
+  const session = appConfig.auth.required ? 
+    await auth() : 
+    { user: appConfig.auth.defaultUser };
 
-  if (!session || !session.user) {
+  const userId = session?.user?.id || appConfig.auth.defaultUser.id;
+
+  if (!userId) {
     return new Response('Unauthorized', { status: 401 });
   }
 
   try {
     const chat = await getChatById({ id });
 
-    if (chat.userId !== session.user.id) {
+    if (chat.userId !== userId) {
       return new Response('Unauthorized', { status: 401 });
     }
 

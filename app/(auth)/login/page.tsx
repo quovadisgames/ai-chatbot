@@ -1,41 +1,9 @@
-import { Suspense } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import { toast } from 'sonner';
-
-import { AuthForm } from '@/components/auth-form';
-import { Button } from '@/components/ui/button';
+import { Suspense } from 'react';
 import { Card } from '@/components/ui/card';
-import { signIn } from '@/app/(auth)/auth';
+import { LoginForm } from '@/components/login-form';
 
 export default function LoginPage() {
-  const [isPending, setIsPending] = useState(false);
-  const router = useRouter();
-
-  async function onSubmit(formData: FormData) {
-    try {
-      setIsPending(true);
-      const result = await signIn('credentials', {
-        email: formData.get('email') as string,
-        password: formData.get('password') as string,
-        redirect: false,
-      });
-
-      if (result?.error) {
-        toast.error('Invalid credentials');
-        return;
-      }
-
-      router.push('/');
-      router.refresh();
-    } catch (error) {
-      toast.error('Something went wrong');
-    } finally {
-      setIsPending(false);
-    }
-  }
-
   return (
     <div className="flex min-h-screen items-center justify-center">
       <Card className="w-full max-w-md space-y-6 p-6">
@@ -44,7 +12,7 @@ export default function LoginPage() {
           <p className="text-gray-500">Enter your credentials to continue</p>
         </div>
         <Suspense>
-          <AuthForm isPending={isPending} onSubmit={onSubmit} />
+          <LoginForm />
         </Suspense>
         <div className="text-center text-sm">
           Don&apos;t have an account?{' '}

@@ -5,9 +5,10 @@ import {
   streamText,
 } from 'ai';
 
-import { auth } from '@/app/(auth)/auth';
+import { auth } from '@/auth';
 import { myProvider } from '@/lib/ai/models';
 import { systemPrompt } from '@/lib/ai/prompts';
+import { trackTokenUsage } from '@/lib/ai/token-tracking';
 import {
   deleteChatById,
   getChatById,
@@ -27,6 +28,13 @@ import { requestSuggestions } from '@/lib/ai/tools/request-suggestions';
 import { getWeather } from '@/lib/ai/tools/get-weather';
 
 export const maxDuration = 60;
+
+// Define the usage type
+interface TokenUsage {
+  promptTokens?: number;
+  completionTokens?: number;
+  totalTokens?: number;
+}
 
 export async function POST(request: Request) {
   const {
@@ -86,7 +94,15 @@ export async function POST(request: Request) {
             dataStream,
           }),
         },
-        onFinish: async ({ response, reasoning }) => {
+        onFinish: async ({ 
+          response, 
+          reasoning, 
+          usage 
+        }: { 
+          response: { messages: any[] }, 
+          reasoning?: any, 
+          usage?: TokenUsage 
+        }) => {
           if (session.user?.id) {
             try {
               const sanitizedResponseMessages = sanitizeResponseMessages({
@@ -94,7 +110,8 @@ export async function POST(request: Request) {
                 reasoning,
               });
 
-              await saveMessages({
+              // Save the messages to the database
+              const savedMessages = await saveMessages({
                 messages: sanitizedResponseMessages.map((message) => {
                   return {
                     id: message.id,
@@ -105,8 +122,21 @@ export async function POST(request: Request) {
                   };
                 }),
               });
+
+              // Track token usage if available
+              if (usage && usage.totalTokens && usage.promptTokens && usage.completionTokens) {
+                const assistantMessage = savedMessages.find(msg => msg.role === 'assistant');
+                await trackTokenUsage({
+                  chatId: id,
+                  messageId: assistantMessage?.id,
+                  model: selectedChatModel,
+                  promptTokens: usage.promptTokens,
+                  completionTokens: usage.completionTokens,
+                  totalTokens: usage.totalTokens,
+                });
+              }
             } catch (error) {
-              console.error('Failed to save chat');
+              console.error('Failed to save chat or track token usage', error);
             }
           }
         },

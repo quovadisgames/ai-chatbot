@@ -1,10 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Skeleton } from '@/components/ui/skeleton';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { AlertCircle } from 'lucide-react';
 
 interface TokenUsageStats {
   totalPromptTokens: number;
@@ -65,52 +61,52 @@ export function TokenUsageDisplay({
 
   if (loading && !usage) {
     return (
-      <Card>
-        <CardHeader>
-          <CardTitle>Token Usage</CardTitle>
-          <CardDescription>Loading token usage data...</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            <Skeleton className="h-4 w-full" />
-            <Skeleton className="h-4 w-full" />
-            <Skeleton className="h-4 w-full" />
-          </div>
-        </CardContent>
-      </Card>
+      <div className="border rounded-lg shadow-sm p-6">
+        <div className="mb-4">
+          <h3 className="text-lg font-semibold">Token Usage</h3>
+          <p className="text-sm text-muted-foreground">Loading token usage data...</p>
+        </div>
+        <div className="space-y-4">
+          <div className="h-4 w-full bg-gray-200 animate-pulse rounded"></div>
+          <div className="h-4 w-full bg-gray-200 animate-pulse rounded"></div>
+          <div className="h-4 w-full bg-gray-200 animate-pulse rounded"></div>
+        </div>
+      </div>
     );
   }
 
   if (error) {
     return (
-      <Card>
-        <CardHeader>
-          <CardTitle>Token Usage</CardTitle>
-          <CardDescription>Error loading data</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Alert variant="destructive">
-            <AlertCircle className="h-4 w-4" />
-            <AlertDescription>{error}</AlertDescription>
-          </Alert>
-        </CardContent>
-      </Card>
+      <div className="border rounded-lg shadow-sm p-6">
+        <div className="mb-4">
+          <h3 className="text-lg font-semibold">Token Usage</h3>
+          <p className="text-sm text-muted-foreground">Error loading data</p>
+        </div>
+        <div className="p-4 border border-red-200 bg-red-50 text-red-800 rounded-md">
+          <div className="flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 mr-2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+            <span>{error}</span>
+          </div>
+        </div>
+      </div>
     );
   }
 
   if (!usage) {
     return (
-      <Card>
-        <CardHeader>
-          <CardTitle>Token Usage</CardTitle>
-          <CardDescription>No token usage data available</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p className="text-sm text-muted-foreground">
-            Start using the AI chatbot to see your token usage statistics.
-          </p>
-        </CardContent>
-      </Card>
+      <div className="border rounded-lg shadow-sm p-6">
+        <div className="mb-4">
+          <h3 className="text-lg font-semibold">Token Usage</h3>
+          <p className="text-sm text-muted-foreground">No token usage data available</p>
+        </div>
+        <p className="text-sm text-muted-foreground">
+          Start using the AI chatbot to see your token usage statistics.
+        </p>
+      </div>
     );
   }
 
@@ -121,47 +117,45 @@ export function TokenUsageDisplay({
   const completionPercentage = totalTokens > 0 ? (totalCompletionTokens / totalTokens) * 100 : 0;
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Token Usage</CardTitle>
-        <CardDescription>Your AI token consumption</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-4">
-          <div>
-            <div className="flex justify-between mb-1">
-              <span className="text-sm font-medium">Total Tokens</span>
-              <span className="text-sm font-medium">{totalTokens.toLocaleString()}</span>
-            </div>
-          </div>
-          
-          <div>
-            <div className="flex justify-between mb-1">
-              <span className="text-sm">Prompt Tokens</span>
-              <span className="text-sm">{totalPromptTokens.toLocaleString()} ({promptPercentage.toFixed(1)}%)</span>
-            </div>
-            <div className="h-2 w-full bg-secondary rounded-full overflow-hidden">
-              <div 
-                className="h-full bg-primary rounded-full" 
-                style={{ width: `${promptPercentage}%` }}
-              />
-            </div>
-          </div>
-          
-          <div>
-            <div className="flex justify-between mb-1">
-              <span className="text-sm">Completion Tokens</span>
-              <span className="text-sm">{totalCompletionTokens.toLocaleString()} ({completionPercentage.toFixed(1)}%)</span>
-            </div>
-            <div className="h-2 w-full bg-secondary rounded-full overflow-hidden">
-              <div 
-                className="h-full bg-primary rounded-full" 
-                style={{ width: `${completionPercentage}%` }}
-              />
-            </div>
+    <div className="border rounded-lg shadow-sm p-6">
+      <div className="mb-4">
+        <h3 className="text-lg font-semibold">Token Usage</h3>
+        <p className="text-sm text-muted-foreground">Your AI token consumption</p>
+      </div>
+      <div className="space-y-4">
+        <div>
+          <div className="flex justify-between mb-1">
+            <span className="text-sm font-medium">Total Tokens</span>
+            <span className="text-sm font-medium">{totalTokens.toLocaleString()}</span>
           </div>
         </div>
-      </CardContent>
-    </Card>
+        
+        <div>
+          <div className="flex justify-between mb-1">
+            <span className="text-sm">Prompt Tokens</span>
+            <span className="text-sm">{totalPromptTokens.toLocaleString()} ({promptPercentage.toFixed(1)}%)</span>
+          </div>
+          <div className="h-2 w-full bg-gray-200 rounded-full overflow-hidden">
+            <div 
+              className="h-full bg-blue-600 rounded-full" 
+              style={{ width: `${promptPercentage}%` }}
+            />
+          </div>
+        </div>
+        
+        <div>
+          <div className="flex justify-between mb-1">
+            <span className="text-sm">Completion Tokens</span>
+            <span className="text-sm">{totalCompletionTokens.toLocaleString()} ({completionPercentage.toFixed(1)}%)</span>
+          </div>
+          <div className="h-2 w-full bg-gray-200 rounded-full overflow-hidden">
+            <div 
+              className="h-full bg-blue-600 rounded-full" 
+              style={{ width: `${completionPercentage}%` }}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
   );
 } 

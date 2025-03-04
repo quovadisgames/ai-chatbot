@@ -1,2 +1,2 @@
 // Re-export auth from the auth module
-export { auth } from './app/(auth)/auth'; 
+export { auth, signIn, signOut } from './app/(auth)/auth'; 

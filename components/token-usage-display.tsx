@@ -2,7 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Progress } from '@/components/ui/progress';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { AlertCircle } from 'lucide-react';
 
 interface TokenUsageStats {
   totalPromptTokens: number;
@@ -24,20 +26,28 @@ export function TokenUsageDisplay({
   const [error, setError] = useState<string | null>(null);
 
   const fetchUsage = async () => {
+    if (!userId) return;
+    
     try {
       setLoading(true);
       const response = await fetch(`/api/token-usage?userId=${userId}`);
       
       if (!response.ok) {
-        throw new Error('Failed to fetch token usage');
+        throw new Error(`Failed to fetch token usage: ${response.status} ${response.statusText}`);
       }
       
       const data = await response.json();
-      setUsage(data);
+      
+      // Ensure we have the expected data structure
+      setUsage({
+        totalPromptTokens: Number(data.totalPromptTokens) || 0,
+        totalCompletionTokens: Number(data.totalCompletionTokens) || 0,
+        totalTokens: Number(data.totalTokens) || 0
+      });
       setError(null);
     } catch (err) {
-      setError('Error fetching token usage data');
-      console.error(err);
+      console.error('Error fetching token usage data:', err);
+      setError(err instanceof Error ? err.message : 'Error fetching token usage data');
     } finally {
       setLoading(false);
     }
@@ -60,6 +70,13 @@ export function TokenUsageDisplay({
           <CardTitle>Token Usage</CardTitle>
           <CardDescription>Loading token usage data...</CardDescription>
         </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            <Skeleton className="h-4 w-full" />
+            <Skeleton className="h-4 w-full" />
+            <Skeleton className="h-4 w-full" />
+          </div>
+        </CardContent>
       </Card>
     );
   }
@@ -69,8 +86,14 @@ export function TokenUsageDisplay({
       <Card>
         <CardHeader>
           <CardTitle>Token Usage</CardTitle>
-          <CardDescription className="text-red-500">{error}</CardDescription>
+          <CardDescription>Error loading data</CardDescription>
         </CardHeader>
+        <CardContent>
+          <Alert variant="destructive">
+            <AlertCircle className="h-4 w-4" />
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+        </CardContent>
       </Card>
     );
   }
@@ -82,6 +105,11 @@ export function TokenUsageDisplay({
           <CardTitle>Token Usage</CardTitle>
           <CardDescription>No token usage data available</CardDescription>
         </CardHeader>
+        <CardContent>
+          <p className="text-sm text-muted-foreground">
+            Start using the AI chatbot to see your token usage statistics.
+          </p>
+        </CardContent>
       </Card>
     );
   }
@@ -112,7 +140,12 @@ export function TokenUsageDisplay({
               <span className="text-sm">Prompt Tokens</span>
               <span className="text-sm">{totalPromptTokens.toLocaleString()} ({promptPercentage.toFixed(1)}%)</span>
             </div>
-            <Progress value={promptPercentage} className="h-2" />
+            <div className="h-2 w-full bg-secondary rounded-full overflow-hidden">
+              <div 
+                className="h-full bg-primary rounded-full" 
+                style={{ width: `${promptPercentage}%` }}
+              />
+            </div>
           </div>
           
           <div>
@@ -120,7 +153,12 @@ export function TokenUsageDisplay({
               <span className="text-sm">Completion Tokens</span>
               <span className="text-sm">{totalCompletionTokens.toLocaleString()} ({completionPercentage.toFixed(1)}%)</span>
             </div>
-            <Progress value={completionPercentage} className="h-2" />
+            <div className="h-2 w-full bg-secondary rounded-full overflow-hidden">
+              <div 
+                className="h-full bg-primary rounded-full" 
+                style={{ width: `${completionPercentage}%` }}
+              />
+            </div>
           </div>
         </div>
       </CardContent>

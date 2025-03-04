@@ -1,6 +1,7 @@
 import { db } from '@/lib/db';
 import { tokenUsage } from '@/lib/db/schema';
 import { auth } from '@/auth';
+import { saveTokenUsage } from '@/lib/db/queries';
 
 /**
  * Tracks token usage for a specific API call
@@ -33,18 +34,18 @@ export async function trackTokenUsage({
 
     const userId = session.user.id;
 
-    const result = await db.insert(tokenUsage).values({
+    // Use the existing query function to save token usage
+    await saveTokenUsage({
       userId,
-      chatId: chatId || null,
-      messageId: messageId || null,
+      chatId,
+      messageId,
       model,
       promptTokens,
       completionTokens,
-      totalTokens,
-      createdAt: new Date(),
-    }).returning();
+      totalTokens
+    });
 
-    return result[0] || null;
+    return { success: true };
   } catch (error) {
     console.error('Failed to track token usage:', error);
     return null;
@@ -66,10 +67,12 @@ export async function getUserTokenUsage(userId: string) {
     }).from(tokenUsage)
       .where(db.eq(tokenUsage.userId, userId));
     
-    return result[0] || { 
-      totalPromptTokens: 0, 
-      totalCompletionTokens: 0, 
-      totalTokens: 0 
+    // Handle null values from the database
+    const data = result[0] || {};
+    return {
+      totalPromptTokens: Number(data.totalPromptTokens) || 0,
+      totalCompletionTokens: Number(data.totalCompletionTokens) || 0,
+      totalTokens: Number(data.totalTokens) || 0
     };
   } catch (error) {
     console.error('Failed to get user token usage:', error);
@@ -96,10 +99,12 @@ export async function getChatTokenUsage(chatId: string) {
     }).from(tokenUsage)
       .where(db.eq(tokenUsage.chatId, chatId));
     
-    return result[0] || { 
-      totalPromptTokens: 0, 
-      totalCompletionTokens: 0, 
-      totalTokens: 0 
+    // Handle null values from the database
+    const data = result[0] || {};
+    return {
+      totalPromptTokens: Number(data.totalPromptTokens) || 0,
+      totalCompletionTokens: Number(data.totalCompletionTokens) || 0,
+      totalTokens: Number(data.totalTokens) || 0
     };
   } catch (error) {
     console.error('Failed to get chat token usage:', error);

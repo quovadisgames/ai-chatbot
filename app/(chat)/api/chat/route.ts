@@ -36,6 +36,15 @@ interface TokenUsage {
   totalTokens?: number;
 }
 
+// Define the saved message type
+interface SavedMessage {
+  id: string;
+  chatId: string;
+  role: string;
+  content: string;
+  createdAt: Date;
+}
+
 export async function POST(request: Request) {
   const {
     id,
@@ -121,20 +130,21 @@ export async function POST(request: Request) {
                     createdAt: new Date(),
                   };
                 }),
-              });
+              }) as SavedMessage[];
 
               // Track token usage if available
-              if (usage && usage.totalTokens && usage.promptTokens && usage.completionTokens) {
-                const assistantMessage = savedMessages.find(msg => msg.role === 'assistant');
-                await trackTokenUsage({
-                  chatId: id,
-                  messageId: assistantMessage?.id,
-                  model: selectedChatModel,
-                  promptTokens: usage.promptTokens,
-                  completionTokens: usage.completionTokens,
-                  totalTokens: usage.totalTokens,
-                });
-              }
+              // Always track usage even if some values are missing
+              const assistantMessage = savedMessages.find(msg => msg.role === 'assistant');
+              await trackTokenUsage({
+                chatId: id,
+                messageId: assistantMessage?.id,
+                model: selectedChatModel,
+                promptTokens: usage?.promptTokens || 0,
+                completionTokens: usage?.completionTokens || 0,
+                totalTokens: usage?.totalTokens || 0,
+              });
+              
+              console.log(`Token usage tracked for chat ${id}: ${usage?.totalTokens || 0} tokens`);
             } catch (error) {
               console.error('Failed to save chat or track token usage', error);
             }

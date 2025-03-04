@@ -2,10 +2,6 @@
 
 import { useEffect, useState } from 'react';
 
-interface TokenUsageStats {
-  totalTokens: number;
-}
-
 export function ChatHeaderTokenCount({ chatId }: { chatId: string }) {
   const [totalTokens, setTotalTokens] = useState<number>(0);
   const [loading, setLoading] = useState(true);
@@ -45,7 +41,7 @@ export function ChatHeaderTokenCount({ chatId }: { chatId: string }) {
   }
 
   return (
-    <div className="text-xs text-muted-foreground bg-muted/50 px-2 py-1 rounded flex items-center">
+    <div className="text-xs bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded flex items-center">
       <span className="font-medium">{totalTokens.toLocaleString()}</span>
       <span className="ml-1">tokens</span>
     </div>

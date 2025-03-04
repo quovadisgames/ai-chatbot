@@ -15,6 +15,7 @@ import { Messages } from './messages';
 import { VisibilityType } from './visibility-selector';
 import { useArtifactSelector } from '@/hooks/use-artifact';
 import { toast } from 'sonner';
+import { SimpleTokenDisplay } from './simple-token-display';
 
 export function Chat({
   id,
@@ -73,6 +74,11 @@ export function Chat({
           selectedVisibilityType={selectedVisibilityType}
           isReadonly={isReadonly}
         />
+        
+        {/* Add simple token display */}
+        <div className="flex justify-end px-4 py-1">
+          <SimpleTokenDisplay chatId={id} />
+        </div>
 
         <Messages
           chatId={id}

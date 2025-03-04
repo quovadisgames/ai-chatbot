@@ -1,10 +1,13 @@
-import {
-  type Message,
-  createDataStreamResponse,
-  smoothStream,
-  streamText,
-} from 'ai';
+// Define types locally instead of importing from 'ai'
+type Message = {
+  id: string;
+  content: string;
+  role: 'user' | 'assistant' | 'system' | 'function' | 'data' | 'tool';
+  createdAt?: Date;
+  chatId?: string;
+};
 
+// Import the rest of the dependencies
 import { auth } from '@/auth';
 import { myProvider } from '@/lib/ai/models';
 import { systemPrompt } from '@/lib/ai/prompts';
@@ -27,6 +30,13 @@ import { updateDocument } from '@/lib/ai/tools/update-document';
 import { requestSuggestions } from '@/lib/ai/tools/request-suggestions';
 import { getWeather } from '@/lib/ai/tools/get-weather';
 
+// Import AI functions from the actual module
+import {
+  createDataStreamResponse,
+  smoothStream,
+  streamText,
+} from 'ai';
+
 export const maxDuration = 60;
 
 // Define the usage type
@@ -43,6 +53,12 @@ interface SavedMessage {
   role: string;
   content: string;
   createdAt: Date;
+}
+
+// Function to estimate token count based on text length
+// This is a very rough estimate - 1 token is approximately 4 characters in English
+function estimateTokenCount(text: string): number {
+  return Math.ceil(text.length / 4);
 }
 
 export async function POST(request: Request) {
@@ -77,7 +93,7 @@ export async function POST(request: Request) {
   });
 
   return createDataStreamResponse({
-    execute: (dataStream) => {
+    execute: (dataStream: any) => {
       const result = streamText({
         model: myProvider.languageModel(selectedChatModel),
         system: systemPrompt({ selectedChatModel }),
@@ -132,19 +148,43 @@ export async function POST(request: Request) {
                 }),
               }) as SavedMessage[];
 
-              // Track token usage if available
-              // Always track usage even if some values are missing
+              // Get the assistant message for token tracking
               const assistantMessage = savedMessages.find(msg => msg.role === 'assistant');
+              
+              // If we have usage data from the model, use it
+              // Otherwise, estimate token counts based on message lengths
+              let promptTokens: number = usage?.promptTokens || 0;
+              let completionTokens: number = usage?.completionTokens || 0;
+              let totalTokens: number = usage?.totalTokens || 0;
+              
+              // If any token counts are missing or zero, estimate them
+              if (promptTokens === 0 || completionTokens === 0 || totalTokens === 0) {
+                // Estimate prompt tokens from user messages
+                const estimatedPromptTokens = messages.reduce((sum, msg) => 
+                  sum + estimateTokenCount(msg.content), 0);
+                
+                // Estimate completion tokens from assistant message
+                const estimatedCompletionTokens = assistantMessage 
+                  ? estimateTokenCount(assistantMessage.content) 
+                  : 0;
+                
+                // Use estimates for any missing values
+                promptTokens = promptTokens || estimatedPromptTokens;
+                completionTokens = completionTokens || estimatedCompletionTokens;
+                totalTokens = totalTokens || (promptTokens + completionTokens);
+              }
+              
+              // Track token usage with our best data
               await trackTokenUsage({
                 chatId: id,
                 messageId: assistantMessage?.id,
                 model: selectedChatModel,
-                promptTokens: usage?.promptTokens || 0,
-                completionTokens: usage?.completionTokens || 0,
-                totalTokens: usage?.totalTokens || 0,
+                promptTokens,
+                completionTokens,
+                totalTokens,
               });
               
-              console.log(`Token usage tracked for chat ${id}: ${usage?.totalTokens || 0} tokens`);
+              console.log(`Token usage tracked for chat ${id}: ${totalTokens} tokens (${promptTokens} prompt, ${completionTokens} completion)`);
             } catch (error) {
               console.error('Failed to save chat or track token usage', error);
             }

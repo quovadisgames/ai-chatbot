@@ -1,4 +1,7 @@
-'use client';
+const fs = require('fs');
+const path = require('path');
+
+const content = `'use client';
 
 import { useFormStatus } from 'react-dom';
 import { LoaderIcon } from '@/components/icons';
@@ -33,4 +36,9 @@ export function SubmitButton({
       </output>
     </Button>
   );
-}
+}`;
+
+const filePath = path.join(__dirname, 'components', 'submit-button.tsx');
+
+fs.writeFileSync(filePath, content, 'utf8');
+console.log('File created successfully at:', filePath); 

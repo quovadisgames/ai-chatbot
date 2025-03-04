@@ -15,6 +15,8 @@ import {
   type Message,
   message,
   vote,
+  tokenUsage,
+  type TokenUsage,
 } from './schema';
 import { ArtifactKind } from '@/components/artifact';
 
@@ -339,9 +341,100 @@ export async function updateChatVisiblityById({
   visibility: 'private' | 'public';
 }) {
   try {
-    return await db.update(chat).set({ visibility }).where(eq(chat.id, chatId));
+    return await db
+      .update(chat)
+      .set({ visibility })
+      .where(eq(chat.id, chatId));
   } catch (error) {
-    console.error('Failed to update chat visibility in database');
+    console.error('Failed to update chat visibility by id in database');
+    throw error;
+  }
+}
+
+export async function saveTokenUsage({
+  userId,
+  chatId,
+  messageId,
+  model,
+  promptTokens,
+  completionTokens,
+  totalTokens,
+}: {
+  userId: string;
+  chatId?: string;
+  messageId?: string;
+  model: string;
+  promptTokens: number;
+  completionTokens: number;
+  totalTokens: number;
+}) {
+  try {
+    return await db.insert(tokenUsage).values({
+      userId,
+      chatId,
+      messageId,
+      model,
+      promptTokens,
+      completionTokens,
+      totalTokens,
+      createdAt: new Date(),
+    });
+  } catch (error) {
+    console.error('Failed to save token usage in database');
+    throw error;
+  }
+}
+
+export async function getTokenUsageByUserId({ userId }: { userId: string }) {
+  try {
+    return await db
+      .select()
+      .from(tokenUsage)
+      .where(eq(tokenUsage.userId, userId))
+      .orderBy(desc(tokenUsage.createdAt));
+  } catch (error) {
+    console.error('Failed to get token usage by user id from database');
+    throw error;
+  }
+}
+
+export async function getTokenUsageByChatId({ chatId }: { chatId: string }) {
+  try {
+    return await db
+      .select()
+      .from(tokenUsage)
+      .where(eq(tokenUsage.chatId, chatId))
+      .orderBy(desc(tokenUsage.createdAt));
+  } catch (error) {
+    console.error('Failed to get token usage by chat id from database');
+    throw error;
+  }
+}
+
+export async function getTokenUsageSummaryByUserId({ userId }: { userId: string }) {
+  try {
+    const usage = await db
+      .select()
+      .from(tokenUsage)
+      .where(eq(tokenUsage.userId, userId));
+    
+    // Calculate total tokens used
+    const totalTokensUsed = usage.reduce((sum, record) => sum + record.totalTokens, 0);
+    
+    // Calculate tokens by model
+    const tokensByModel = usage.reduce((acc, record) => {
+      const { model, totalTokens } = record;
+      acc[model] = (acc[model] || 0) + totalTokens;
+      return acc;
+    }, {} as Record<string, number>);
+    
+    return {
+      totalTokensUsed,
+      tokensByModel,
+      usageRecords: usage,
+    };
+  } catch (error) {
+    console.error('Failed to get token usage summary by user id from database');
     throw error;
   }
 }

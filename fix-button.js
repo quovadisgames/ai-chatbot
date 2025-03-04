@@ -1,7 +1,13 @@
-'use client';
+const fs = require('fs');
+const path = require('path');
+
+// Create the content with the correct closing tag
+const content = `'use client';
 
 import { useFormStatus } from 'react-dom';
+
 import { LoaderIcon } from '@/components/icons';
+
 import { Button } from './ui/button';
 
 export function SubmitButton({
@@ -33,4 +39,10 @@ export function SubmitButton({
       </output>
     </Button>
   );
-}
+}`;
+
+const filePath = path.join(__dirname, 'components', 'submit-button.tsx');
+
+// Write the content to the file
+fs.writeFileSync(filePath, content, 'utf8');
+console.log('File created successfully with the correct closing tag.'); 

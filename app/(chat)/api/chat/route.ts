@@ -8,6 +8,7 @@ import {
 import { auth } from '@/app/(auth)/auth';
 import { myProvider } from '@/lib/ai/models';
 import { systemPrompt } from '@/lib/ai/prompts';
+import { trackTokenUsage } from '@/lib/ai/token-tracking';
 import {
   deleteChatById,
   getChatById,
@@ -86,7 +87,7 @@ export async function POST(request: Request) {
             dataStream,
           }),
         },
-        onFinish: async ({ response, reasoning }) => {
+        onFinish: async ({ response, reasoning, usage }) => {
           if (session.user?.id) {
             try {
               const sanitizedResponseMessages = sanitizeResponseMessages({
@@ -94,7 +95,8 @@ export async function POST(request: Request) {
                 reasoning,
               });
 
-              await saveMessages({
+              // Save the messages to the database
+              const savedMessages = await saveMessages({
                 messages: sanitizedResponseMessages.map((message) => {
                   return {
                     id: message.id,
@@ -105,8 +107,21 @@ export async function POST(request: Request) {
                   };
                 }),
               });
+
+              // Track token usage if available
+              if (usage) {
+                const assistantMessage = savedMessages.find(msg => msg.role === 'assistant');
+                await trackTokenUsage({
+                  chatId: id,
+                  messageId: assistantMessage?.id,
+                  model: selectedChatModel,
+                  promptTokens: usage.promptTokens || 0,
+                  completionTokens: usage.completionTokens || 0,
+                  totalTokens: usage.totalTokens || 0,
+                });
+              }
             } catch (error) {
-              console.error('Failed to save chat');
+              console.error('Failed to save chat or track token usage', error);
             }
           }
         },

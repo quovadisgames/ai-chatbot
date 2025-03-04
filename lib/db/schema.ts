@@ -9,6 +9,7 @@ import {
   primaryKey,
   foreignKey,
   boolean,
+  integer,
 } from 'drizzle-orm/pg-core';
 
 export const user = pgTable('User', {
@@ -113,3 +114,21 @@ export const suggestion = pgTable(
 );
 
 export type Suggestion = InferSelectModel<typeof suggestion>;
+
+export const tokenUsage = pgTable('TokenUsage', {
+  id: uuid('id').primaryKey().notNull().defaultRandom(),
+  userId: uuid('userId')
+    .notNull()
+    .references(() => user.id),
+  chatId: uuid('chatId')
+    .references(() => chat.id),
+  messageId: uuid('messageId')
+    .references(() => message.id),
+  model: varchar('model', { length: 64 }).notNull(),
+  promptTokens: integer('promptTokens').notNull(),
+  completionTokens: integer('completionTokens').notNull(),
+  totalTokens: integer('totalTokens').notNull(),
+  createdAt: timestamp('createdAt').notNull(),
+});
+
+export type TokenUsage = InferSelectModel<typeof tokenUsage>;

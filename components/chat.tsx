@@ -75,8 +75,8 @@ export function Chat({
           isReadonly={isReadonly}
         />
         
-        {/* Add simple token display */}
-        <div className="flex justify-end px-4 py-1">
+        {/* Token display - more prominent */}
+        <div className="flex justify-end px-4 py-2 border-b">
           <SimpleTokenDisplay chatId={id} />
         </div>
 

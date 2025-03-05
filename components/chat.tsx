@@ -75,9 +75,11 @@ export function Chat({
           isReadonly={isReadonly}
         />
         
-        {/* Token display - more prominent */}
-        <div className="flex justify-end px-4 py-2 border-b">
-          <SimpleTokenDisplay chatId={id} />
+        {/* Token display - with cost information */}
+        <div className="flex justify-end px-4 py-3 border-b bg-blue-50 dark:bg-blue-900/20">
+          <div className="border-2 border-blue-200 dark:border-blue-700 rounded-md shadow-sm">
+            <SimpleTokenDisplay chatId={id} />
+          </div>
         </div>
 
         <Messages

@@ -2,11 +2,11 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useActionState, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
 import { AuthForm } from '@/components/auth-form';
-import { SubmitButton } from '@/components/submit-button';
+import { CustomSubmitButton } from '@/components/custom-submit-button';
 
 import { register, type RegisterActionState } from '../actions';
 
@@ -15,13 +15,8 @@ export default function Page() {
 
   const [email, setEmail] = useState('');
   const [isSuccessful, setIsSuccessful] = useState(false);
-
-  const [state, formAction] = useActionState<RegisterActionState, FormData>(
-    register,
-    {
-      status: 'idle',
-    },
-  );
+  const [state, setState] = useState<RegisterActionState>({ status: 'idle' });
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (state.status === 'user_exists') {
@@ -37,9 +32,20 @@ export default function Page() {
     }
   }, [state, router]);
 
-  const handleSubmit = (formData: FormData) => {
+  const handleSubmit = async (formData: FormData) => {
     setEmail(formData.get('email') as string);
-    formAction(formData);
+    setIsLoading(true);
+    setState({ status: 'in_progress' });
+    
+    try {
+      const result = await register({ status: 'idle' }, formData);
+      setState(result);
+    } catch (error) {
+      setState({ status: 'failed' });
+      console.error('Registration error:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -52,7 +58,9 @@ export default function Page() {
           </p>
         </div>
         <AuthForm action={handleSubmit} defaultEmail={email}>
-          <SubmitButton isSuccessful={isSuccessful}>Sign Up</SubmitButton>
+          <CustomSubmitButton isSuccessful={isSuccessful} isLoading={isLoading}>
+            {isLoading ? 'Signing up...' : 'Sign Up'}
+          </CustomSubmitButton>
           <p className="text-center text-sm text-gray-600 mt-4 dark:text-zinc-400">
             {'Already have an account? '}
             <Link

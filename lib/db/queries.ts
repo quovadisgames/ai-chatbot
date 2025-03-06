@@ -4,11 +4,13 @@ import { genSaltSync, hashSync } from 'bcrypt-ts';
 import { and, asc, desc, eq, gt, gte, inArray } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/postgres-js';
 import postgres from 'postgres';
+import { PostgresJsDatabase } from 'drizzle-orm/postgres-js';
 
 import {
   user,
   chat,
   type User,
+  type Chat,
   document,
   type Suggestion,
   suggestion,
@@ -20,17 +22,91 @@ import {
 } from './schema';
 import { ArtifactKind } from '@/components/artifact';
 
-// Optionally, if not using email/pass login, you can
-// use the Drizzle adapter for Auth.js / NextAuth
-// https://authjs.dev/reference/adapter/drizzle
+// Enable mock database for development
+const USE_MOCK_DB = true;
+
+// Mock data for development
+const MOCK_USER: User = {
+  id: "mock-user-123",
+  email: "dev@example.com",
+  password: "$2a$10$mockhashedpassword",
+};
+
+const MOCK_CHATS: Chat[] = [
+  {
+    id: "mock-chat-1",
+    title: "Mock Chat 1",
+    userId: MOCK_USER.id,
+    createdAt: new Date(),
+    visibility: "private",
+  },
+  {
+    id: "mock-chat-2",
+    title: "Mock Chat 2",
+    userId: MOCK_USER.id,
+    createdAt: new Date(Date.now() - 86400000), // 1 day ago
+    visibility: "private",
+  }
+];
+
+const MOCK_MESSAGES: Message[] = [
+  {
+    id: "mock-message-1",
+    chatId: "mock-chat-1",
+    role: "user",
+    content: "Hello, this is a mock message",
+    createdAt: new Date(Date.now() - 3600000), // 1 hour ago
+  },
+  {
+    id: "mock-message-2",
+    chatId: "mock-chat-1",
+    role: "assistant",
+    content: "Hello! I'm a mock assistant response.",
+    createdAt: new Date(Date.now() - 3500000), // 58 minutes ago
+  }
+];
+
+const MOCK_TOKEN_USAGE: TokenUsage[] = [
+  {
+    id: "mock-token-1",
+    userId: MOCK_USER.id,
+    chatId: "mock-chat-1",
+    messageId: "mock-message-2",
+    model: "gpt-3.5-turbo",
+    promptTokens: 150,
+    completionTokens: 100,
+    totalTokens: 250,
+    createdAt: new Date(Date.now() - 3500000), // 58 minutes ago
+  }
+];
 
 // biome-ignore lint: Forbidden non-null assertion.
-const client = postgres(process.env.POSTGRES_URL!);
-const db = drizzle(client);
+let client: postgres.Sql<{}> | null = null;
+let db: PostgresJsDatabase | null = null;
+
+try {
+  // Only connect to the database if not using mock data
+  if (!USE_MOCK_DB) {
+    // biome-ignore lint: Forbidden non-null assertion.
+    client = postgres(process.env.POSTGRES_URL!);
+    db = drizzle(client);
+  }
+} catch (error) {
+  console.error('Failed to connect to database, using mock data');
+}
 
 export async function getUser(email: string): Promise<Array<User>> {
+  if (USE_MOCK_DB) {
+    console.log('Using mock user data for:', email);
+    if (email === MOCK_USER.email) {
+      return [MOCK_USER];
+    }
+    return [];
+  }
+  
   try {
-    return await db.select().from(user).where(eq(user.email, email));
+    // biome-ignore lint: Forbidden non-null assertion.
+    return await db!.select().from(user).where(eq(user.email, email));
   } catch (error) {
     console.error('Failed to get user from database');
     throw error;
@@ -84,8 +160,14 @@ export async function deleteChatById({ id }: { id: string }) {
 }
 
 export async function getChatsByUserId({ id }: { id: string }) {
+  if (USE_MOCK_DB) {
+    console.log('Using mock chat data for user:', id);
+    return MOCK_CHATS.filter(chat => chat.userId === id);
+  }
+  
   try {
-    return await db
+    // biome-ignore lint: Forbidden non-null assertion.
+    return await db!
       .select()
       .from(chat)
       .where(eq(chat.userId, id))
@@ -116,8 +198,14 @@ export async function saveMessages({ messages }: { messages: Array<Message> }) {
 }
 
 export async function getMessagesByChatId({ id }: { id: string }) {
+  if (USE_MOCK_DB) {
+    console.log('Using mock message data for chat:', id);
+    return MOCK_MESSAGES.filter(msg => msg.chatId === id);
+  }
+  
   try {
-    return await db
+    // biome-ignore lint: Forbidden non-null assertion.
+    return await db!
       .select()
       .from(message)
       .where(eq(message.chatId, id))
@@ -399,8 +487,14 @@ export async function getTokenUsageByUserId({ userId }: { userId: string }) {
 }
 
 export async function getTokenUsageByChatId({ chatId }: { chatId: string }) {
+  if (USE_MOCK_DB) {
+    console.log('Using mock token usage data for chat:', chatId);
+    return MOCK_TOKEN_USAGE.filter(usage => usage.chatId === chatId);
+  }
+  
   try {
-    return await db
+    // biome-ignore lint: Forbidden non-null assertion.
+    return await db!
       .select()
       .from(tokenUsage)
       .where(eq(tokenUsage.chatId, chatId))

@@ -1,32 +1,37 @@
-import { config } from 'dotenv';
 import { drizzle } from 'drizzle-orm/postgres-js';
 import { migrate } from 'drizzle-orm/postgres-js/migrator';
 import postgres from 'postgres';
 
-config({
-  path: '.env.local',
-});
+// Check if we should use mock data
+const USE_MOCK_DB = process.env.USE_MOCK_DB === 'true';
 
-const runMigrate = async () => {
-  if (!process.env.POSTGRES_URL) {
-    throw new Error('POSTGRES_URL is not defined');
+async function main() {
+  if (USE_MOCK_DB) {
+    console.log('Using mock database, skipping migrations');
+    return;
   }
-
-  const connection = postgres(process.env.POSTGRES_URL, { max: 1 });
-  const db = drizzle(connection);
 
   console.log('⏳ Running migrations...');
 
-  const start = Date.now();
-  await migrate(db, { migrationsFolder: './lib/db/migrations' });
-  const end = Date.now();
+  const connectionString = process.env.POSTGRES_URL;
+  if (!connectionString) {
+    console.error('❌ POSTGRES_URL is not defined');
+    process.exit(1);
+  }
 
-  console.log('✅ Migrations completed in', end - start, 'ms');
-  process.exit(0);
-};
+  const sql = postgres(connectionString, { max: 1 });
+  const db = drizzle(sql);
 
-runMigrate().catch((err) => {
-  console.error('❌ Migration failed');
-  console.error(err);
-  process.exit(1);
-});
+  try {
+    await migrate(db, { migrationsFolder: 'drizzle' });
+    console.log('✅ Migrations completed');
+    await sql.end();
+    process.exit(0);
+  } catch (error) {
+    console.error('❌ Migration failed', error);
+    await sql.end();
+    process.exit(1);
+  }
+}
+
+main();

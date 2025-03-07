@@ -5,6 +5,7 @@ import { and, asc, desc, eq, gt, gte, inArray } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/postgres-js';
 import postgres from 'postgres';
 import { PostgresJsDatabase } from 'drizzle-orm/postgres-js';
+import { nanoid } from 'nanoid';
 
 import {
   user,
@@ -96,19 +97,20 @@ try {
 }
 
 export async function getUser(email: string): Promise<Array<User>> {
-  if (USE_MOCK_DB) {
-    console.log('Using mock user data for:', email);
-    if (email === MOCK_USER.email) {
-      return [MOCK_USER];
-    }
-    return [];
-  }
-  
   try {
-    // biome-ignore lint: Forbidden non-null assertion.
-    return await db!.select().from(user).where(eq(user.email, email));
+    if (!db) {
+      throw new Error("Database not initialized");
+    }
+    return await db.select().from(user).where(eq(user.email, email));
   } catch (error) {
     console.error('Failed to get user from database');
+    if (USE_MOCK_DB) {
+      console.log('Using mock user data');
+      if (email === MOCK_USER.email) {
+        return [MOCK_USER];
+      }
+      return [];
+    }
     throw error;
   }
 }
@@ -155,6 +157,9 @@ export async function saveChat({
 
 export async function deleteChatById({ id }: { id: string }) {
   try {
+    if (!db) {
+      throw new Error("Database not initialized");
+    }
     await db.delete(vote).where(eq(vote.chatId, id));
     await db.delete(message).where(eq(message.chatId, id));
 
@@ -167,25 +172,26 @@ export async function deleteChatById({ id }: { id: string }) {
 
 export async function getChatsByUserId({ id }: { id: string }) {
   if (USE_MOCK_DB) {
-    console.log('Using mock chat data for user:', id);
+    console.log('Using mock chats data');
     return MOCK_CHATS.filter(chat => chat.userId === id);
   }
-  
+
   try {
-    // biome-ignore lint: Forbidden non-null assertion.
-    return await db!
-      .select()
-      .from(chat)
-      .where(eq(chat.userId, id))
-      .orderBy(desc(chat.createdAt));
+    if (!db) {
+      throw new Error("Database not initialized");
+    }
+    return await db.select().from(chat).where(eq(chat.userId, id));
   } catch (error) {
-    console.error('Failed to get chats by user from database');
+    console.error('Failed to get chats by user id from database');
     throw error;
   }
 }
 
 export async function getChatById({ id }: { id: string }) {
   try {
+    if (!db) {
+      throw new Error("Database not initialized");
+    }
     const [selectedChat] = await db.select().from(chat).where(eq(chat.id, id));
     return selectedChat;
   } catch (error) {
@@ -196,28 +202,29 @@ export async function getChatById({ id }: { id: string }) {
 
 export async function saveMessages({ messages }: { messages: Array<Message> }) {
   try {
+    if (!db) {
+      throw new Error("Database not initialized");
+    }
     return await db.insert(message).values(messages);
   } catch (error) {
-    console.error('Failed to save messages in database', error);
+    console.error('Failed to save messages in database');
     throw error;
   }
 }
 
 export async function getMessagesByChatId({ id }: { id: string }) {
   if (USE_MOCK_DB) {
-    console.log('Using mock message data for chat:', id);
-    return MOCK_MESSAGES.filter(msg => msg.chatId === id);
+    console.log('Using mock messages data');
+    return MOCK_MESSAGES.filter(message => message.chatId === id);
   }
-  
+
   try {
-    // biome-ignore lint: Forbidden non-null assertion.
-    return await db!
-      .select()
-      .from(message)
-      .where(eq(message.chatId, id))
-      .orderBy(asc(message.createdAt));
+    if (!db) {
+      throw new Error("Database not initialized");
+    }
+    return await db.select().from(message).where(eq(message.chatId, id));
   } catch (error) {
-    console.error('Failed to get messages by chat id from database', error);
+    console.error('Failed to get messages by chat id from database');
     throw error;
   }
 }
@@ -232,6 +239,10 @@ export async function voteMessage({
   type: 'up' | 'down';
 }) {
   try {
+    if (!db) {
+      throw new Error("Database not initialized");
+    }
+    
     const [existingVote] = await db
       .select()
       .from(vote)
@@ -243,22 +254,26 @@ export async function voteMessage({
         .set({ isUpvoted: type === 'up' })
         .where(and(eq(vote.messageId, messageId), eq(vote.chatId, chatId)));
     }
+    
     return await db.insert(vote).values({
       chatId,
       messageId,
       isUpvoted: type === 'up',
     });
   } catch (error) {
-    console.error('Failed to upvote message in database', error);
+    console.error('Failed to vote message in database');
     throw error;
   }
 }
 
 export async function getVotesByChatId({ id }: { id: string }) {
   try {
+    if (!db) {
+      throw new Error("Database not initialized");
+    }
     return await db.select().from(vote).where(eq(vote.chatId, id));
   } catch (error) {
-    console.error('Failed to get votes by chat id from database', error);
+    console.error('Failed to get votes by chat id from database');
     throw error;
   }
 }
@@ -277,6 +292,9 @@ export async function saveDocument({
   userId: string;
 }) {
   try {
+    if (!db) {
+      throw new Error("Database not initialized");
+    }
     return await db.insert(document).values({
       id,
       title,
@@ -293,21 +311,27 @@ export async function saveDocument({
 
 export async function getDocumentsById({ id }: { id: string }) {
   try {
+    if (!db) {
+      throw new Error("Database not initialized");
+    }
     const documents = await db
       .select()
       .from(document)
       .where(eq(document.id, id))
-      .orderBy(asc(document.createdAt));
+      .orderBy(desc(document.createdAt));
 
     return documents;
   } catch (error) {
-    console.error('Failed to get document by id from database');
+    console.error('Failed to get documents by id from database');
     throw error;
   }
 }
 
 export async function getDocumentById({ id }: { id: string }) {
   try {
+    if (!db) {
+      throw new Error("Database not initialized");
+    }
     const [selectedDocument] = await db
       .select()
       .from(document)
@@ -329,12 +353,15 @@ export async function deleteDocumentsByIdAfterTimestamp({
   timestamp: Date;
 }) {
   try {
+    if (!db) {
+      throw new Error("Database not initialized");
+    }
     await db
       .delete(suggestion)
       .where(
         and(
           eq(suggestion.documentId, id),
-          gt(suggestion.documentCreatedAt, timestamp),
+          gt(suggestion.createdAt, timestamp),
         ),
       );
 
@@ -342,9 +369,7 @@ export async function deleteDocumentsByIdAfterTimestamp({
       .delete(document)
       .where(and(eq(document.id, id), gt(document.createdAt, timestamp)));
   } catch (error) {
-    console.error(
-      'Failed to delete documents by id after timestamp from database',
-    );
+    console.error('Failed to delete documents by id after timestamp from database');
     throw error;
   }
 }
@@ -355,6 +380,9 @@ export async function saveSuggestions({
   suggestions: Array<Suggestion>;
 }) {
   try {
+    if (!db) {
+      throw new Error("Database not initialized");
+    }
     return await db.insert(suggestion).values(suggestions);
   } catch (error) {
     console.error('Failed to save suggestions in database');
@@ -368,20 +396,24 @@ export async function getSuggestionsByDocumentId({
   documentId: string;
 }) {
   try {
+    if (!db) {
+      throw new Error("Database not initialized");
+    }
     return await db
       .select()
       .from(suggestion)
       .where(and(eq(suggestion.documentId, documentId)));
   } catch (error) {
-    console.error(
-      'Failed to get suggestions by document version from database',
-    );
+    console.error('Failed to get suggestions by document id from database');
     throw error;
   }
 }
 
 export async function getMessageById({ id }: { id: string }) {
   try {
+    if (!db) {
+      throw new Error("Database not initialized");
+    }
     return await db.select().from(message).where(eq(message.id, id));
   } catch (error) {
     console.error('Failed to get message by id from database');
@@ -397,14 +429,17 @@ export async function deleteMessagesByChatIdAfterTimestamp({
   timestamp: Date;
 }) {
   try {
+    if (!db) {
+      throw new Error("Database not initialized");
+    }
     const messagesToDelete = await db
       .select({ id: message.id })
       .from(message)
       .where(
-        and(eq(message.chatId, chatId), gte(message.createdAt, timestamp)),
+        and(eq(message.chatId, chatId), gt(message.createdAt, timestamp)),
       );
 
-    const messageIds = messagesToDelete.map((message) => message.id);
+    const messageIds = messagesToDelete.map((m) => m.id);
 
     if (messageIds.length > 0) {
       await db
@@ -419,10 +454,10 @@ export async function deleteMessagesByChatIdAfterTimestamp({
           and(eq(message.chatId, chatId), inArray(message.id, messageIds)),
         );
     }
+
+    return { rowCount: 0 };
   } catch (error) {
-    console.error(
-      'Failed to delete messages by id after timestamp from database',
-    );
+    console.error('Failed to delete messages by chat id after timestamp from database');
     throw error;
   }
 }
@@ -435,6 +470,9 @@ export async function updateChatVisiblityById({
   visibility: 'private' | 'public';
 }) {
   try {
+    if (!db) {
+      throw new Error("Database not initialized");
+    }
     return await db
       .update(chat)
       .set({ visibility })
@@ -463,6 +501,9 @@ export async function saveTokenUsage({
   totalTokens: number;
 }) {
   try {
+    if (!db) {
+      throw new Error("Database not initialized");
+    }
     return await db.insert(tokenUsage).values({
       userId,
       chatId,
@@ -480,7 +521,15 @@ export async function saveTokenUsage({
 }
 
 export async function getTokenUsageByUserId({ userId }: { userId: string }) {
+  if (USE_MOCK_DB) {
+    console.log('Using mock token usage data');
+    return MOCK_TOKEN_USAGE.filter(usage => usage.userId === userId);
+  }
+
   try {
+    if (!db) {
+      throw new Error("Database not initialized");
+    }
     return await db
       .select()
       .from(tokenUsage)
@@ -494,13 +543,15 @@ export async function getTokenUsageByUserId({ userId }: { userId: string }) {
 
 export async function getTokenUsageByChatId({ chatId }: { chatId: string }) {
   if (USE_MOCK_DB) {
-    console.log('Using mock token usage data for chat:', chatId);
+    console.log('Using mock token usage data');
     return MOCK_TOKEN_USAGE.filter(usage => usage.chatId === chatId);
   }
-  
+
   try {
-    // biome-ignore lint: Forbidden non-null assertion.
-    return await db!
+    if (!db) {
+      throw new Error("Database not initialized");
+    }
+    return await db
       .select()
       .from(tokenUsage)
       .where(eq(tokenUsage.chatId, chatId))
@@ -513,26 +564,23 @@ export async function getTokenUsageByChatId({ chatId }: { chatId: string }) {
 
 export async function getTokenUsageSummaryByUserId({ userId }: { userId: string }) {
   try {
+    if (!db) {
+      throw new Error("Database not initialized");
+    }
     const usage = await db
       .select()
       .from(tokenUsage)
       .where(eq(tokenUsage.userId, userId));
-    
-    // Calculate total tokens used
-    const totalTokensUsed = usage.reduce((sum, record) => sum + record.totalTokens, 0);
-    
-    // Calculate tokens by model
-    const tokensByModel = usage.reduce((acc, record) => {
-      const { model, totalTokens } = record;
-      acc[model] = (acc[model] || 0) + totalTokens;
-      return acc;
-    }, {} as Record<string, number>);
-    
-    return {
-      totalTokensUsed,
-      tokensByModel,
-      usageRecords: usage,
-    };
+
+    return usage.reduce(
+      (acc, curr) => {
+        acc.promptTokens += curr.promptTokens;
+        acc.completionTokens += curr.completionTokens;
+        acc.totalTokens += curr.totalTokens;
+        return acc;
+      },
+      { promptTokens: 0, completionTokens: 0, totalTokens: 0 },
+    );
   } catch (error) {
     console.error('Failed to get token usage summary by user id from database');
     throw error;

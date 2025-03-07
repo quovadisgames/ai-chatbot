@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "cross-env USE_MOCK_DB=true next dev",
     "build": "next build",
+    "build:debug": "next build --debug",
     "postinstall": "cross-env USE_MOCK_DB=true tsx lib/db/migrate",
     "start": "next start",
     "lint": "next lint",

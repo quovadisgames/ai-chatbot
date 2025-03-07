@@ -118,6 +118,9 @@ export async function createUser(email: string, password: string) {
   const hash = hashSync(password, salt);
 
   try {
+    if (!db) {
+      throw new Error("Database not initialized");
+    }
     return await db.insert(user).values({ email, password: hash });
   } catch (error) {
     console.error('Failed to create user in database');

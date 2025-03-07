@@ -138,6 +138,9 @@ export async function saveChat({
   title: string;
 }) {
   try {
+    if (!db) {
+      throw new Error("Database not initialized");
+    }
     return await db.insert(chat).values({
       id,
       createdAt: new Date(),

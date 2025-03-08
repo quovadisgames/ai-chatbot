@@ -188,14 +188,16 @@ export async function getChatsByUserId({ id }: { id: string }) {
 }
 
 export async function getChatById({ id }: { id: string }) {
+  if (USE_MOCK_DB) {
+    console.log('Using mock chat data for id:', id);
+    return MOCK_CHATS.find(chat => chat.id === id) || null;
+  }
   try {
-    if (!db) {
-      throw new Error("Database not initialized");
-    }
+    if (!db) throw new Error("Database not initialized");
     const [selectedChat] = await db.select().from(chat).where(eq(chat.id, id));
     return selectedChat;
   } catch (error) {
-    console.error('Failed to get chat by id from database');
+    console.error('Failed to get chat by id from database:', error);
     throw error;
   }
 }

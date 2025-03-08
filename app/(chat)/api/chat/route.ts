@@ -111,7 +111,7 @@ export async function POST(req: NextRequest) {
     return new Response(response.toDataStream(), {
       headers: { 'Content-Type': 'text/event-stream' },
     });
-  } catch (error) {
+  } catch (error: Error) {
     console.error('Error in POST /api/chat:', error);
     return new Response(`Error: ${error.message}`, { status: 500 });
   }

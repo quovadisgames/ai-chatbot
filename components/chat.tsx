@@ -137,20 +137,13 @@ export function Chat({
                   }
                 }
                 
-                // The AI SDK expects a very specific format for the data
-                // Format: data: {"id":"...","role":"assistant","content":"...","createdAt":"..."}\n\n
-                // No array brackets, just a plain JSON object
-                console.log('📝 Formatting mock Dijkstra response as a single event');
+                // The Vercel AI SDK expects a very specific format
+                // Based on the error, let's try the exact format used by the SDK
+                console.log('📝 Formatting mock Dijkstra response using Vercel AI SDK format');
                 
-                const message = {
-                  id: assistantMessageId,
-                  role: 'assistant',
-                  content: fullContent,
-                  createdAt: new Date().toISOString()
-                };
-                
-                const sseEvent = encoder.encode(`data: ${JSON.stringify(message)}\n\n`);
-                await writer.write(sseEvent);
+                // Format the response as a text completion
+                const textEvent = encoder.encode(`data: {"text":"${fullContent.replace(/"/g, '\\"')}"}\n\n`);
+                await writer.write(textEvent);
                 
                 // Clear the buffer since we've processed everything
                 buffer = '';
@@ -171,17 +164,9 @@ export function Chat({
                     const content = dataLines.join('\n');
                     console.log('📝 Parsed content:', content.length > 50 ? content.substring(0, 50) + '...' : content);
                     
-                    // Format as a proper SSE event for the AI SDK
-                    // The AI SDK expects a plain JSON object, not an array
-                    const message = {
-                      id: assistantMessageId,
-                      role: 'assistant',
-                      content: content,
-                      createdAt: new Date().toISOString()
-                    };
-                    
-                    const sseEvent = encoder.encode(`data: ${JSON.stringify(message)}\n\n`);
-                    await writer.write(sseEvent);
+                    // Format as a text completion for the AI SDK
+                    const textEvent = encoder.encode(`data: {"text":"${content.replace(/"/g, '\\"')}"}\n\n`);
+                    await writer.write(textEvent);
                   }
                 }
               }

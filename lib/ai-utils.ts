@@ -55,11 +55,17 @@ export async function trackAIUsage(userId: string, prompt: string): Promise<AIRe
       "```\n" +
       "This finds shortest paths from a start node in a weighted graph.";
     
-    // Create a ReadableStream directly
+    // Split into chunks and format as SSE
+    const chunks = mockResponse.split('\n').map(line => `data: ${line}\n`);
+    chunks.push('\n'); // End event
+    
+    // Create a ReadableStream with SSE format
     const encoder = new TextEncoder();
     const stream = new ReadableStream({
       start(controller) {
-        controller.enqueue(encoder.encode(mockResponse));
+        chunks.forEach(chunk => {
+          controller.enqueue(encoder.encode(chunk));
+        });
         controller.close();
       }
     });
@@ -76,9 +82,29 @@ export async function trackAIUsage(userId: string, prompt: string): Promise<AIRe
     prompt,
   });
   
-  // Get the underlying ReadableStream from the response
-  // This assumes the AI SDK's response has a readable property or can be converted to a ReadableStream
-  const stream = response as unknown as ReadableStream;
+  // Create a properly formatted SSE stream
+  const stream = new ReadableStream({
+    async start(controller) {
+      const encoder = new TextEncoder();
+      
+      // Handle the response as a stream of events
+      try {
+        // This assumes the AI SDK's response is iterable
+        for await (const chunk of response as any) {
+          const content = chunk?.content || chunk?.delta?.content || '';
+          if (content) {
+            controller.enqueue(encoder.encode(`data: ${content}\n\n`));
+          }
+        }
+      } catch (error) {
+        console.error('Error processing AI stream:', error);
+      }
+      
+      // End the stream
+      controller.enqueue(encoder.encode('\n'));
+      controller.close();
+    }
+  });
   
   // Estimate token usage
   const promptTokens = estimateTokenCount(prompt);

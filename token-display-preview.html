@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Token Display Preview</title>
+  <style>
+    :root {
+      --background: hsl(210, 50%, 98%);
+      --foreground: hsl(240, 10%, 3.9%);
+      --border: hsl(240, 5.9%, 90%);
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      background-color: var(--background);
+      color: var(--foreground);
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .dark {
+      --background: hsl(240, 10%, 3.9%);
+      --foreground: hsl(0, 0%, 98%);
+      --border: hsl(240, 3.7%, 15.9%);
+    }
+    
+    header {
+      display: flex;
+      align-items: center;
+      padding: 0.5rem 1rem;
+      border-bottom: 1px solid var(--border);
+      background-color: white;
+    }
+    
+    .dark header {
+      background-color: hsl(240, 10%, 3.9%);
+    }
+    
+    .token-display-container {
+      display: flex;
+      justify-content: flex-end;
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--border);
+      background-color: hsl(210, 50%, 95%);
+    }
+    
+    .dark .token-display-container {
+      background-color: hsla(210, 50%, 30%, 0.2);
+    }
+    
+    .token-display-wrapper {
+      border: 2px solid hsl(210, 50%, 80%);
+      border-radius: 0.375rem;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+    
+    .dark .token-display-wrapper {
+      border-color: hsl(210, 50%, 30%);
+    }
+    
+    .token-display {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      padding: 0.5rem 0.75rem;
+      background-color: white;
+      border-radius: 0.25rem;
+      min-width: 220px;
+    }
+    
+    .token-display-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+    
+    .token-display-label {
+      font-size: 0.75rem;
+      color: hsl(240, 3.8%, 46.1%);
+    }
+    
+    .token-display-value {
+      font-weight: 600;
+    }
+    
+    .token-display-divider {
+      height: 1px;
+      background-color: hsl(240, 5.9%, 90%);
+      margin: 0.25rem 0;
+    }
+    
+    .dark .token-display-divider {
+      background-color: hsl(240, 3.7%, 15.9%);
+    }
+    
+    .status-indicator {
+      width: 0.5rem;
+      height: 0.5rem;
+      border-radius: 9999px;
+    }
+    
+    .status-indicator.active {
+      background-color: hsl(142, 76%, 36%);
+    }
+    
+    .status-indicator.loading {
+      background-color: hsl(217, 91%, 60%);
+      animation: pulse 2s infinite;
+    }
+    
+    .status-indicator.error {
+      background-color: hsl(0, 84%, 60%);
+    }
+    
+    .message-area {
+      flex: 1;
+      padding: 1rem;
+      overflow-y: auto;
+    }
+    
+    .theme-toggle {
+      margin-left: auto;
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 0.25rem;
+      padding: 0.25rem 0.5rem;
+      cursor: pointer;
+      color: var(--foreground);
+    }
+    
+    .options {
+      padding: 1rem;
+      border-top: 1px solid var(--border);
+    }
+    
+    .option-group {
+      margin-bottom: 1rem;
+    }
+    
+    .option-group h3 {
+      margin-top: 0;
+      margin-bottom: 0.5rem;
+      font-size: 0.875rem;
+    }
+    
+    .option-buttons {
+      display: flex;
+      gap: 0.5rem;
+    }
+    
+    button {
+      padding: 0.375rem 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: 0.25rem;
+      background-color: white;
+      cursor: pointer;
+    }
+    
+    .dark button {
+      background-color: hsl(240, 5%, 26%);
+      color: white;
+    }
+    
+    @keyframes pulse {
+      0%, 100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.5;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1 style="font-size: 1rem; margin: 0;">AI Chatbot</h1>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+  </header>
+  
+  <div class="token-display-container">
+    <div class="token-display-wrapper">
+      <div class="token-display">
+        <div class="token-display-row">
+          <div class="status-indicator active" id="status-indicator"></div>
+          <span class="token-display-label">Current Message</span>
+          <span class="token-display-value" id="query-tokens">250 tokens</span>
+          <span class="token-display-value" id="query-cost">$0.0025</span>
+        </div>
+        
+        <div class="token-display-divider"></div>
+        
+        <div class="token-display-row">
+          <span class="token-display-label">Total Chat</span>
+          <span class="token-display-value" id="total-tokens">1,250 tokens</span>
+          <span class="token-display-value" id="total-cost">$0.0125</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="message-area">
+    <h2>Token Display Preview</h2>
+    <p>This is a preview of the token display with a light blue background. The token count will update every 5 seconds.</p>
+    <p>You can toggle between light and dark mode using the button in the header.</p>
+  </div>
+  
+  <div class="options">
+    <div class="option-group">
+      <h3>Token Display Options</h3>
+      <div class="option-buttons">
+        <button onclick="showNormal()">Normal</button>
+        <button onclick="showLoading()">Loading</button>
+        <button onclick="showError()">Error</button>
+        <button onclick="showDetailed()">Detailed</button>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    let queryTokens = 250;
+    let totalTokens = 1250;
+    const tokenRate = 0.00001; // $0.00001 per token (adjust based on your model)
+    
+    const statusIndicator = document.getElementById('status-indicator');
+    const queryTokensElement = document.getElementById('query-tokens');
+    const queryCostElement = document.getElementById('query-cost');
+    const totalTokensElement = document.getElementById('total-tokens');
+    const totalCostElement = document.getElementById('total-cost');
+    
+    function updateDisplay() {
+      // Calculate costs
+      const queryCost = queryTokens * tokenRate;
+      const totalCost = totalTokens * tokenRate;
+      
+      // Update display
+      queryTokensElement.textContent = `${queryTokens.toLocaleString()} tokens`;
+      queryCostElement.textContent = `$${queryCost.toFixed(4)}`;
+      totalTokensElement.textContent = `${totalTokens.toLocaleString()} tokens`;
+      totalCostElement.textContent = `$${totalCost.toFixed(4)}`;
+    }
+    
+    function toggleTheme() {
+      document.body.classList.toggle('dark');
+    }
+    
+    function showNormal() {
+      statusIndicator.className = 'status-indicator active';
+      updateDisplay();
+    }
+    
+    function showLoading() {
+      statusIndicator.className = 'status-indicator loading';
+      queryTokensElement.textContent = 'Calculating...';
+      queryCostElement.textContent = '';
+      totalTokensElement.textContent = `${totalTokens.toLocaleString()} tokens`;
+      totalCostElement.textContent = `$${(totalTokens * tokenRate).toFixed(4)}`;
+    }
+    
+    function showError() {
+      statusIndicator.className = 'status-indicator error';
+      queryTokensElement.textContent = 'Error';
+      queryCostElement.textContent = '';
+      totalTokensElement.textContent = `${totalTokens.toLocaleString()} tokens`;
+      totalCostElement.textContent = `$${(totalTokens * tokenRate).toFixed(4)}`;
+    }
+    
+    function showDetailed() {
+      statusIndicator.className = 'status-indicator active';
+      
+      const promptTokens = Math.floor(queryTokens * 0.4);
+      const completionTokens = queryTokens - promptTokens;
+      const promptCost = promptTokens * tokenRate * 0.5; // Prompt tokens are cheaper
+      const completionCost = completionTokens * tokenRate * 1.5; // Completion tokens are more expensive
+      const queryCost = promptCost + completionCost;
+      
+      queryTokensElement.innerHTML = `
+        <div style="font-size: 0.75rem;">
+          <div>Prompt: ${promptTokens} ($${promptCost.toFixed(5)})</div>
+          <div>Completion: ${completionTokens} ($${completionCost.toFixed(5)})</div>
+          <div>Total: ${queryTokens} ($${queryCost.toFixed(5)})</div>
+        </div>
+      `;
+      queryCostElement.textContent = '';
+      
+      totalTokensElement.textContent = `${totalTokens.toLocaleString()} tokens`;
+      totalCostElement.textContent = `$${(totalTokens * tokenRate).toFixed(4)}`;
+    }
+    
+    // Initial display
+    updateDisplay();
+    
+    // Update token count every 5 seconds
+    setInterval(() => {
+      // Simulate a new message being added
+      const newQueryTokens = Math.floor(Math.random() * 100) + 50;
+      queryTokens = newQueryTokens;
+      totalTokens += newQueryTokens;
+      
+      if (statusIndicator.className === 'status-indicator active') {
+        updateDisplay();
+      }
+    }, 5000);
+  </script>
+</body>
+</html> 

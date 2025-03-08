@@ -61,12 +61,12 @@ export function TokenUsageDisplay({
 
   if (loading && !usage) {
     return (
-      <div className="border rounded-lg shadow-sm p-6">
-        <div className="mb-4">
-          <h3 className="text-lg font-semibold">Token Usage</h3>
-          <p className="text-sm text-muted-foreground">Loading token usage data...</p>
+      <div className="border rounded-lg p-4">
+        <div className="mb-2">
+          <h3 className="text-lg font-medium">Token Usage</h3>
+          <p className="text-sm text-gray-500">Loading token usage data...</p>
         </div>
-        <div className="space-y-4">
+        <div className="space-y-2">
           <div className="h-4 w-full bg-gray-200 animate-pulse rounded"></div>
           <div className="h-4 w-full bg-gray-200 animate-pulse rounded"></div>
           <div className="h-4 w-full bg-gray-200 animate-pulse rounded"></div>
@@ -77,20 +77,13 @@ export function TokenUsageDisplay({
 
   if (error) {
     return (
-      <div className="border rounded-lg shadow-sm p-6">
-        <div className="mb-4">
-          <h3 className="text-lg font-semibold">Token Usage</h3>
-          <p className="text-sm text-muted-foreground">Error loading data</p>
+      <div className="border rounded-lg p-4">
+        <div className="mb-2">
+          <h3 className="text-lg font-medium">Token Usage</h3>
+          <p className="text-sm text-gray-500">Error loading data</p>
         </div>
-        <div className="p-4 border border-red-200 bg-red-50 text-red-800 rounded-md">
-          <div className="flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 mr-2">
-              <circle cx="12" cy="12" r="10"></circle>
-              <line x1="12" y1="8" x2="12" y2="12"></line>
-              <line x1="12" y1="16" x2="12.01" y2="16"></line>
-            </svg>
-            <span>{error}</span>
-          </div>
+        <div className="p-3 border border-red-200 bg-red-50 text-red-700 rounded">
+          {error}
         </div>
       </div>
     );
@@ -98,12 +91,12 @@ export function TokenUsageDisplay({
 
   if (!usage) {
     return (
-      <div className="border rounded-lg shadow-sm p-6">
-        <div className="mb-4">
-          <h3 className="text-lg font-semibold">Token Usage</h3>
-          <p className="text-sm text-muted-foreground">No token usage data available</p>
+      <div className="border rounded-lg p-4">
+        <div className="mb-2">
+          <h3 className="text-lg font-medium">Token Usage</h3>
+          <p className="text-sm text-gray-500">No token usage data available</p>
         </div>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-sm text-gray-500">
           Start using the AI chatbot to see your token usage statistics.
         </p>
       </div>
@@ -117,12 +110,12 @@ export function TokenUsageDisplay({
   const completionPercentage = totalTokens > 0 ? (totalCompletionTokens / totalTokens) * 100 : 0;
 
   return (
-    <div className="border rounded-lg shadow-sm p-6">
-      <div className="mb-4">
-        <h3 className="text-lg font-semibold">Token Usage</h3>
-        <p className="text-sm text-muted-foreground">Your AI token consumption</p>
+    <div className="border rounded-lg p-4">
+      <div className="mb-2">
+        <h3 className="text-lg font-medium">Token Usage</h3>
+        <p className="text-sm text-gray-500">Your AI token consumption</p>
       </div>
-      <div className="space-y-4">
+      <div className="space-y-3">
         <div>
           <div className="flex justify-between mb-1">
             <span className="text-sm font-medium">Total Tokens</span>
@@ -137,7 +130,7 @@ export function TokenUsageDisplay({
           </div>
           <div className="h-2 w-full bg-gray-200 rounded-full overflow-hidden">
             <div 
-              className="h-full bg-blue-600 rounded-full" 
+              className="h-full bg-blue-500 rounded-full" 
               style={{ width: `${promptPercentage}%` }}
             />
           </div>
@@ -150,7 +143,7 @@ export function TokenUsageDisplay({
           </div>
           <div className="h-2 w-full bg-gray-200 rounded-full overflow-hidden">
             <div 
-              className="h-full bg-blue-600 rounded-full" 
+              className="h-full bg-blue-500 rounded-full" 
               style={{ width: `${completionPercentage}%` }}
             />
           </div>

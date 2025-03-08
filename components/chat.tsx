@@ -15,6 +15,7 @@ import { Messages } from './messages';
 import { VisibilityType } from './visibility-selector';
 import { useArtifactSelector } from '@/hooks/use-artifact';
 import { toast } from 'sonner';
+import { SimpleTokenDisplay } from './simple-token-display';
 
 export function Chat({
   id,
@@ -73,6 +74,13 @@ export function Chat({
           selectedVisibilityType={selectedVisibilityType}
           isReadonly={isReadonly}
         />
+        
+        {/* Token display - with cost information */}
+        <div className="flex justify-end px-4 py-3 border-b bg-blue-50 dark:bg-blue-900/20">
+          <div className="border-2 border-blue-200 dark:border-blue-700 rounded-md shadow-sm">
+            <SimpleTokenDisplay chatId={id} />
+          </div>
+        </div>
 
         <Messages
           chatId={id}

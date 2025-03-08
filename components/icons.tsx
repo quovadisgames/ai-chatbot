@@ -1,3 +1,5 @@
+import * as React from 'react';
+
 export const BotIcon = () => {
   return (
     <svg
@@ -284,7 +286,10 @@ export const FileIcon = ({ size = 16 }: { size?: number }) => {
   );
 };
 
-export const LoaderIcon = ({ size = 16 }: { size?: number }) => {
+export const LoaderIcon = ({
+  size = 16,
+  ...props
+}: React.SVGProps<SVGSVGElement> & { size?: number }) => {
   return (
     <svg
       height={size}
@@ -292,6 +297,7 @@ export const LoaderIcon = ({ size = 16 }: { size?: number }) => {
       viewBox="0 0 16 16"
       width={size}
       style={{ color: 'currentcolor' }}
+      {...props}
     >
       <g clipPath="url(#clip0_2393_1490)">
         <path d="M8 0V4" stroke="currentColor" strokeWidth="1.5" />

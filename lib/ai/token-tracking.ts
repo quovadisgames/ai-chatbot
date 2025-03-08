@@ -2,6 +2,7 @@ import { db } from '@/lib/db';
 import { tokenUsage } from '@/lib/db/schema';
 import { auth } from '@/auth';
 import { saveTokenUsage } from '@/lib/db/queries';
+import { sum, eq } from 'drizzle-orm';
 
 /**
  * Tracks token usage for a specific API call
@@ -61,11 +62,11 @@ export async function trackTokenUsage({
 export async function getUserTokenUsage(userId: string) {
   try {
     const result = await db.select({
-      totalPromptTokens: db.fn.sum(tokenUsage.promptTokens),
-      totalCompletionTokens: db.fn.sum(tokenUsage.completionTokens),
-      totalTokens: db.fn.sum(tokenUsage.totalTokens),
+      totalPromptTokens: sum(tokenUsage.promptTokens),
+      totalCompletionTokens: sum(tokenUsage.completionTokens),
+      totalTokens: sum(tokenUsage.totalTokens),
     }).from(tokenUsage)
-      .where(db.eq(tokenUsage.userId, userId));
+      .where(eq(tokenUsage.userId, userId));
     
     // Handle null values from the database
     const data = result[0] || {};
@@ -93,11 +94,11 @@ export async function getUserTokenUsage(userId: string) {
 export async function getChatTokenUsage(chatId: string) {
   try {
     const result = await db.select({
-      totalPromptTokens: db.fn.sum(tokenUsage.promptTokens),
-      totalCompletionTokens: db.fn.sum(tokenUsage.completionTokens),
-      totalTokens: db.fn.sum(tokenUsage.totalTokens),
+      totalPromptTokens: sum(tokenUsage.promptTokens),
+      totalCompletionTokens: sum(tokenUsage.completionTokens),
+      totalTokens: sum(tokenUsage.totalTokens),
     }).from(tokenUsage)
-      .where(db.eq(tokenUsage.chatId, chatId));
+      .where(eq(tokenUsage.chatId, chatId));
     
     // Handle null values from the database
     const data = result[0] || {};

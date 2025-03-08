@@ -51,13 +51,15 @@ export async function POST(req: NextRequest) {
       }
     } else {
       // Create new chat
-      try {
-        const title = await generateTitleFromUserMessage({ message: userMessage });
-        await saveChat({ id, userId, title });
-      } catch (error) {
-        console.error('Error creating chat:', error);
-        // Continue anyway
-      }
+      console.log('Generating title for new chat');
+      const titleStart = Date.now();
+      const title = await generateTitleFromUserMessage({ message: userMessage });
+      console.log(`Title generated in ${Date.now() - titleStart}ms:`, title);
+      
+      console.log('Saving new chat');
+      const saveStart = Date.now();
+      await saveChat({ id, userId, title });
+      console.log(`Chat saved in ${Date.now() - saveStart}ms`);
     }
     
     // Save the user message
@@ -69,8 +71,10 @@ export async function POST(req: NextRequest) {
     }
 
     // Process with AI and return streaming response
+    console.log('Starting AI processing');
+    const aiStart = Date.now();
     const response = await trackAIUsage(userId, prompt);
-    console.log('Token usage:', response.usage);
+    console.log(`AI processed in ${Date.now() - aiStart}ms, Token usage:`, response.usage);
     
     return new Response(response.toDataStream(), {
       headers: { 'Content-Type': 'text/event-stream' },

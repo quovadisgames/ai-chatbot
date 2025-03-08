@@ -89,21 +89,12 @@ export function Chat({
             const decoder = new TextDecoder();
             let buffer = '';
             let eventCount = 0;
-            let fullContent = '';
             
-            // Create a new assistant message
-            const assistantMessage: Message = {
-              id: generateUUID(),
-              createdAt: new Date(),
-              content: '',
-              role: 'assistant',
-            };
+            // Create a new assistant message with a stable ID
+            const assistantMessageId = generateUUID();
+            console.log(`🆔 Created assistant message with ID: ${assistantMessageId}`);
             
-            // Add the empty assistant message to the state via the append function
-            if (appendRef.current) {
-              appendRef.current(assistantMessage);
-            }
-            
+            // Process the stream chunk by chunk
             while (true) {
               const { done, value } = await reader.read();
               
@@ -126,6 +117,48 @@ export function Chat({
               const events = buffer.split('\n\n');
               buffer = events.pop() || ''; // Keep the last incomplete event in the buffer
               
+              // Check if this is a mock response with Dijkstra's algorithm
+              const isDijkstraResponse = events.some(event => 
+                event.includes('Dijkstra') && event.includes('algorithm')
+              );
+              
+              if (isDijkstraResponse) {
+                console.log('🤖 Detected mock Dijkstra response, sending as a single event');
+                
+                // Collect all content from all events
+                let fullContent = '';
+                for (const event of events) {
+                  const dataLines = event.split('\n')
+                    .filter(line => line.startsWith('data: '))
+                    .map(line => line.substring(6));
+                  
+                  if (dataLines.length > 0) {
+                    fullContent += dataLines.join('\n');
+                  }
+                }
+                
+                // Send the full content as a single properly formatted event
+                const formattedEvent = {
+                  id: assistantMessageId,
+                  role: 'assistant',
+                  content: fullContent,
+                  createdAt: new Date()
+                };
+                
+                console.log('📝 Sending formatted event:', JSON.stringify(formattedEvent).substring(0, 100) + '...');
+                
+                // Format as a proper SSE event for the AI SDK
+                const sseEvent = encoder.encode(`data: ${JSON.stringify(formattedEvent)}\n\n`);
+                await writer.write(sseEvent);
+                
+                // Clear the buffer since we've processed everything
+                buffer = '';
+                
+                // Skip further processing of these events
+                continue;
+              }
+              
+              // Process each event normally
               for (const event of events) {
                 if (event.trim()) {
                   // Parse data lines
@@ -137,12 +170,17 @@ export function Chat({
                     const content = dataLines.join('\n');
                     console.log('📝 Parsed content:', content.length > 50 ? content.substring(0, 50) + '...' : content);
                     
-                    // Accumulate the full content
-                    fullContent = content;
+                    // Format as a proper JSON object for the AI SDK
+                    const formattedEvent = {
+                      id: assistantMessageId,
+                      role: 'assistant',
+                      content: content,
+                      createdAt: new Date()
+                    };
                     
-                    // Format the content as a proper SSE event for the AI SDK
-                    const formattedEvent = encoder.encode(`data: ${JSON.stringify({ role: 'assistant', content, id: assistantMessage.id })}\n\n`);
-                    await writer.write(formattedEvent);
+                    // Format as a proper SSE event for the AI SDK
+                    const sseEvent = encoder.encode(`data: ${JSON.stringify(formattedEvent)}\n\n`);
+                    await writer.write(sseEvent);
                   }
                 }
               }

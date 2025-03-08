@@ -96,14 +96,14 @@ try {
   console.error('Failed to connect to database, using mock data');
 }
 
-export async function getUser({ userId }: { userId: string }) {
+export async function getUser({ email }: { email: string }): Promise<User[]> {
   if (USE_MOCK_DB) {
-    console.log('Using mock user data for userId:', userId);
-    return [MOCK_USER].filter(user => user.id === userId);
+    console.log('Using mock user data for email:', email);
+    return email === MOCK_USER.email ? [MOCK_USER] : [];
   }
   try {
     if (!db) throw new Error("Database not initialized");
-    return await db.select().from(user).where(eq(user.id, userId));
+    return await db.select().from(user).where(eq(user.email, email));
   } catch (error) {
     console.error('Failed to get user from database:', error);
     throw error;
@@ -186,7 +186,7 @@ export async function getChatsByUserId({ id }: { id: string }) {
   }
 }
 
-export async function getChatById({ id }: { id: string }) {
+export async function getChatById({ id }: { id: string }): Promise<ExtendedChat | null> {
   if (USE_MOCK_DB) {
     console.log('Using mock chat data for id:', id);
     return MOCK_CHATS.find(chat => chat.id === id) || null;
@@ -194,28 +194,28 @@ export async function getChatById({ id }: { id: string }) {
   try {
     if (!db) throw new Error("Database not initialized");
     const [selectedChat] = await db.select().from(chat).where(eq(chat.id, id));
-    return selectedChat;
-  } catch (error: unknown) {
+    return selectedChat as ExtendedChat || null;
+  } catch (error) {
     console.error('Failed to get chat by id from database:', error);
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-    return new Response(`Error: ${errorMessage}`, { status: 500 });
+    throw error;
   }
 }
 
-export async function saveMessages({ messages }: { messages: Array<Message> }) {
+export async function saveMessages({ messages }: { messages: Array<Message> }): Promise<any> {
+  if (USE_MOCK_DB) {
+    console.log('Using mock mode for saveMessages');
+    return { success: true };
+  }
   try {
-    if (!db) {
-      throw new Error("Database not initialized");
-    }
+    if (!db) throw new Error("Database not initialized");
     return await db.insert(message).values(messages);
-  } catch (error: unknown) {
-    console.error('Failed to save messages in database');
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-    return new Response(`Error: ${errorMessage}`, { status: 500 });
+  } catch (error) {
+    console.error('Failed to save messages in database:', error);
+    throw error;
   }
 }
 
-export async function getMessagesByChatId({ chatId }: { chatId: string }) {
+export async function getMessagesByChatId({ chatId }: { chatId: string }): Promise<Message[]> {
   if (USE_MOCK_DB) {
     console.log('Using mock message data for chatId:', chatId);
     return MOCK_MESSAGES.filter(msg => msg.chatId === chatId).sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
@@ -237,11 +237,13 @@ export async function voteMessage({
   chatId: string;
   messageId: string;
   type: 'up' | 'down';
-}) {
+}): Promise<any> {
+  if (USE_MOCK_DB) {
+    console.log('Using mock mode for voteMessage');
+    return { success: true };
+  }
   try {
-    if (!db) {
-      throw new Error("Database not initialized");
-    }
+    if (!db) throw new Error("Database not initialized");
     
     const [existingVote] = await db
       .select()
@@ -260,23 +262,23 @@ export async function voteMessage({
       messageId,
       isUpvoted: type === 'up',
     });
-  } catch (error: unknown) {
-    console.error('Failed to vote message in database');
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-    return new Response(`Error: ${errorMessage}`, { status: 500 });
+  } catch (error) {
+    console.error('Failed to vote message in database:', error);
+    throw error;
   }
 }
 
-export async function getVotesByChatId({ id }: { id: string }) {
+export async function getVotesByChatId({ id }: { id: string }): Promise<any[]> {
+  if (USE_MOCK_DB) {
+    console.log('Using mock votes data for chat id:', id);
+    return []; // Add mock votes if needed
+  }
   try {
-    if (!db) {
-      throw new Error("Database not initialized");
-    }
+    if (!db) throw new Error("Database not initialized");
     return await db.select().from(vote).where(eq(vote.chatId, id));
-  } catch (error: unknown) {
-    console.error('Failed to get votes by chat id from database');
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-    return new Response(`Error: ${errorMessage}`, { status: 500 });
+  } catch (error) {
+    console.error('Failed to get votes by chat id from database:', error);
+    throw error;
   }
 }
 
@@ -292,11 +294,13 @@ export async function saveDocument({
   kind: ArtifactKind;
   content: string;
   userId: string;
-}) {
+}): Promise<any> {
+  if (USE_MOCK_DB) {
+    console.log('Using mock mode for saveDocument');
+    return { success: true };
+  }
   try {
-    if (!db) {
-      throw new Error("Database not initialized");
-    }
+    if (!db) throw new Error("Database not initialized");
     return await db.insert(document).values({
       id,
       title,
@@ -305,10 +309,9 @@ export async function saveDocument({
       userId,
       createdAt: new Date(),
     });
-  } catch (error: unknown) {
-    console.error('Failed to save document in database');
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-    return new Response(`Error: ${errorMessage}`, { status: 500 });
+  } catch (error) {
+    console.error('Failed to save document in database:', error);
+    throw error;
   }
 }
 
@@ -593,4 +596,10 @@ export async function getTokenUsageSummaryByUserId({ userId }: { userId: string 
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     return new Response(`Error: ${errorMessage}`, { status: 500 });
   }
+}
+
+// Ensure Chat type has userId property
+export type { User, Message };
+export interface ExtendedChat extends Chat {
+  userId: string;
 }

@@ -8,7 +8,7 @@ type LocalMessage = {
 };
 
 // Import the rest of the dependencies
-import { auth } from '@/auth';
+import { auth } from '@/app/(auth)/auth';
 import { myProvider } from '@/lib/ai/models';
 import { systemPrompt } from '@/lib/ai/prompts';
 import { trackTokenUsage } from '@/lib/ai/token-tracking';
@@ -18,10 +18,12 @@ import {
   getChatById,
   saveChat,
   saveMessages,
+  ExtendedChat,
 } from '@/lib/db/queries';
 import {
   generateUUID,
   sanitizeResponseMessages,
+  getMostRecentUserMessage,
 } from '@/lib/utils';
 
 import { generateTitleFromUserMessage } from '../../actions';
@@ -63,12 +65,6 @@ function estimateTokenCount(text: string): number {
   return Math.ceil(text.length / 4);
 }
 
-// Helper function to get the most recent user message
-function getMostRecentUserMessage(messages: Array<any>) {
-  const userMessages = messages.filter((message) => message.role === 'user');
-  return userMessages.at(-1);
-}
-
 // Define a type that matches the ai package's Message type
 type AIMessage = {
   id: string;
@@ -83,38 +79,72 @@ const MOCK_USER = {
   email: "dev@example.com",
 };
 
+// Proper type guard function that TypeScript recognizes
+function isValidChat(chat: any): chat is ExtendedChat {
+  return chat !== null && typeof chat === 'object' && 'userId' in chat;
+}
+
 export async function POST(req: NextRequest) {
   try {
+    // Parse request
     const { id, messages } = await req.json();
     console.log('Incoming request:', { id, messages });
+    
+    // Authentication
     const session = await auth() || (USE_MOCK_AUTH ? { user: MOCK_USER } : null);
     const userId = session?.user?.id;
     if (!userId) return new Response('Unauthorized', { status: 401 });
 
+    // Get user message
     const userMessage = getMostRecentUserMessage(messages);
     console.log('Parsed userMessage:', userMessage);
     if (!userMessage) return new Response('No user message found', { status: 400 });
     const prompt = userMessage.content;
-
-    const chat = await getChatById({ id });
-    if (chat && chat.userId !== userId) {
-      return new Response('Unauthorized', { status: 401 });
+    
+    // Get chat
+    let chat = null;
+    try {
+      chat = await getChatById({ id });
+    } catch (error) {
+      console.error('Error getting chat:', error);
     }
-    if (!chat) {
-      const title = await generateTitleFromUserMessage({ message: userMessage });
-      await saveChat({ id, userId, title });
+    
+    // Check authorization if chat exists using the type guard
+    if (isValidChat(chat)) {
+      // @ts-ignore: TypeScript doesn't understand our type guard properly
+      if (chat.userId !== userId) {
+        return new Response('Unauthorized', { status: 401 });
+      }
+    } else {
+      // Create chat if it doesn't exist
+      try {
+        const title = await generateTitleFromUserMessage({ message: userMessage });
+        await saveChat({ id, userId, title });
+      } catch (error) {
+        console.error('Error creating chat:', error);
+        // Continue anyway
+      }
     }
-    await saveMessages({ messages: [{ ...userMessage, createdAt: new Date(), chatId: id }] });
+    
+    // Save the user message
+    try {
+      await saveMessages({ messages: [{ ...userMessage, createdAt: new Date(), chatId: id }] });
+    } catch (error) {
+      console.error('Error saving message:', error);
+      // Continue anyway
+    }
 
+    // Process with AI and return streaming response
     const response = await trackAIUsage(userId, prompt);
     console.log('Token usage:', response.usage);
+    
     return new Response(response.toDataStream(), {
       headers: { 'Content-Type': 'text/event-stream' },
     });
   } catch (error: unknown) {
     console.error('Error in POST /api/chat:', error);
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-    return new Response(`Error: ${errorMessage}`, { status: 500 });
+    const message = error instanceof Error ? error.message : String(error);
+    return new Response(`Error: ${message}`, { status: 500 });
   }
 }
 

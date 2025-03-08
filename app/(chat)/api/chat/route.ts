@@ -111,9 +111,10 @@ export async function POST(req: NextRequest) {
     return new Response(response.toDataStream(), {
       headers: { 'Content-Type': 'text/event-stream' },
     });
-  } catch (error: Error) {
+  } catch (error: unknown) {
     console.error('Error in POST /api/chat:', error);
-    return new Response(`Error: ${error.message}`, { status: 500 });
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    return new Response(`Error: ${errorMessage}`, { status: 500 });
   }
 }
 

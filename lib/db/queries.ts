@@ -102,7 +102,7 @@ export async function getUser(email: string): Promise<Array<User>> {
       throw new Error("Database not initialized");
     }
     return await db.select().from(user).where(eq(user.email, email));
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Failed to get user from database');
     if (USE_MOCK_DB) {
       console.log('Using mock user data');
@@ -111,7 +111,8 @@ export async function getUser(email: string): Promise<Array<User>> {
       }
       return [];
     }
-    throw error;
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    return new Response(`Error: ${errorMessage}`, { status: 500 });
   }
 }
 
@@ -124,9 +125,10 @@ export async function createUser(email: string, password: string) {
       throw new Error("Database not initialized");
     }
     return await db.insert(user).values({ email, password: hash });
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Failed to create user in database');
-    throw error;
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    return new Response(`Error: ${errorMessage}`, { status: 500 });
   }
 }
 
@@ -149,9 +151,10 @@ export async function saveChat({
       userId,
       title,
     });
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Failed to save chat in database');
-    throw error;
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    return new Response(`Error: ${errorMessage}`, { status: 500 });
   }
 }
 
@@ -164,9 +167,10 @@ export async function deleteChatById({ id }: { id: string }) {
     await db.delete(message).where(eq(message.chatId, id));
 
     return await db.delete(chat).where(eq(chat.id, id));
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Failed to delete chat by id from database');
-    throw error;
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    return new Response(`Error: ${errorMessage}`, { status: 500 });
   }
 }
 
@@ -181,9 +185,10 @@ export async function getChatsByUserId({ id }: { id: string }) {
       throw new Error("Database not initialized");
     }
     return await db.select().from(chat).where(eq(chat.userId, id));
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Failed to get chats by user id from database');
-    throw error;
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    return new Response(`Error: ${errorMessage}`, { status: 500 });
   }
 }
 
@@ -196,9 +201,10 @@ export async function getChatById({ id }: { id: string }) {
     if (!db) throw new Error("Database not initialized");
     const [selectedChat] = await db.select().from(chat).where(eq(chat.id, id));
     return selectedChat;
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Failed to get chat by id from database:', error);
-    throw error;
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    return new Response(`Error: ${errorMessage}`, { status: 500 });
   }
 }
 
@@ -208,9 +214,10 @@ export async function saveMessages({ messages }: { messages: Array<Message> }) {
       throw new Error("Database not initialized");
     }
     return await db.insert(message).values(messages);
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Failed to save messages in database');
-    throw error;
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    return new Response(`Error: ${errorMessage}`, { status: 500 });
   }
 }
 
@@ -225,9 +232,10 @@ export async function getMessagesByChatId({ id }: { id: string }) {
       throw new Error("Database not initialized");
     }
     return await db.select().from(message).where(eq(message.chatId, id));
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Failed to get messages by chat id from database');
-    throw error;
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    return new Response(`Error: ${errorMessage}`, { status: 500 });
   }
 }
 
@@ -262,9 +270,10 @@ export async function voteMessage({
       messageId,
       isUpvoted: type === 'up',
     });
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Failed to vote message in database');
-    throw error;
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    return new Response(`Error: ${errorMessage}`, { status: 500 });
   }
 }
 
@@ -274,9 +283,10 @@ export async function getVotesByChatId({ id }: { id: string }) {
       throw new Error("Database not initialized");
     }
     return await db.select().from(vote).where(eq(vote.chatId, id));
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Failed to get votes by chat id from database');
-    throw error;
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    return new Response(`Error: ${errorMessage}`, { status: 500 });
   }
 }
 
@@ -305,9 +315,10 @@ export async function saveDocument({
       userId,
       createdAt: new Date(),
     });
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Failed to save document in database');
-    throw error;
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    return new Response(`Error: ${errorMessage}`, { status: 500 });
   }
 }
 
@@ -323,9 +334,10 @@ export async function getDocumentsById({ id }: { id: string }) {
       .orderBy(desc(document.createdAt));
 
     return documents;
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Failed to get documents by id from database');
-    throw error;
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    return new Response(`Error: ${errorMessage}`, { status: 500 });
   }
 }
 
@@ -341,9 +353,10 @@ export async function getDocumentById({ id }: { id: string }) {
       .orderBy(desc(document.createdAt));
 
     return selectedDocument;
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Failed to get document by id from database');
-    throw error;
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    return new Response(`Error: ${errorMessage}`, { status: 500 });
   }
 }
 
@@ -370,9 +383,10 @@ export async function deleteDocumentsByIdAfterTimestamp({
     return await db
       .delete(document)
       .where(and(eq(document.id, id), gt(document.createdAt, timestamp)));
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Failed to delete documents by id after timestamp from database');
-    throw error;
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    return new Response(`Error: ${errorMessage}`, { status: 500 });
   }
 }
 
@@ -386,9 +400,10 @@ export async function saveSuggestions({
       throw new Error("Database not initialized");
     }
     return await db.insert(suggestion).values(suggestions);
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Failed to save suggestions in database');
-    throw error;
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    return new Response(`Error: ${errorMessage}`, { status: 500 });
   }
 }
 
@@ -405,9 +420,10 @@ export async function getSuggestionsByDocumentId({
       .select()
       .from(suggestion)
       .where(and(eq(suggestion.documentId, documentId)));
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Failed to get suggestions by document id from database');
-    throw error;
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    return new Response(`Error: ${errorMessage}`, { status: 500 });
   }
 }
 
@@ -417,9 +433,10 @@ export async function getMessageById({ id }: { id: string }) {
       throw new Error("Database not initialized");
     }
     return await db.select().from(message).where(eq(message.id, id));
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Failed to get message by id from database');
-    throw error;
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    return new Response(`Error: ${errorMessage}`, { status: 500 });
   }
 }
 
@@ -458,9 +475,10 @@ export async function deleteMessagesByChatIdAfterTimestamp({
     }
 
     return { rowCount: 0 };
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Failed to delete messages by chat id after timestamp from database');
-    throw error;
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    return new Response(`Error: ${errorMessage}`, { status: 500 });
   }
 }
 
@@ -479,9 +497,10 @@ export async function updateChatVisiblityById({
       .update(chat)
       .set({ visibility })
       .where(eq(chat.id, chatId));
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Failed to update chat visibility by id in database');
-    throw error;
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    return new Response(`Error: ${errorMessage}`, { status: 500 });
   }
 }
 
@@ -516,9 +535,10 @@ export async function saveTokenUsage({
       totalTokens,
       createdAt: new Date(),
     });
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Failed to save token usage in database');
-    throw error;
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    return new Response(`Error: ${errorMessage}`, { status: 500 });
   }
 }
 
@@ -537,9 +557,10 @@ export async function getTokenUsageByUserId({ userId }: { userId: string }) {
       .from(tokenUsage)
       .where(eq(tokenUsage.userId, userId))
       .orderBy(desc(tokenUsage.createdAt));
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Failed to get token usage by user id from database');
-    throw error;
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    return new Response(`Error: ${errorMessage}`, { status: 500 });
   }
 }
 
@@ -558,9 +579,10 @@ export async function getTokenUsageByChatId({ chatId }: { chatId: string }) {
       .from(tokenUsage)
       .where(eq(tokenUsage.chatId, chatId))
       .orderBy(desc(tokenUsage.createdAt));
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Failed to get token usage by chat id from database');
-    throw error;
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    return new Response(`Error: ${errorMessage}`, { status: 500 });
   }
 }
 
@@ -583,8 +605,9 @@ export async function getTokenUsageSummaryByUserId({ userId }: { userId: string 
       },
       { promptTokens: 0, completionTokens: 0, totalTokens: 0 },
     );
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Failed to get token usage summary by user id from database');
-    throw error;
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    return new Response(`Error: ${errorMessage}`, { status: 500 });
   }
 }

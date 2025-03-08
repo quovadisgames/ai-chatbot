@@ -16,11 +16,13 @@ export async function saveChatModelAsCookie(model: string) {
   cookieStore.set('chat-model', model);
 }
 
-export async function generateTitleFromUserMessage({
-  message,
-}: {
-  message: Message;
-}) {
+export async function generateTitleFromUserMessage({ message }: { message: any }): Promise<string> {
+  const USE_MOCK_DB = true; // Match route.ts
+  if (USE_MOCK_DB) {
+    console.log('[MOCK] Generating title');
+    return `Chat: ${message.content.slice(0, 20)}...`; // Fast mock title
+  }
+  
   const { text: title } = await generateText({
     model: myProvider.languageModel('title-model'),
     system: `\n

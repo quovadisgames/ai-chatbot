@@ -181,29 +181,33 @@ export async function createUser(email: string, password: string) {
   }
 }
 
-export async function saveChat({
-  id,
-  userId,
-  title,
-}: {
-  id: string;
-  userId: string;
-  title: string;
-}) {
-  try {
-    if (!db) {
-      throw new Error("Database not initialized");
-    }
-    return await db.insert(chat).values({
+export async function saveChat({ id, userId, title }: { id: string; userId: string; title: string }): Promise<ExtendedChat> {
+  if (USE_MOCK_DB) {
+    console.log(`[MOCK] Saving chat with ID: ${id}`);
+    const newChat: ExtendedChat = {
       id,
-      createdAt: new Date(),
       userId,
       title,
-    });
-  } catch (error: unknown) {
-    console.error('Failed to save chat in database');
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-    return new Response(`Error: ${errorMessage}`, { status: 500 });
+      createdAt: new Date(),
+      visibility: "private", // Default value
+    };
+    const existingIndex = MOCK_CHATS.findIndex(c => c.id === id);
+    if (existingIndex >= 0) {
+      MOCK_CHATS[existingIndex] = newChat;
+    } else {
+      MOCK_CHATS.push(newChat);
+    }
+    return newChat;
+  }
+  try {
+    if (!db) throw new Error("Database not initialized");
+    await db.insert(chat).values({ id, userId, title, createdAt: new Date() });
+    const [newChat] = await db.select().from(chat).where(eq(chat.id, id));
+    if (!newChat) throw new Error("Failed to retrieve saved chat");
+    return newChat;
+  } catch (error) {
+    console.error('Failed to save chat in database:', error);
+    throw error;
   }
 }
 

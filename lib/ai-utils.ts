@@ -34,9 +34,9 @@ export async function trackAIUsage(userId: string, prompt: string) {
   await saveTokenUsage({
     userId,
     model: 'gpt-4o',
-    promptTokens: usage.prompt_tokens,
-    completionTokens: usage.completion_tokens,
-    totalTokens: usage.total_tokens,
+    promptTokens: usage.promptTokens,
+    completionTokens: usage.completionTokens,
+    totalTokens: usage.totalTokens,
   });
   return response;
 } 

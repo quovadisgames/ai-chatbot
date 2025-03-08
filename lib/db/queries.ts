@@ -20,6 +20,7 @@ import {
   vote,
   tokenUsage,
   type TokenUsage,
+  type Document,
 } from './schema';
 import { ArtifactKind } from '@/components/artifact';
 
@@ -78,6 +79,60 @@ const MOCK_TOKEN_USAGE: TokenUsage[] = [
     completionTokens: 100,
     totalTokens: 250,
     createdAt: new Date(Date.now() - 3500000), // 58 minutes ago
+  }
+];
+
+// Add mock document data after the other mock data definitions
+const MOCK_DOCUMENTS: Document[] = [
+  {
+    id: "mock-doc-1",
+    title: "Mock Document 1",
+    kind: "text" as const,
+    content: "This is a mock text document for development",
+    userId: MOCK_USER.id,
+    createdAt: new Date(),
+  },
+  {
+    id: "mock-doc-2",
+    title: "Mock Code Sample",
+    kind: "code" as const,
+    content: "function hello() {\n  console.log('Hello world');\n}",
+    userId: MOCK_USER.id,
+    createdAt: new Date(Date.now() - 86400000), // 1 day ago
+  },
+  {
+    id: "mock-doc-3",
+    title: "Mock Spreadsheet",
+    kind: "sheet" as const,
+    content: "Column A,Column B\nValue 1,Value 2",
+    userId: MOCK_USER.id,
+    createdAt: new Date(Date.now() - 172800000), // 2 days ago
+  }
+];
+
+// Add mock suggestions data
+const MOCK_SUGGESTIONS: Suggestion[] = [
+  {
+    id: "mock-suggestion-1",
+    documentId: "mock-doc-1",
+    userId: MOCK_USER.id,
+    description: "Suggestion for improving document 1",
+    documentCreatedAt: new Date(Date.now() - 3600000), // 1 hour ago
+    originalText: "This is the original text",
+    suggestedText: "This is the suggested improved text",
+    isResolved: false,
+    createdAt: new Date(),
+  },
+  {
+    id: "mock-suggestion-2",
+    documentId: "mock-doc-2",
+    userId: MOCK_USER.id,
+    description: "Suggestion for improving document 2",
+    documentCreatedAt: new Date(Date.now() - 7200000), // 2 hours ago
+    originalText: "function hello() {\n  console.log('Hello');\n}",
+    suggestedText: "function hello() {\n  console.log('Hello world!');\n}",
+    isResolved: false,
+    createdAt: new Date(),
   }
 ];
 
@@ -311,62 +366,111 @@ export async function saveDocument({
   kind: ArtifactKind;
   content: string;
   userId: string;
-}): Promise<any> {
+}): Promise<Document> {
   if (USE_MOCK_DB) {
-    console.log('Using mock mode for saveDocument');
-    return { success: true };
-  }
-  try {
-    if (!db) throw new Error("Database not initialized");
-    return await db.insert(document).values({
+    console.log(`[MOCK] Saving document with ID: ${id}`);
+    
+    // Check if document already exists in mock data
+    const existingDocIndex = MOCK_DOCUMENTS.findIndex(doc => doc.id === id);
+    
+    const newDoc: Document = {
       id,
       title,
       kind,
       content,
       userId,
       createdAt: new Date(),
-    });
+    };
+    
+    // Update or add the document
+    if (existingDocIndex >= 0) {
+      MOCK_DOCUMENTS[existingDocIndex] = newDoc;
+    } else {
+      MOCK_DOCUMENTS.push(newDoc);
+    }
+    
+    return newDoc;
+  }
+
+  try {
+    if (!db) throw new Error("Database not initialized");
+    
+    await db
+      .insert(document)
+      .values({
+        id,
+        title,
+        kind,
+        content,
+        userId,
+        createdAt: new Date(),
+      })
+      .onConflictDoUpdate({
+        target: document.id,
+        set: {
+          title,
+          kind,
+          content,
+          createdAt: new Date(),
+        },
+      });
+    
+    // Return the saved document
+    const [savedDoc] = await db
+      .select()
+      .from(document)
+      .where(eq(document.id, id))
+      .limit(1);
+    
+    if (!savedDoc) {
+      throw new Error(`Failed to retrieve saved document with ID: ${id}`);
+    }
+    
+    return savedDoc;
   } catch (error) {
-    console.error('Failed to save document in database:', error);
+    console.error('Failed to save document to database:', error);
     throw error;
   }
 }
 
-export async function getDocumentsById({ id }: { id: string }) {
+export async function getDocumentsById({ id }: { id: string }): Promise<Document[]> {
+  if (USE_MOCK_DB) {
+    console.log(`[MOCK] Getting documents for user ID: ${id}`);
+    return MOCK_DOCUMENTS.filter(doc => doc.userId === id)
+      .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+  }
+
   try {
-    if (!db) {
-      throw new Error("Database not initialized");
-    }
-    const documents = await db
+    if (!db) throw new Error("Database not initialized");
+    return await db
       .select()
       .from(document)
-      .where(eq(document.id, id))
+      .where(eq(document.userId, id))
       .orderBy(desc(document.createdAt));
-
-    return documents;
-  } catch (error: unknown) {
-    console.error('Failed to get documents by id from database');
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-    return new Response(`Error: ${errorMessage}`, { status: 500 });
+  } catch (error) {
+    console.error('Failed to get documents by user id from database:', error);
+    throw error;
   }
 }
 
-export async function getDocumentById({ id }: { id: string }) {
+export async function getDocumentById({ id }: { id: string }): Promise<Document | null> {
+  if (USE_MOCK_DB) {
+    console.log(`[MOCK] Getting document by ID: ${id}`);
+    return MOCK_DOCUMENTS.find(doc => doc.id === id) || null;
+  }
+
   try {
-    if (!db) {
-      throw new Error("Database not initialized");
-    }
-    const [selectedDocument] = await db
+    if (!db) throw new Error("Database not initialized");
+    const [result] = await db
       .select()
       .from(document)
       .where(eq(document.id, id))
-      .orderBy(desc(document.createdAt));
-
-    return selectedDocument;
-  } catch (error: unknown) {
-    console.error('Failed to get document by id from database');
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-    return new Response(`Error: ${errorMessage}`, { status: 500 });
+      .limit(1);
+    
+    return result || null;
+  } catch (error) {
+    console.error('Failed to get document by id from database:', error);
+    throw error;
   }
 }
 
@@ -376,27 +480,38 @@ export async function deleteDocumentsByIdAfterTimestamp({
 }: {
   id: string;
   timestamp: Date;
-}) {
+}): Promise<void> {
+  if (USE_MOCK_DB) {
+    console.log(`[MOCK] Deleting documents for ID ${id} after timestamp ${timestamp}`);
+    // In mock mode, we don't actually delete anything
+    return;
+  }
+
   try {
-    if (!db) {
-      throw new Error("Database not initialized");
-    }
+    if (!db) throw new Error("Database not initialized");
+    
+    // Delete suggestions first
     await db
       .delete(suggestion)
       .where(
         and(
           eq(suggestion.documentId, id),
-          gt(suggestion.createdAt, timestamp),
-        ),
+          gte(suggestion.createdAt, timestamp)
+        )
       );
-
-    return await db
+    
+    // Then delete documents
+    await db
       .delete(document)
-      .where(and(eq(document.id, id), gt(document.createdAt, timestamp)));
-  } catch (error: unknown) {
-    console.error('Failed to delete documents by id after timestamp from database');
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-    return new Response(`Error: ${errorMessage}`, { status: 500 });
+      .where(
+        and(
+          eq(document.id, id),
+          gte(document.createdAt, timestamp)
+        )
+      );
+  } catch (error) {
+    console.error('Failed to delete documents by id after timestamp from database:', error);
+    throw error;
   }
 }
 
@@ -404,16 +519,49 @@ export async function saveSuggestions({
   suggestions,
 }: {
   suggestions: Array<Suggestion>;
-}) {
-  try {
-    if (!db) {
-      throw new Error("Database not initialized");
+}): Promise<Suggestion[]> {
+  if (USE_MOCK_DB) {
+    console.log(`[MOCK] Saving ${suggestions.length} suggestions`);
+    
+    for (const newSuggestion of suggestions) {
+      // Check if suggestion already exists in mock data
+      const existingIndex = MOCK_SUGGESTIONS.findIndex(s => s.id === newSuggestion.id);
+      
+      if (existingIndex >= 0) {
+        // Update existing suggestion
+        MOCK_SUGGESTIONS[existingIndex] = newSuggestion;
+      } else {
+        // Add new suggestion
+        MOCK_SUGGESTIONS.push(newSuggestion);
+      }
     }
-    return await db.insert(suggestion).values(suggestions);
-  } catch (error: unknown) {
-    console.error('Failed to save suggestions in database');
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-    return new Response(`Error: ${errorMessage}`, { status: 500 });
+    
+    return suggestions;
+  }
+
+  try {
+    if (!db) throw new Error("Database not initialized");
+    
+    // Insert all suggestions
+    for (const s of suggestions) {
+      await db
+        .insert(suggestion)
+        .values(s)
+        .onConflictDoUpdate({
+          target: suggestion.id,
+          set: {
+            description: s.description,
+            originalText: s.originalText,
+            suggestedText: s.suggestedText,
+            isResolved: s.isResolved,
+          },
+        });
+    }
+    
+    return suggestions;
+  } catch (error) {
+    console.error('Failed to save suggestions to database:', error);
+    throw error;
   }
 }
 
@@ -421,19 +569,21 @@ export async function getSuggestionsByDocumentId({
   documentId,
 }: {
   documentId: string;
-}) {
+}): Promise<Suggestion[]> {
+  if (USE_MOCK_DB) {
+    console.log(`[MOCK] Getting suggestions for document ID: ${documentId}`);
+    return MOCK_SUGGESTIONS.filter(s => s.documentId === documentId);
+  }
+
   try {
-    if (!db) {
-      throw new Error("Database not initialized");
-    }
+    if (!db) throw new Error("Database not initialized");
     return await db
       .select()
       .from(suggestion)
-      .where(and(eq(suggestion.documentId, documentId)));
-  } catch (error: unknown) {
-    console.error('Failed to get suggestions by document id from database');
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-    return new Response(`Error: ${errorMessage}`, { status: 500 });
+      .where(eq(suggestion.documentId, documentId));
+  } catch (error) {
+    console.error('Failed to get suggestions by document id from database:', error);
+    throw error;
   }
 }
 

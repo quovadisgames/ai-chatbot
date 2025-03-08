@@ -102,7 +102,7 @@ export async function POST(req: NextRequest) {
 
   const response = await trackAIUsage(userId, prompt);
   console.log('Token usage:', response.usage);
-  return new Response(response.toAIStream(), {
+  return new Response(response.toDataStream(), {
     headers: { 'Content-Type': 'text/event-stream' },
   });
 }

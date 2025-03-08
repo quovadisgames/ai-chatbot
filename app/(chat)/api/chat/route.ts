@@ -84,27 +84,37 @@ const MOCK_USER = {
 };
 
 export async function POST(req: NextRequest) {
-  const { id, messages } = await req.json();
-  const session = await auth() || (USE_MOCK_AUTH ? { user: MOCK_USER } : null);
-  const userId = session?.user?.id;
-  if (!userId) return new Response('Unauthorized', { status: 401 });
+  try {
+    const { id, messages } = await req.json();
+    console.log('Incoming request:', { id, messages });
+    const session = await auth() || (USE_MOCK_AUTH ? { user: MOCK_USER } : null);
+    const userId = session?.user?.id;
+    if (!userId) return new Response('Unauthorized', { status: 401 });
 
-  const userMessage = getMostRecentUserMessage(messages);
-  if (!userMessage) return new Response('No user message found', { status: 400 });
-  const prompt = userMessage.content;
+    const userMessage = getMostRecentUserMessage(messages);
+    console.log('Parsed userMessage:', userMessage);
+    if (!userMessage) return new Response('No user message found', { status: 400 });
+    const prompt = userMessage.content;
 
-  const chat = await getChatById({ id });
-  if (!chat) {
-    const title = await generateTitleFromUserMessage({ message: userMessage });
-    await saveChat({ id, userId, title });
+    const chat = await getChatById({ id });
+    if (chat && chat.userId !== userId) {
+      return new Response('Unauthorized', { status: 401 });
+    }
+    if (!chat) {
+      const title = await generateTitleFromUserMessage({ message: userMessage });
+      await saveChat({ id, userId, title });
+    }
+    await saveMessages({ messages: [{ ...userMessage, createdAt: new Date(), chatId: id }] });
+
+    const response = await trackAIUsage(userId, prompt);
+    console.log('Token usage:', response.usage);
+    return new Response(response.toDataStream(), {
+      headers: { 'Content-Type': 'text/event-stream' },
+    });
+  } catch (error) {
+    console.error('Error in POST /api/chat:', error);
+    return new Response(`Error: ${error.message}`, { status: 500 });
   }
-  await saveMessages({ messages: [{ ...userMessage, createdAt: new Date(), chatId: id }] });
-
-  const response = await trackAIUsage(userId, prompt);
-  console.log('Token usage:', response.usage);
-  return new Response(response.toDataStream(), {
-    headers: { 'Content-Type': 'text/event-stream' },
-  });
 }
 
 export async function DELETE(request: Request) {

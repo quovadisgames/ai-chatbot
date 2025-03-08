@@ -137,7 +137,11 @@ export function Chat({
                   }
                 }
                 
-                // Create a properly formatted message object
+                // The AI SDK expects a very specific format for the data
+                // Format: data: {"id":"...","role":"assistant","content":"...","createdAt":"..."}\n\n
+                // No array brackets, just a plain JSON object
+                console.log('📝 Formatting mock Dijkstra response as a single event');
+                
                 const message = {
                   id: assistantMessageId,
                   role: 'assistant',
@@ -145,11 +149,7 @@ export function Chat({
                   createdAt: new Date().toISOString()
                 };
                 
-                console.log('📝 Sending formatted event:', JSON.stringify(message).substring(0, 100) + '...');
-                
-                // Format as a proper SSE event for the AI SDK
-                // The AI SDK expects the format: data: [{"id": "...", "role": "assistant", "content": "..."}]
-                const sseEvent = encoder.encode(`data: [${JSON.stringify(message)}]\n\n`);
+                const sseEvent = encoder.encode(`data: ${JSON.stringify(message)}\n\n`);
                 await writer.write(sseEvent);
                 
                 // Clear the buffer since we've processed everything
@@ -171,7 +171,8 @@ export function Chat({
                     const content = dataLines.join('\n');
                     console.log('📝 Parsed content:', content.length > 50 ? content.substring(0, 50) + '...' : content);
                     
-                    // Create a properly formatted message object
+                    // Format as a proper SSE event for the AI SDK
+                    // The AI SDK expects a plain JSON object, not an array
                     const message = {
                       id: assistantMessageId,
                       role: 'assistant',
@@ -179,9 +180,7 @@ export function Chat({
                       createdAt: new Date().toISOString()
                     };
                     
-                    // Format as a proper SSE event for the AI SDK
-                    // The AI SDK expects the format: data: [{"id": "...", "role": "assistant", "content": "..."}]
-                    const sseEvent = encoder.encode(`data: [${JSON.stringify(message)}]\n\n`);
+                    const sseEvent = encoder.encode(`data: ${JSON.stringify(message)}\n\n`);
                     await writer.write(sseEvent);
                   }
                 }

@@ -73,10 +73,9 @@ export async function POST(req: NextRequest) {
     // Process with AI and return streaming response
     console.log('Starting AI processing');
     const aiStart = Date.now();
-    const response = await trackAIUsage(userId, prompt);
-    console.log(`AI processed in ${Date.now() - aiStart}ms, Token usage:`, response.usage);
-    
-    return new Response(response.toDataStream(), {
+    const { usage, stream } = await trackAIUsage(userId, prompt);
+    console.log(`AI processed in ${Date.now() - aiStart}ms, Token usage:`, usage);
+    return new Response(stream, {
       headers: { 'Content-Type': 'text/event-stream' },
     });
   } catch (error: unknown) {

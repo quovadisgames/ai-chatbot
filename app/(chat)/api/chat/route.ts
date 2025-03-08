@@ -1,88 +1,13 @@
-// Define types locally instead of importing from 'ai'
-type LocalMessage = {
-  id: string;
-  content: string;
-  role: 'user' | 'assistant' | 'system' | 'function' | 'data' | 'tool';
-  createdAt?: Date;
-  chatId?: string;
-};
-
-// Import the rest of the dependencies
-import { auth } from '@/app/(auth)/auth';
-import { myProvider } from '@/lib/ai/models';
-import { systemPrompt } from '@/lib/ai/prompts';
-import { trackTokenUsage } from '@/lib/ai/token-tracking';
-import { trackAIUsage } from '@/lib/ai-utils';
-import {
-  deleteChatById,
-  getChatById,
-  saveChat,
-  saveMessages,
-  ExtendedChat,
-} from '@/lib/db/queries';
-import {
-  generateUUID,
-  sanitizeResponseMessages,
-  getMostRecentUserMessage,
-} from '@/lib/utils';
-
-import { generateTitleFromUserMessage } from '../../actions';
-import { createDocument } from '@/lib/ai/tools/create-document';
-import { updateDocument } from '@/lib/ai/tools/update-document';
-import { requestSuggestions } from '@/lib/ai/tools/request-suggestions';
-import { getWeather } from '@/lib/ai/tools/get-weather';
-
-// Import AI functions from the actual module
-import {
-  createDataStreamResponse,
-  smoothStream,
-  streamText,
-} from 'ai';
-
 import { NextRequest } from 'next/server';
+import { auth } from '@/app/(auth)/auth';
+import { saveChat, saveMessages, getChatById, deleteChatById } from '@/lib/db/queries';
+import { trackAIUsage } from '@/lib/ai-utils';
+import { getMostRecentUserMessage } from '@/lib/utils';
+import { generateTitleFromUserMessage } from '../../actions';
 
-export const maxDuration = 60;
-
-// Define the usage type
-interface TokenUsage {
-  promptTokens?: number;
-  completionTokens?: number;
-  totalTokens?: number;
-}
-
-// Define the saved message type
-interface SavedMessage {
-  id: string;
-  chatId: string;
-  role: string;
-  content: string;
-  createdAt: Date;
-}
-
-// Function to estimate token count based on text length
-// This is a very rough estimate - 1 token is approximately 4 characters in English
-function estimateTokenCount(text: string): number {
-  return Math.ceil(text.length / 4);
-}
-
-// Define a type that matches the ai package's Message type
-type AIMessage = {
-  id: string;
-  content: string;
-  role: 'user' | 'assistant' | 'system' | 'data';
-};
-
-// Constants for mock authentication
+// Mock authentication for development
 const USE_MOCK_AUTH = true;
-const MOCK_USER = {
-  id: "mock-user-123",
-  email: "dev@example.com",
-};
-
-// Proper type guard function that TypeScript recognizes
-function isValidChat(chat: any): chat is ExtendedChat {
-  return chat !== null && typeof chat === 'object' && 'userId' in chat;
-}
+const MOCK_USER = { id: "mock-user-123", email: "dev@example.com" };
 
 export async function POST(req: NextRequest) {
   try {
@@ -93,30 +18,39 @@ export async function POST(req: NextRequest) {
     // Authentication
     const session = await auth() || (USE_MOCK_AUTH ? { user: MOCK_USER } : null);
     const userId = session?.user?.id;
-    if (!userId) return new Response('Unauthorized', { status: 401 });
+    if (!userId) {
+      return new Response('Unauthorized', { status: 401 });
+    }
 
     // Get user message
     const userMessage = getMostRecentUserMessage(messages);
     console.log('Parsed userMessage:', userMessage);
-    if (!userMessage) return new Response('No user message found', { status: 400 });
-    const prompt = userMessage.content;
-    
-    // Get chat
-    let chat = null;
-    try {
-      chat = await getChatById({ id });
-    } catch (error) {
-      console.error('Error getting chat:', error);
+    if (!userMessage) {
+      return new Response('No user message found', { status: 400 });
     }
     
-    // Check authorization if chat exists using the type guard
-    if (isValidChat(chat)) {
-      // @ts-ignore: TypeScript doesn't understand our type guard properly
-      if (chat.userId !== userId) {
+    const prompt = userMessage.content;
+    
+    // Check if chat exists
+    let existingChat = null;
+    try {
+      existingChat = await getChatById({ id });
+    } catch (error) {
+      console.error('Error fetching chat:', error);
+    }
+    
+    // Check authorization
+    if (existingChat) {
+      // We need to handle the case where userId might be undefined
+      // This is a safe way to check without TypeScript errors
+      const chatUserId = existingChat && 'userId' in existingChat ? 
+        (existingChat as any).userId : undefined;
+      
+      if (chatUserId && chatUserId !== userId) {
         return new Response('Unauthorized', { status: 401 });
       }
     } else {
-      // Create chat if it doesn't exist
+      // Create new chat
       try {
         const title = await generateTitleFromUserMessage({ message: userMessage });
         await saveChat({ id, userId, title });
@@ -149,32 +83,50 @@ export async function POST(req: NextRequest) {
 }
 
 export async function DELETE(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const id = searchParams.get('id');
-
-  if (!id) {
-    return new Response('Not Found', { status: 404 });
-  }
-
-  const session = await auth();
-
-  if (!session || !session.user) {
-    return new Response('Unauthorized', { status: 401 });
-  }
-
   try {
-    const chat = await getChatById({ id });
-
-    if (chat.userId !== session.user.id) {
+    // Get the chat ID from the URL
+    const url = new URL(request.url);
+    const id = url.searchParams.get('id');
+    
+    if (!id) {
+      return new Response('Missing chat ID', { status: 400 });
+    }
+    
+    // Authentication
+    const session = await auth() || (USE_MOCK_AUTH ? { user: MOCK_USER } : null);
+    const userId = session?.user?.id;
+    if (!userId) {
       return new Response('Unauthorized', { status: 401 });
     }
-
-    await deleteChatById({ id });
-
-    return new Response('Chat deleted', { status: 200 });
-  } catch (error) {
-    return new Response('An error occurred while processing your request', {
-      status: 500,
-    });
+    
+    // Check if chat exists and belongs to user
+    try {
+      const existingChat = await getChatById({ id });
+      
+      // Check authorization
+      if (existingChat) {
+        const chatUserId = existingChat && 'userId' in existingChat ? 
+          (existingChat as any).userId : undefined;
+        
+        if (chatUserId && chatUserId !== userId) {
+          return new Response('Unauthorized', { status: 401 });
+        }
+      } else {
+        return new Response('Chat not found', { status: 404 });
+      }
+      
+      // Delete the chat
+      await deleteChatById({ id });
+      
+      return new Response('Chat deleted successfully', { status: 200 });
+    } catch (error) {
+      console.error('Error deleting chat:', error);
+      const message = error instanceof Error ? error.message : String(error);
+      return new Response(`Error: ${message}`, { status: 500 });
+    }
+  } catch (error: unknown) {
+    console.error('Error in DELETE /api/chat:', error);
+    const message = error instanceof Error ? error.message : String(error);
+    return new Response(`Error: ${message}`, { status: 500 });
   }
-}
+} 

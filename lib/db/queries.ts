@@ -96,23 +96,17 @@ try {
   console.error('Failed to connect to database, using mock data');
 }
 
-export async function getUser(email: string): Promise<Array<User>> {
+export async function getUser({ userId }: { userId: string }) {
+  if (USE_MOCK_DB) {
+    console.log('Using mock user data for userId:', userId);
+    return [MOCK_USER].filter(user => user.id === userId);
+  }
   try {
-    if (!db) {
-      throw new Error("Database not initialized");
-    }
-    return await db.select().from(user).where(eq(user.email, email));
-  } catch (error: unknown) {
-    console.error('Failed to get user from database');
-    if (USE_MOCK_DB) {
-      console.log('Using mock user data');
-      if (email === MOCK_USER.email) {
-        return [MOCK_USER];
-      }
-      return [];
-    }
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-    return new Response(`Error: ${errorMessage}`, { status: 500 });
+    if (!db) throw new Error("Database not initialized");
+    return await db.select().from(user).where(eq(user.id, userId));
+  } catch (error) {
+    console.error('Failed to get user from database:', error);
+    throw error;
   }
 }
 
@@ -221,21 +215,17 @@ export async function saveMessages({ messages }: { messages: Array<Message> }) {
   }
 }
 
-export async function getMessagesByChatId({ id }: { id: string }) {
+export async function getMessagesByChatId({ chatId }: { chatId: string }) {
   if (USE_MOCK_DB) {
-    console.log('Using mock messages data');
-    return MOCK_MESSAGES.filter(message => message.chatId === id);
+    console.log('Using mock message data for chatId:', chatId);
+    return MOCK_MESSAGES.filter(msg => msg.chatId === chatId).sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
   }
-
   try {
-    if (!db) {
-      throw new Error("Database not initialized");
-    }
-    return await db.select().from(message).where(eq(message.chatId, id));
-  } catch (error: unknown) {
-    console.error('Failed to get messages by chat id from database');
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-    return new Response(`Error: ${errorMessage}`, { status: 500 });
+    if (!db) throw new Error("Database not initialized");
+    return await db.select().from(message).where(eq(message.chatId, chatId)).orderBy(desc(message.createdAt));
+  } catch (error) {
+    console.error('Failed to get messages by chat id from database:', error);
+    throw error;
   }
 }
 
@@ -428,15 +418,16 @@ export async function getSuggestionsByDocumentId({
 }
 
 export async function getMessageById({ id }: { id: string }) {
+  if (USE_MOCK_DB) {
+    console.log('Using mock message data for id:', id);
+    return MOCK_MESSAGES.filter(msg => msg.id === id);
+  }
   try {
-    if (!db) {
-      throw new Error("Database not initialized");
-    }
+    if (!db) throw new Error("Database not initialized");
     return await db.select().from(message).where(eq(message.id, id));
-  } catch (error: unknown) {
-    console.error('Failed to get message by id from database');
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-    return new Response(`Error: ${errorMessage}`, { status: 500 });
+  } catch (error) {
+    console.error('Failed to get message by id from database:', error);
+    throw error;
   }
 }
 
@@ -566,23 +557,15 @@ export async function getTokenUsageByUserId({ userId }: { userId: string }) {
 
 export async function getTokenUsageByChatId({ chatId }: { chatId: string }) {
   if (USE_MOCK_DB) {
-    console.log('Using mock token usage data');
-    return MOCK_TOKEN_USAGE.filter(usage => usage.chatId === chatId);
+    console.log('Using mock token usage data for chat:', chatId);
+    return MOCK_TOKEN_USAGE.filter(usage => usage.chatId === chatId).sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
   }
-
   try {
-    if (!db) {
-      throw new Error("Database not initialized");
-    }
-    return await db
-      .select()
-      .from(tokenUsage)
-      .where(eq(tokenUsage.chatId, chatId))
-      .orderBy(desc(tokenUsage.createdAt));
-  } catch (error: unknown) {
-    console.error('Failed to get token usage by chat id from database');
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-    return new Response(`Error: ${errorMessage}`, { status: 500 });
+    if (!db) throw new Error("Database not initialized");
+    return await db.select().from(tokenUsage).where(eq(tokenUsage.chatId, chatId)).orderBy(desc(tokenUsage.createdAt));
+  } catch (error) {
+    console.error('Failed to get token usage by chat id from database:', error);
+    throw error;
   }
 }
 

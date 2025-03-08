@@ -30,12 +30,13 @@ export async function trackAIUsage(userId: string, prompt: string) {
     model: openai('gpt-4o'),
     prompt,
   });
+  const usage = await response.usage;
   await saveTokenUsage({
     userId,
     model: 'gpt-4o',
-    promptTokens: response.usage.prompt_tokens,
-    completionTokens: response.usage.completion_tokens,
-    totalTokens: response.usage.total_tokens,
+    promptTokens: usage.prompt_tokens,
+    completionTokens: usage.completion_tokens,
+    totalTokens: usage.total_tokens,
   });
   return response;
 } 

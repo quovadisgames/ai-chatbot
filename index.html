@@ -3,17 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Star Wars RPG UI Theme Preview</title>
+    <title>PDT AI - Unlock AI Potential with Three Themes</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700&family=Inter:wght@300;400;500;600;700&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         /* ===== SHARED VARIABLES ===== */
         :root {
+            /* PDT AI Brand Colors */
+            --pdt-accent: #00A1D6;
+            --pdt-accent-rgb: 0, 161, 214;
+            --pdt-dark: #0D0D0D;
+            --pdt-light: #E0E1DD;
+            
             /* KOTOR Theme Variables */
             --kotor-bg: #1A2526;
             --kotor-dark: #0F1419;
             --kotor-accent: #00BFFF;
+            --kotor-accent-rgb: 0, 191, 255;
             --kotor-warning: #FF4500;
             --kotor-success: #32CD32;
             --kotor-text: #FFFFFF;
@@ -22,10 +29,11 @@
             --kotor-glow: rgba(0, 191, 255, 0.3);
             --kotor-font: 'Exo 2', monospace;
             
-            /* Jedi Survivor Theme Variables - Updated */
+            /* Jedi Survivor Theme Variables */
             --jedi-bg: #000000;
             --jedi-dark: #0D0D0D;
-            --jedi-accent: #FFFFFF;
+            --jedi-accent: #00D4FF;
+            --jedi-accent-rgb: 0, 212, 255;
             --jedi-secondary: #8A8D93;
             --jedi-highlight: #A7C7E7;
             --jedi-warning: #FF4500;
@@ -35,6 +43,19 @@
             --jedi-border: rgba(255, 255, 255, 0.15);
             --jedi-glow: rgba(167, 199, 231, 0.3);
             --jedi-font: 'Rajdhani', sans-serif;
+            
+            /* Professional Theme Variables - New */
+            --prof-bg: #2E2E2E;
+            --prof-dark: #1E1E1E;
+            --prof-accent: #0078D4;
+            --prof-accent-rgb: 0, 120, 212;
+            --prof-warning: #FF4500;
+            --prof-success: #32CD32;
+            --prof-text: #F5F5F5;
+            --prof-text-secondary: rgba(245, 245, 245, 0.7);
+            --prof-border: rgba(0, 120, 212, 0.5);
+            --prof-glow: rgba(0, 120, 212, 0.3);
+            --prof-font: 'Inter', sans-serif;
         }
 
         * {
@@ -43,116 +64,448 @@
             box-sizing: border-box;
         }
 
-        /* ===== THEME BASE STYLES ===== */
-        
-        /* KOTOR Theme */
-        body.kotor-theme {
-            --theme-bg: var(--kotor-bg);
-            --theme-dark: var(--kotor-dark);
-            --theme-accent: var(--kotor-accent);
-            --theme-warning: var(--kotor-warning);
-            --theme-success: var(--kotor-success);
-            --theme-text: var(--kotor-text);
-            --theme-text-secondary: var(--kotor-text-secondary);
-            --theme-border: var(--kotor-border);
-            --theme-glow: var(--kotor-glow);
-            --theme-font: var(--kotor-font);
-            
-            background-color: var(--theme-bg);
-            color: var(--theme-text);
-            font-family: var(--theme-font);
-        }
-        
-        /* Jedi Survivor Theme - Updated */
-        body.jedi-survivor-theme {
-            --theme-bg: var(--jedi-bg);
-            --theme-dark: var(--jedi-dark);
-            --theme-accent: var(--jedi-accent);
-            --theme-secondary: var(--jedi-secondary);
-            --theme-highlight: var(--jedi-highlight);
-            --theme-warning: var(--jedi-warning);
-            --theme-success: var(--jedi-success);
-            --theme-text: var(--jedi-text);
-            --theme-text-secondary: var(--jedi-text-secondary);
-            --theme-border: var(--jedi-border);
-            --theme-glow: var(--jedi-glow);
-            --theme-font: var(--jedi-font);
-            
-            background-color: var(--theme-bg);
-            color: var(--theme-text);
-            font-family: var(--theme-font);
-            background-image: none;
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--pdt-dark);
+            color: var(--pdt-light);
+            min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        /* ===== SHARED STYLES WITH THEME VARIATIONS ===== */
+        /* ===== LANDING PAGE STYLES ===== */
         
-        /* Background with Grid Overlay */
-        .terminal-background {
-            background-color: var(--theme-bg);
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            background: radial-gradient(circle at center, var(--current-bg, #1B263B) 0%, #0D0D0D 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
             position: relative;
             overflow: hidden;
-            min-height: 100vh;
+            animation: fadeIn 1s ease-in-out;
         }
 
-        /* Grid overlay for KOTOR theme */
-        .kotor-theme .terminal-background::before {
-            content: "";
+        /* Neural Network Grid Background */
+        .neural-grid {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: 
-                linear-gradient(90deg, rgba(15, 20, 25, 0.3) 1px, transparent 1px) 0 0 / 20px 20px,
-                linear-gradient(0deg, rgba(15, 20, 25, 0.3) 1px, transparent 1px) 0 0 / 20px 20px;
-            z-index: 0;
             opacity: 0.4;
-        }
-        
-        /* Grid overlay for Jedi Survivor theme - Updated */
-        .jedi-survivor-theme .terminal-background::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px) 0 0 / 25px 25px,
-                linear-gradient(0deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px) 0 0 / 25px 25px;
+            background-image: 
+                linear-gradient(to right, rgba(var(--current-accent-rgb, 0, 161, 214), 0.07) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(var(--current-accent-rgb, 0, 161, 214), 0.07) 1px, transparent 1px);
+            background-size: 50px 50px;
             z-index: 0;
-            opacity: 0.3;
+            animation: pulseGrid 5s infinite ease-in-out;
         }
 
-        /* Particle Background for Jedi Survivor - Updated */
-        .jedi-survivor-theme .terminal-background::after {
-            content: "";
+        .neural-node {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            width: 5px;
+            height: 5px;
+            background-color: rgba(var(--current-accent-rgb, 0, 161, 214), 0.5);
+            border-radius: 50%;
             z-index: 0;
-            opacity: 0.2;
-            background: linear-gradient(90deg, transparent, rgba(167, 199, 231, 0.3), transparent);
-            animation: ambientLight 12s infinite linear;
-        }
-        
-        /* Particle Background for KOTOR */
-        .kotor-theme .terminal-background::after {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            opacity: 0.2;
-            background: linear-gradient(90deg, transparent, rgba(0, 191, 255, 0.3), transparent);
-            animation: ambientLight 12s infinite linear;
+            box-shadow: 0 0 4px rgba(var(--current-accent-rgb, 0, 161, 214), 0.3);
         }
 
-        /* Particles for Both Themes */
+        .neural-connection {
+            position: absolute;
+            height: 0.75px;
+            background-color: rgba(var(--current-accent-rgb, 0, 161, 214), 0.2);
+            transform-origin: left center;
+            z-index: 0;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            z-index: 2;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--pdt-light);
+            text-shadow: 0 0 8px var(--pdt-accent);
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 24px;
+            margin-bottom: 2rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.4;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 15px 30px;
+            background: rgba(var(--current-accent-rgb, 0, 161, 214), 0.3);
+            color: white;
+            border: 2px solid var(--pdt-accent);
+            border-radius: 8px;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            border-radius: 8px;
+            background: transparent;
+            border: 2px solid transparent;
+            animation: holographicAura 3s infinite ease-in-out;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .cta-button:hover {
+            background: rgba(var(--current-accent-rgb, 0, 161, 214), 0.5);
+            box-shadow: 0 0 15px var(--pdt-accent);
+            transform: translateY(-2px);
+        }
+
+        .logo {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 100px;
+            height: 40px;
+            background-color: rgba(128, 128, 128, 0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 4px;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            color: var(--pdt-light);
+            z-index: 10;
+        }
+
+        /* Feature Section */
+        .features {
+            padding: 5rem 2rem;
+            background-color: #0D0D0D;
+            position: relative;
+        }
+
+        .features-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .features h2 {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 36px;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--pdt-light);
+            text-shadow: 0 0 5px var(--pdt-accent);
+        }
+
+        .feature-cards {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background-color: #2E2E2E;
+            border-radius: 8px;
+            padding: 2rem;
+            width: calc(25% - 2rem);
+            min-width: 250px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            animation: slideIn 0.5s ease-in-out;
+            animation-fill-mode: both;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.05),
+                transparent
+            );
+            transition: all 0.5s ease;
+        }
+
+        .feature-card:hover::before {
+            left: 100%;
+        }
+
+        .feature-card:nth-child(1) { animation-delay: 0.1s; }
+        .feature-card:nth-child(2) { animation-delay: 0.2s; }
+        .feature-card:nth-child(3) { animation-delay: 0.3s; }
+        .feature-card:nth-child(4) { animation-delay: 0.4s; }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 0 15px var(--pdt-accent);
+            border-color: var(--pdt-accent);
+        }
+
+        .feature-card h3 {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 24px;
+            margin-bottom: 1rem;
+            color: var(--pdt-accent);
+        }
+
+        .feature-card p {
+            color: #F5F5F5;
+            line-height: 1.5;
+        }
+
+        .feature-icon {
+            font-size: 48px;
+            margin-bottom: 1rem;
+            color: var(--pdt-accent);
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover .feature-icon {
+            transform: scale(1.1);
+        }
+
+        /* Use Case Showcase */
+        .showcase {
+            padding: 5rem 2rem;
+            background-color: #0A0A0A;
+            position: relative;
+        }
+
+        .showcase-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .showcase h2 {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 36px;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--pdt-light);
+            text-shadow: 0 0 5px var(--pdt-accent);
+        }
+
+        .carousel {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            margin-bottom: 1rem;
+        }
+
+        .carousel::-webkit-scrollbar {
+            display: none;
+        }
+
+        .carousel-slide {
+            flex: 0 0 100%;
+            scroll-snap-align: start;
+            padding: 2rem;
+            border-radius: 8px;
+            margin-right: 1rem;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .carousel-slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1;
+        }
+
+        .carousel-slide:hover::before {
+            opacity: 1;
+        }
+
+        .carousel-slide h3, .carousel-slide p, .carousel-slide img {
+            position: relative;
+            z-index: 2;
+        }
+
+        .carousel-slide h3 {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 28px;
+            margin-bottom: 1rem;
+        }
+
+        .carousel-slide p {
+            font-size: 18px;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            line-height: 1.5;
+        }
+
+        /* Theme-specific carousel slides */
+        .carousel-slide.kotor {
+            background-color: var(--kotor-bg);
+            color: var(--kotor-text);
+            background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.3)), 
+                              url('https://via.placeholder.com/1200x600?text=KOTOR+Background');
+            background-size: cover;
+            background-position: center;
+            border: 1px solid var(--kotor-border);
+            box-shadow: 0 0 15px var(--kotor-glow);
+        }
+
+        .carousel-slide.kotor h3 {
+            color: var(--kotor-accent);
+            text-shadow: 0 0 5px var(--kotor-accent);
+        }
+
+        .carousel-slide.kotor img {
+            border: 1px solid var(--kotor-border);
+            box-shadow: 0 0 10px var(--kotor-glow);
+        }
+
+        .carousel-slide.jedi {
+            background-color: var(--jedi-bg);
+            color: var(--jedi-text);
+            background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.3)), 
+                              url('https://via.placeholder.com/1200x600?text=Jedi+Background');
+            background-size: cover;
+            background-position: center;
+            border: 1px solid var(--jedi-border);
+            box-shadow: 0 0 15px var(--jedi-glow);
+        }
+
+        .carousel-slide.jedi h3 {
+            color: var(--jedi-accent);
+            text-shadow: 0 0 5px var(--jedi-accent);
+        }
+
+        .carousel-slide.jedi img {
+            border: 1px solid var(--jedi-border);
+            box-shadow: 0 0 10px var(--jedi-glow);
+        }
+
+        .carousel-slide.professional {
+            background-color: var(--prof-bg);
+            color: var(--prof-text);
+            background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.3)), 
+                              url('https://via.placeholder.com/1200x600?text=Professional+Background');
+            background-size: cover;
+            background-position: center;
+            border: 1px solid var(--prof-border);
+            box-shadow: 0 0 15px var(--prof-glow);
+        }
+
+        .carousel-slide.professional h3 {
+            color: var(--prof-accent);
+            text-shadow: 0 0 5px var(--prof-accent);
+        }
+
+        .carousel-slide.professional img {
+            border: 1px solid var(--prof-border);
+            box-shadow: 0 0 10px var(--prof-glow);
+        }
+
+        .carousel-nav {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .carousel-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .carousel-dot.active {
+            background-color: var(--pdt-accent);
+            transform: scale(1.2);
+        }
+
+        /* Footer */
+        footer {
+            padding: 3rem 2rem;
+            background-color: #0D0D0D;
+            text-align: center;
+            position: relative;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        footer p {
+            font-size: 16px;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links {
+            margin-top: 1.5rem;
+        }
+
+        .footer-links a {
+            color: var(--pdt-accent);
+            text-decoration: none;
+            margin: 0 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #FFB703;
+            text-decoration: underline;
+        }
+
+        /* Particles */
         .particles {
             position: absolute;
             top: 0;
@@ -166,738 +519,50 @@
 
         .particle {
             position: absolute;
+            background-color: #E0E1DD;
             width: 2px;
             height: 2px;
             border-radius: 50%;
-            opacity: 0;
+            opacity: 0.15;
             animation: particleDrift var(--drift-duration, 3s) infinite linear;
-        }
-        
-        .kotor-theme .particle {
-            background-color: #00BFFF;
-            box-shadow: 0 0 6px rgba(0, 191, 255, 0.9);
+            box-shadow: 0 0 6px rgba(var(--current-accent-rgb, 0, 161, 214), 0.6);
         }
 
-        .jedi-survivor-theme .particle {
-            background-color: #FFFFFF;
-            width: 3px;
-            height: 3px;
-            box-shadow: 0 0 6px rgba(255, 255, 255, 0.9);
-        }
-        
-        /* Container Styles */
-        .holoscreen-container {
-            position: relative;
-            z-index: 1;
-            animation: flicker 2s ease-in-out 1;
-            border-radius: 5px;
-            margin: 20px;
-            overflow: hidden;
-        }
-        
-        /* KOTOR holoscreen - Updated */
-        .kotor-theme .holoscreen-container {
-            background: rgba(26, 37, 38, 0.8);
-            border: 1px solid var(--theme-border);
-            box-shadow: 0 0 10px var(--theme-accent);
-            animation: kotor-pulse 4s infinite ease-in-out;
-        }
-        
-        /* Jedi Survivor holoscreen - Updated */
-        .jedi-survivor-theme .holoscreen-container {
-            background: rgba(13, 13, 13, 0.95);
-            border: 1px solid var(--theme-border);
-            box-shadow: none;
-            background-image: none;
-            border-radius: 8px;
-            animation: none;
-        }
-
-        /* Header and Footer */
-        .terminal-header {
-            position: relative;
-            padding: 15px 20px;
-            text-align: center;
-        }
-        
-        .kotor-theme .terminal-header {
-            background-color: var(--theme-dark);
-            border-bottom: 1px solid var(--theme-accent);
-        }
-        
-        .jedi-survivor-theme .terminal-header {
-            background-color: var(--theme-dark);
-            border-bottom: 1px solid var(--theme-border);
-            border-radius: 8px 8px 0 0;
-        }
-
-        .terminal-footer {
-            padding: 10px 20px;
-            display: flex;
-            justify-content: space-between;
-            font-size: 12px;
-        }
-        
-        .kotor-theme .terminal-footer {
-            background-color: var(--theme-dark);
-            border-top: 1px solid rgba(0, 191, 255, 0.3);
-            color: var(--theme-accent);
-        }
-        
-        .jedi-survivor-theme .terminal-footer {
-            background-color: var(--theme-dark);
-            border-top: 1px solid var(--theme-border);
-            color: var(--theme-text-secondary);
-            border-radius: 0 0 8px 8px;
-        }
-
-        /* Scanline Effect */
-        .scanline {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 2;
-        }
-        
-        .kotor-theme .scanline {
-            background: linear-gradient(
-                0deg,
-                rgba(0, 191, 255, 0.03) 1px,
-                transparent 1px
-            );
-            background-size: 100% 2px;
-        }
-        
-        .jedi-survivor-theme .scanline {
-            background: linear-gradient(
-                0deg,
-                rgba(255, 183, 3, 0.02) 1px,
-                transparent 1px
-            );
-            background-size: 100% 3px;
-        }
-
-        /* Text Styles */
-        .text-glow {
-            text-shadow: 0 0 5px var(--theme-accent);
-        }
-
-        .text-glow-sm {
-            text-shadow: 0 0 3px var(--theme-accent);
-        }
-
-        h1, h2, h3, h4 {
-            color: var(--theme-text);
-            margin-bottom: 15px;
-        }
-
-        .kotor-theme h1 {
-            font-size: 24px;
-            text-shadow: 0 0 8px rgba(0, 191, 255, 0.7);
-        }
-        
-        .jedi-survivor-theme h1 {
-            font-size: 26px;
-            text-shadow: 0 0 8px var(--theme-accent);
-            letter-spacing: 1px;
-        }
-
-        .kotor-theme h2 {
-            font-size: 20px;
-            text-shadow: 0 0 6px rgba(0, 191, 255, 0.7);
-        }
-        
-        .jedi-survivor-theme h2 {
-            font-size: 22px;
-            text-shadow: 0 0 6px var(--theme-accent);
-            letter-spacing: 0.5px;
-        }
-
-        .kotor-theme h3 {
-            font-size: 18px;
-            text-shadow: 0 0 5px rgba(0, 191, 255, 0.7);
-        }
-        
-        .jedi-survivor-theme h3 {
-            font-size: 20px;
-            text-shadow: 0 0 8px var(--theme-accent);
-            letter-spacing: 0.5px;
-        }
-
-        p {
-            margin-bottom: 15px;
-            line-height: 1.5;
-        }
-        
-        .jedi-survivor-theme p {
-            font-weight: 500;
-            font-size: 16px;
-        }
-
-        /* Button Styles - Updated */
-        .holographic-button {
-            padding: 12px 15px;
-            font-family: inherit;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            margin: 5px;
-            min-width: 150px;
-        }
-        
-        .kotor-theme .holographic-button {
-            background: rgba(0, 191, 255, 0.2);
-            color: #FFFFFF;
-            border: 1px solid #00BFFF;
-            text-shadow: 0 0 3px rgba(0, 191, 255, 0.5);
-            border-radius: 4px;
-        }
-        
-        .jedi-survivor-theme .holographic-button {
-            background: transparent;
-            color: #FFFFFF;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            text-shadow: none;
-            font-weight: 500;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 8px 15px;
-        }
-
-        .kotor-theme .holographic-button:hover {
-            background: rgba(0, 191, 255, 0.4);
-            box-shadow: 0 0 15px rgba(0, 191, 255, 0.5);
-        }
-        
-        .jedi-survivor-theme .holographic-button:hover {
-            background: rgba(255, 255, 255, 0.1);
-            box-shadow: none;
-            border-color: rgba(255, 255, 255, 0.3);
-        }
-
-        .kotor-theme .holographic-button:active {
-            background: #00BFFF;
-            color: #0F1419;
-        }
-        
-        .jedi-survivor-theme .holographic-button:active {
-            background: rgba(255, 255, 255, 0.2);
-            color: #FFFFFF;
-        }
-
-        /* Ripple Effect - New */
-        .holographic-button::after {
-            content: "";
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 5px;
-            height: 5px;
-            background: rgba(255, 255, 255, 0.5);
-            opacity: 0;
-            border-radius: 50%;
-            transform: scale(1);
-            pointer-events: none;
-            transition: all 0s;
-        }
-
-        .kotor-theme .holographic-button::after {
-            background: radial-gradient(circle, rgba(0, 191, 255, 0.8) 0%, rgba(0, 191, 255, 0) 70%);
-        }
-
-        .jedi-survivor-theme .holographic-button::after {
-            background: radial-gradient(circle, rgba(0, 212, 255, 0.8) 0%, rgba(0, 212, 255, 0) 70%);
-        }
-
-        .holographic-button.ripple::after {
-            animation: ripple 0.5s ease-out;
-        }
-
-        .holographic-button::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            animation: pulse 2s infinite;
-        }
-        
-        .kotor-theme .holographic-button::before {
-            background: linear-gradient(
-                90deg,
-                transparent,
-                rgba(0, 191, 255, 0.2),
-                transparent
-            );
-        }
-        
-        .jedi-survivor-theme .holographic-button::before {
-            background: linear-gradient(
-                90deg,
-                transparent,
-                rgba(255, 183, 3, 0.2),
-                transparent
-            );
-        }
-
-        .holographic-button:hover::before {
-            animation: pulse 1s infinite;
-        }
-
-        .holographic-button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        /* Number Badge */
-        .response-number {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            line-height: 20px;
-            text-align: center;
-            border-radius: 50%;
-            margin-right: 8px;
-            font-size: 12px;
-        }
-        
-        .kotor-theme .response-number {
-            background: rgba(0, 191, 255, 0.3);
-            color: #FFFFFF;
-        }
-        
-        .jedi-survivor-theme .response-number {
-            background: rgba(255, 183, 3, 0.3);
-            color: #FFFFFF;
-            width: 30px;
-            height: 30px;
-            line-height: 30px;
-            margin-right: 12px;
-            transition: all 0.3s ease;
-        }
-
-        .jedi-survivor-theme .holographic-button:hover .response-number {
-            background: rgba(255, 183, 3, 0.6);
-            box-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
-        }
-
-        /* Status Indicator */
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            margin-right: 8px;
-            animation: blink 2s infinite;
-            display: inline-block;
-        }
-        
-        .kotor-theme .status-dot {
-            background-color: #00BFFF;
-        }
-        
-        .jedi-survivor-theme .status-dot {
-            background-color: #FFB703;
-        }
-
-        .status-dot.warning {
-            background-color: var(--theme-warning);
-        }
-
-        .status-dot.success {
-            background-color: var(--theme-success);
-        }
-
-        /* Form Elements */
-        .theme-input {
-            transition: all 0.3s ease;
-            border-radius: 4px;
-            padding: 10px 12px;
-            width: 100%;
-            margin-bottom: 15px;
-            font-family: inherit;
-        }
-        
-        .kotor-theme .theme-input {
-            background: rgba(15, 20, 25, 0.6);
-            border: 1px solid rgba(0, 191, 255, 0.3);
-            color: white;
-        }
-        
-        .jedi-survivor-theme .theme-input {
-            background: rgba(13, 27, 42, 0.7);
-            border: 1px solid rgba(255, 183, 3, 0.3);
-            color: white;
-            border-radius: 8px;
-        }
-
-        .kotor-theme .theme-input:focus {
-            border-color: rgba(0, 191, 255, 0.8);
-            box-shadow: 0 0 8px rgba(0, 191, 255, 0.4);
-            outline: none;
-        }
-        
-        .jedi-survivor-theme .theme-input:focus {
-            border-color: rgba(255, 183, 3, 0.8);
-            box-shadow: 0 0 8px rgba(0, 212, 255, 0.4);
-            outline: none;
-        }
-
-        .theme-input::placeholder {
-            color: rgba(255, 255, 255, 0.4);
-        }
-
-        /* Chat Message Styles */
-        .chat-container {
-            padding: 20px;
-            height: 400px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .message {
-            margin-bottom: 15px;
-            padding: 10px 15px;
-            max-width: 80%;
-            position: relative;
-        }
-
-        .ai-message {
-            align-self: flex-start;
-            animation: fadeIn 0.3s ease-in-out;
-        }
-        
-        .kotor-theme .ai-message {
-            background-color: rgba(0, 191, 255, 0.1);
-            border-left: 3px solid #00BFFF;
-            border-radius: 5px;
-        }
-        
-        .jedi-survivor-theme .ai-message {
-            background-color: rgba(255, 183, 3, 0.1);
-            border-left: 3px solid #FFB703;
-            border-radius: 8px;
-        }
-
-        .user-message {
-            align-self: flex-end;
-            margin-left: auto;
-            animation: fadeIn 0.3s ease-in-out;
-        }
-        
-        .kotor-theme .user-message {
-            background-color: rgba(255, 255, 255, 0.1);
-            border-left: 3px solid rgba(255, 255, 255, 0.5);
-            border-radius: 5px;
-        }
-        
-        .jedi-survivor-theme .user-message {
-            background-color: rgba(0, 212, 255, 0.1);
-            border-left: 3px solid rgba(0, 212, 255, 0.5);
-            border-radius: 8px;
-        }
-
-        .message-sender {
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-
-        .kotor-theme .ai-message .message-sender {
-            color: #00BFFF;
-        }
-        
-        .jedi-survivor-theme .ai-message .message-sender {
-            color: #FFB703;
-        }
-
-        .kotor-theme .user-message .message-sender {
-            color: rgba(255, 255, 255, 0.9);
-        }
-        
-        .jedi-survivor-theme .user-message .message-sender {
-            color: rgba(0, 212, 255, 0.9);
-        }
-
-        .message-content {
-            font-size: 14px;
-            line-height: 1.5;
-        }
-        
-        .jedi-survivor-theme .message-content {
-            font-size: 16px;
-        }
-
-        .timestamp {
-            font-size: 11px;
-            color: rgba(255, 255, 255, 0.5);
-            margin-top: 5px;
-            text-align: right;
-        }
-
-        /* Mission Log - Updated */
-        .mission-log {
-            width: 25%;
-            min-width: 200px;
-            max-width: 300px;
-            padding: 20px;
-        }
-        
-        .kotor-theme .mission-log {
-            background: linear-gradient(to bottom, var(--theme-dark), var(--theme-bg));
-            border-right: 1px solid var(--theme-border);
-        }
-        
-        .jedi-survivor-theme .mission-log {
-            background-color: var(--theme-dark);
-            border-right: 2px solid var(--theme-border);
-            border-radius: 8px;
-            margin-right: 5px;
-        }
-
-        /* Mission Log Category Label - New */
-        .mission-category {
-            display: inline-block;
-            padding: 3px 10px;
-            margin-bottom: 15px;
-            font-weight: 600;
-            letter-spacing: 1px;
-            font-size: 12px;
-            text-transform: uppercase;
-        }
-
-        .kotor-theme .mission-category {
-            background-color: rgba(0, 191, 255, 0.2);
-            color: #00BFFF;
-            border: 1px solid rgba(0, 191, 255, 0.5);
-            border-radius: 3px;
-        }
-
-        .jedi-survivor-theme .mission-category {
-            background-color: rgba(255, 183, 3, 0.2);
-            color: #FFB703;
-            border: 1px solid rgba(255, 183, 3, 0.5);
-            border-radius: 20px;
-        }
-
-        .mission-entry {
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s ease;
-        }
-
-        /* Floating Mission Log Highlights - New */
-        .mission-entry.new-entry {
-            animation: floatEntry 0.3s ease-out forwards;
-        }
-
-        .mission-status {
-            display: inline-block;
-            padding: 3px 8px;
-            font-size: 12px;
-            font-weight: 600;
-            margin-top: 8px;
-        }
-
-        .kotor-theme .status-active {
-            background-color: rgba(0, 191, 255, 0.2);
-            color: #00BFFF;
-            border: 1px solid rgba(0, 191, 255, 0.5);
-            border-radius: 3px;
-        }
-        
-        .jedi-survivor-theme .status-active {
-            background-color: rgba(255, 183, 3, 0.2);
-            color: #FFB703;
-            border: 1px solid rgba(255, 183, 3, 0.5);
-            border-radius: 20px;
-        }
-
-        .status-pending {
-            background-color: rgba(255, 69, 0, 0.2);
-            color: #FF4500;
-            border: 1px solid rgba(255, 69, 0, 0.5);
-        }
-
-        .jedi-survivor-theme .status-pending {
-            border-radius: 20px;
-        }
-
-        .status-complete {
-            background-color: rgba(50, 205, 50, 0.2);
-            color: #32CD32;
-            border: 1px solid rgba(50, 205, 50, 0.5);
-        }
-
-        .jedi-survivor-theme .status-complete {
-            border-radius: 20px;
-        }
-
-        /* Theme Toggle Button - Updated */
-        .theme-toggle {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            z-index: 100;
-            padding: 10px 15px;
-            font-family: inherit;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .kotor-theme .theme-toggle {
-            background: rgba(0, 191, 255, 0.2);
-            color: #FFFFFF;
-            border: 1px solid #00BFFF;
-            text-shadow: 0 0 3px rgba(0, 191, 255, 0.5);
-            border-radius: 4px;
-        }
-        
-        .jedi-survivor-theme .theme-toggle {
-            background: rgba(255, 183, 3, 0.3);
-            color: #FFFFFF;
-            border: 2px solid #FFB703;
-            text-shadow: 0 0 3px rgba(255, 183, 3, 0.5);
-            border-radius: 50px;
-        }
-        
-        .kotor-theme .theme-toggle:hover {
-            background: rgba(0, 191, 255, 0.4);
-            box-shadow: 0 0 15px rgba(0, 191, 255, 0.5);
-            transform: scale(1.05);
-            animation: kotor-toggle-pulse 0.8s infinite alternate;
-        }
-        
-        .jedi-survivor-theme .theme-toggle:hover {
-            background: rgba(255, 183, 3, 0.4);
-            box-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
-            transform: scale(1.05);
-            animation: jedi-toggle-pulse 0.8s infinite alternate;
-        }
-
-        /* Layout */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .section {
-            margin-bottom: 40px;
-        }
-
-        .flex {
-            display: flex;
-        }
-
-        .flex-col {
-            flex-direction: column;
-        }
-
-        .items-center {
-            align-items: center;
-        }
-
-        .justify-between {
-            justify-content: space-between;
-        }
-
-        .gap-4 {
-            gap: 16px;
-        }
-
-        .mt-4 {
-            margin-top: 16px;
-        }
-
-        .mb-4 {
-            margin-bottom: 16px;
-        }
-
-        /* Animations - Updated and New */
+        /* Animations */
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        @keyframes flicker {
-            0% { opacity: 0.7; }
-            5% { opacity: 0.9; }
-            10% { opacity: 0.7; }
-            15% { opacity: 0.9; }
-            20% { opacity: 1; }
-            100% { opacity: 1; }
-        }
-
         @keyframes pulse {
-            0% { left: -100%; }
-            100% { left: 100%; }
+            0% { box-shadow: 0 0 0 0 rgba(var(--current-accent-rgb, 0, 161, 214), 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(var(--current-accent-rgb, 0, 161, 214), 0); }
+            100% { box-shadow: 0 0 0 0 rgba(var(--current-accent-rgb, 0, 161, 214), 0); }
         }
 
-        @keyframes blink {
-            0% { opacity: 0.4; }
-            50% { opacity: 1; }
-            100% { opacity: 0.4; }
+        @keyframes pulseGrid {
+            0% { opacity: 0.3; }
+            50% { opacity: 0.5; }
+            100% { opacity: 0.3; }
         }
 
-        @keyframes kotor-pulse {
-            0% { box-shadow: 0 0 10px rgba(0, 191, 255, 0.5); }
-            50% { box-shadow: 0 0 15px rgba(0, 191, 255, 0.8); }
-            100% { box-shadow: 0 0 10px rgba(0, 191, 255, 0.5); }
-        }
-
-        @keyframes jedi-pulse {
-            0% { box-shadow: 0 0 10px rgba(0, 212, 255, 0.5); }
-            50% { box-shadow: 0 0 15px rgba(0, 212, 255, 0.8); }
-            100% { box-shadow: 0 0 10px rgba(0, 212, 255, 0.5); }
-        }
-
-        @keyframes kotor-toggle-pulse {
-            0% { box-shadow: 0 0 5px rgba(0, 191, 255, 0.5); }
-            100% { box-shadow: 0 0 12px rgba(0, 191, 255, 0.8); }
-        }
-
-        @keyframes jedi-toggle-pulse {
-            0% { box-shadow: 0 0 5px rgba(0, 212, 255, 0.5); }
-            100% { box-shadow: 0 0 12px rgba(0, 212, 255, 0.8); }
-        }
-
-        @keyframes ripple {
-            0% {
-                transform: translate(-50%, -50%) scale(0);
-                opacity: 1;
-            }
-            100% {
-                transform: translate(-50%, -50%) scale(20);
-                opacity: 0;
-            }
-        }
-
-        @keyframes floatEntry {
+        @keyframes holographicAura {
             0% { 
-                opacity: 0; 
-                transform: translateY(10px); 
+                border-color: rgba(var(--current-accent-rgb, 0, 161, 214), 0.3);
+                box-shadow: 0 0 5px rgba(var(--current-accent-rgb, 0, 161, 214), 0.3);
             }
             50% { 
-                transform: translateY(-2px) rotate(0.5deg); 
-            }
-            75% { 
-                transform: translateY(1px) rotate(-0.5deg); 
+                border-color: rgba(var(--current-accent-rgb, 0, 161, 214), 0.7);
+                box-shadow: 0 0 15px rgba(var(--current-accent-rgb, 0, 161, 214), 0.5);
             }
             100% { 
-                opacity: 1; 
-                transform: translateY(0) rotate(0); 
+                border-color: rgba(var(--current-accent-rgb, 0, 161, 214), 0.3);
+                box-shadow: 0 0 5px rgba(var(--current-accent-rgb, 0, 161, 214), 0.3);
             }
         }
 
@@ -907,11 +572,11 @@
                 transform: translateY(0) translateX(0) scale(0.8);
             }
             10% {
-                opacity: 0.7;
+                opacity: 0.3;
                 transform: translateY(var(--y-drift, 10px) * 0.1) translateX(var(--x-drift, 10px) * 0.1) scale(1);
             }
             90% {
-                opacity: 0.7;
+                opacity: 0.3;
                 transform: translateY(var(--y-drift, 90px) * 0.9) translateX(var(--x-drift, 90px) * 0.9) scale(1);
             }
             100% {
@@ -920,414 +585,453 @@
             }
         }
 
-        @keyframes ambientLight {
-            0% { transform: translateX(-100%); opacity: 0.1; }
-            50% { opacity: 0.3; }
-            100% { transform: translateX(100%); opacity: 0.1; }
+        /* Responsive Styles */
+        @media (max-width: 1024px) {
+            .feature-card {
+                width: calc(50% - 2rem);
+            }
         }
 
-        /* Responsive */
         @media (max-width: 768px) {
-            .flex {
-                flex-direction: column;
-            }
-
-            .mission-log {
-                width: 100%;
-                max-width: 100%;
-                border-right: none;
-                border-bottom: 1px solid var(--theme-border);
+            .hero h1 {
+                font-size: 36px;
             }
             
-            .theme-toggle {
-                position: relative;
-                top: 0;
-                right: 0;
-                margin: 10px auto;
-                display: block;
+            .hero p {
+                font-size: 18px;
+            }
+            
+            .feature-card {
+                width: 100%;
             }
         }
 
-        /* Toggle Switch Styles - New */
-        .jedi-survivor-theme .toggle-switch {
-            position: relative;
-            display: inline-block;
-            width: 50px;
-            height: 24px;
-            margin-left: 10px;
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 28px;
+            }
+            
+            .hero p {
+                font-size: 16px;
+            }
+            
+            .cta-button {
+                padding: 12px 24px;
+                font-size: 16px;
+            }
         }
 
-        .jedi-survivor-theme .toggle-switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
+        /* Preserve existing theme styles for chat.html reference */
+        /* These styles are kept for reference but not used on the landing page */
+        .theme-styles-reference {
+            display: none;
         }
 
-        .jedi-survivor-theme .toggle-slider {
+        /* Theme Switcher Styles */
+        .theme-switcher {
             position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: transparent;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            transition: .4s;
-            border-radius: 12px;
+            top: 20px;
+            right: 20px;
+            z-index: 10;
         }
 
-        .jedi-survivor-theme .toggle-slider:before {
-            position: absolute;
-            content: "";
-            height: 16px;
-            width: 16px;
-            left: 4px;
-            bottom: 3px;
-            background-color: white;
-            transition: .4s;
-        }
-
-        .jedi-survivor-theme input:checked + .toggle-slider {
-            background-color: rgba(167, 199, 231, 0.3);
-        }
-
-        .jedi-survivor-theme input:checked + .toggle-slider:before {
-            transform: translateX(26px);
-        }
-
-        /* Slider Styles - New */
-        .jedi-survivor-theme .slider-container {
-            width: 100%;
+        .theme-switcher-button {
             display: flex;
             align-items: center;
-            margin: 10px 0;
+            gap: 8px;
+            background-color: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--pdt-accent);
+            border-radius: 4px;
+            color: var(--pdt-light);
+            padding: 8px 12px;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
 
-        .jedi-survivor-theme .slider-label {
-            min-width: 200px;
-            margin-right: 15px;
-        }
-
-        .jedi-survivor-theme .slider-value {
-            min-width: 30px;
-            text-align: right;
-            margin-left: 10px;
-        }
-
-        .jedi-survivor-theme .slider {
-            -webkit-appearance: none;
+        .theme-switcher-button::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
             width: 100%;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.15);
-            outline: none;
-            opacity: 0.7;
-            transition: opacity .2s;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(var(--current-accent-rgb, 0, 161, 214), 0.2),
+                transparent
+            );
+            transition: all 0.5s ease;
         }
 
-        .jedi-survivor-theme .slider:hover {
+        .theme-switcher-button:hover::after {
+            left: 100%;
+        }
+
+        .theme-switcher-button:hover {
+            background-color: rgba(var(--current-accent-rgb, 0, 161, 214), 0.2);
+            box-shadow: 0 0 10px rgba(var(--current-accent-rgb, 0, 161, 214), 0.3);
+        }
+
+        .theme-switcher-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            width: 180px;
+            background-color: #1A1A1A;
+            border: 1px solid var(--pdt-accent);
+            border-radius: 4px;
+            margin-top: 4px;
+            overflow: hidden;
+            display: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .theme-switcher.active .theme-switcher-dropdown {
+            display: block;
+            animation: fadeIn 0.2s ease-in-out;
+        }
+
+        .theme-option {
+            padding: 10px 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .theme-option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.05),
+                transparent
+            );
+            transition: all 0.5s ease;
+        }
+
+        .theme-option:hover::before {
+            left: 100%;
+        }
+
+        .theme-option:hover {
+            background-color: rgba(var(--current-accent-rgb, 0, 161, 214), 0.2);
+        }
+
+        .theme-option[data-theme="kotor"]:hover {
+            background-color: rgba(var(--kotor-accent-rgb, 0, 191, 255), 0.2);
+        }
+
+        .theme-option[data-theme="jedi"]:hover {
+            background-color: rgba(var(--jedi-accent-rgb, 0, 212, 255), 0.2);
+        }
+
+        .theme-option[data-theme="professional"]:hover {
+            background-color: rgba(var(--prof-accent-rgb, 0, 120, 212), 0.2);
+        }
+
+        /* Theme-specific body classes */
+        body.kotor-theme {
+            --current-bg: var(--kotor-bg);
+            --current-dark: var(--kotor-dark);
+            --current-accent: var(--kotor-accent);
+            --current-accent-rgb: var(--kotor-accent-rgb);
+            --current-text: var(--kotor-text);
+            --current-text-secondary: var(--kotor-text-secondary);
+            --current-border: var(--kotor-border);
+            --current-glow: var(--kotor-glow);
+            --current-font: var(--kotor-font);
+        }
+
+        body.jedi-theme {
+            --current-bg: var(--jedi-bg);
+            --current-dark: var(--jedi-dark);
+            --current-accent: var(--jedi-accent);
+            --current-accent-rgb: var(--jedi-accent-rgb);
+            --current-text: var(--jedi-text);
+            --current-text-secondary: var(--jedi-text-secondary);
+            --current-border: var(--jedi-border);
+            --current-glow: var(--jedi-glow);
+            --current-font: var(--jedi-font);
+        }
+
+        body.professional-theme {
+            --current-bg: var(--prof-bg);
+            --current-dark: var(--prof-dark);
+            --current-accent: var(--prof-accent);
+            --current-accent-rgb: var(--prof-accent-rgb);
+            --current-text: var(--prof-text);
+            --current-text-secondary: var(--prof-text-secondary);
+            --current-border: var(--prof-border);
+            --current-glow: var(--prof-glow);
+            --current-font: var(--prof-font);
+        }
+
+        /* Apply theme variables to elements */
+        .hero {
+            background: radial-gradient(circle at center, var(--current-bg, #1B263B) 0%, #0D0D0D 100%);
+        }
+
+        .hero h1 {
+            font-family: var(--current-font, 'Rajdhani'), sans-serif;
+            text-shadow: 0 0 8px var(--current-accent, var(--pdt-accent));
+        }
+
+        .cta-button {
+            border: 2px solid var(--current-accent, var(--pdt-accent));
+            font-family: var(--current-font, 'Rajdhani'), sans-serif;
+        }
+
+        .cta-button:hover {
+            box-shadow: 0 0 15px var(--current-accent, var(--pdt-accent));
+        }
+
+        .features h2, .showcase h2 {
+            font-family: var(--current-font, 'Rajdhani'), sans-serif;
+            text-shadow: 0 0 5px var(--current-accent, var(--pdt-accent));
+        }
+
+        .feature-card h3 {
+            font-family: var(--current-font, 'Rajdhani'), sans-serif;
+            color: var(--current-accent, var(--pdt-accent));
+        }
+
+        .feature-card:hover {
+            box-shadow: 0 0 10px var(--current-accent, var(--pdt-accent));
+        }
+
+        .carousel-dot.active {
+            background-color: var(--current-accent, var(--pdt-accent));
+        }
+
+        @keyframes themeTransition {
+            0% {
+                transform: scaleX(0);
+                opacity: 1;
+            }
+            50% {
+                transform: scaleX(1);
+                opacity: 1;
+            }
+            100% {
+                transform: scaleX(1);
+                opacity: 0;
+            }
+        }
+
+        /* Waves Effect */
+        .waves-container {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 300px;
+            overflow: hidden;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: rgba(var(--current-accent-rgb, 0, 161, 214), 0.05);
+            border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+            transform-origin: bottom center;
+        }
+
+        .wave-1 {
+            animation: wave 15s linear infinite;
+            height: 90px;
             opacity: 1;
         }
 
-        .jedi-survivor-theme .slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 16px;
-            height: 16px;
-            background: white;
-            cursor: pointer;
-            border-radius: 50%;
+        .wave-2 {
+            animation: wave 10s linear infinite;
+            height: 120px;
+            opacity: 0.8;
+            animation-delay: -5s;
         }
 
-        .jedi-survivor-theme .slider::-moz-range-thumb {
-            width: 16px;
-            height: 16px;
-            background: white;
-            cursor: pointer;
-            border-radius: 50%;
+        .wave-3 {
+            animation: wave 8s linear infinite;
+            height: 150px;
+            opacity: 0.5;
+            animation-delay: -2s;
+        }
+
+        @keyframes wave {
+            0% {
+                transform: scaleX(1) translateX(0);
+            }
+            50% {
+                transform: scaleX(1.4) translateX(-15%);
+            }
+            100% {
+                transform: scaleX(1) translateX(0);
+            }
         }
     </style>
 </head>
-<body class="kotor-theme">
-    <div class="terminal-background">
-        <div class="particles" id="particles"></div>
-        <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
-        
-        <div class="container">
-            <header class="terminal-header">
-                <h1 class="text-glow">GALACTIC INTELLIGENCE TERMINAL</h1>
-                <div class="scanline"></div>
-            </header>
-
-            <div class="section">
-                <h2 class="text-glow">AI RPG Interface</h2>
-                <p>This interface demonstrates a sci-fi RPG-inspired chat UI with two swappable themes: KOTOR and Jedi: Survivor.</p>
-            </div>
-
-            <div class="flex gap-4">
-                <!-- Mission Log -->
-                <div class="mission-log">
-                    <div class="mission-category">Mission Log</div>
-                    
-                    <div class="mission-entry new-entry">
-                        <h4>Objective: Gather Intel</h4>
-                        <p>Gather intelligence on enemy movements in the Outer Rim territories.</p>
-                        <span class="mission-status status-active">In Progress</span>
-                    </div>
-                    
-                    <div class="mission-entry">
-                        <h4>Secondary Objective</h4>
-                        <p>Analyze intercepted communications for encryption patterns.</p>
-                        <span class="mission-status status-pending">Awaiting Data</span>
-                    </div>
-                    
-                    <div class="mission-entry">
-                        <h4>Completed Task</h4>
-                        <p>Established secure connection with Intelligence network.</p>
-                        <span class="mission-status status-complete">Complete</span>
-                    </div>
-                    
-                    <div class="mission-entry">
-                        <h4>System Status</h4>
-                        <p>Neural interface operating at optimal capacity. Quantum encryption active.</p>
-                    </div>
+<body>
+    <div class="logo">PDT AI</div>
+    
+    <!-- Theme Switcher -->
+    <div class="theme-switcher">
+        <button class="theme-switcher-button">
+            <span class="current-theme">Theme</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="theme-switcher-dropdown">
+            <div class="theme-option" data-theme="kotor">KOTOR</div>
+            <div class="theme-option" data-theme="jedi">Jedi: Survivor</div>
+            <div class="theme-option" data-theme="professional">Professional</div>
+        </div>
+    </div>
+    
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="neural-grid"></div>
+        <div id="neural-nodes"></div>
+        <div class="particles" id="hero-particles"></div>
+        <div class="hero-content">
+            <h1>Unlock AI Potential with PDT AI—Three Themes, Infinite Possibilities</h1>
+            <p>Innovative AI with RPG flair, cinematic immersion, or professional precision</p>
+            <a href="login.html" class="cta-button">Get Started</a>
+        </div>
+    </section>
+    
+    <!-- Feature Section -->
+    <section class="features">
+        <div class="features-container">
+            <h2>Key Features</h2>
+            <div class="feature-cards">
+                <div class="feature-card">
+                    <div class="feature-icon">🚀</div>
+                    <h3>RPG-Like Flow</h3>
+                    <p>Solve problems with galactic missions and interactive storytelling that makes AI assistance feel like an adventure.</p>
                 </div>
-
-                <!-- Main Content -->
-                <div class="flex-col" style="flex: 1; width: 70%;">
-                    <!-- Chat Interface -->
-                    <div class="holoscreen-container mb-4">
-                        <div class="terminal-header">
-                            <h3 class="text-glow">COMMUNICATION INTERFACE</h3>
-                            <div class="scanline"></div>
-                        </div>
-                        
-                        <div class="chat-container">
-                            <div class="message ai-message">
-                                <div class="message-sender">AI ASSISTANT</div>
-                                <div class="message-content">Greetings, Commander. I am your strategic intelligence assistant. How may I assist with your mission today?</div>
-                                <div class="timestamp">14:30:05 GST</div>
-                            </div>
-
-                            <div class="message user-message">
-                                <div class="message-sender">USER</div>
-                                <div class="message-content">I need a status update on our reconnaissance efforts.</div>
-                                <div class="timestamp">14:31:22 GST</div>
-                            </div>
-
-                            <div class="message ai-message">
-                                <div class="message-sender">AI ASSISTANT</div>
-                                <div class="message-content">Accessing galactic database... Our scouts report increased enemy activity near the Taris system. Three capital ships have been detected moving in formation toward the sector. Analysis suggests they may be establishing a new outpost.</div>
-                                <div class="timestamp">14:31:45 GST</div>
-                            </div>
-                        </div>
-                        
-                        <div class="terminal-footer">
-                            <div class="flex items-center">
-                                <div class="status-dot"></div>
-                                <span>Secure Channel</span>
-                            </div>
-                            <div>Encryption: ACTIVE</div>
-                        </div>
-                    </div>
-
-                    <!-- Response Options -->
-                    <div class="flex mb-4" id="response-options">
-                        <button class="holographic-button">
-                            <span class="response-number">1</span>Request Update
-                        </button>
-                        <button class="holographic-button">
-                            <span class="response-number">2</span>Change Objective
-                        </button>
-                        <button class="holographic-button">
-                            <span class="response-number">3</span>End Transmission
-                        </button>
-                    </div>
-                    
-                    <!-- Jedi Survivor Settings UI - New -->
-                    <div class="holoscreen-container mb-4 jedi-settings" style="display: none;">
-                        <div class="terminal-header">
-                            <h3 class="text-glow">SETTINGS</h3>
-                            <div class="scanline"></div>
-                        </div>
-                        
-                        <div style="padding: 20px;">
-                            <!-- Vibration Setting -->
-                            <div class="slider-container">
-                                <div class="slider-label">Vibration</div>
-                                <input type="range" min="0" max="100" value="100" class="slider" id="vibrationSlider">
-                                <div class="slider-value">100</div>
-                            </div>
-                            
-                            <!-- Trigger Effect Function -->
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin: 15px 0;">
-                                <div>Trigger Effect Function</div>
-                                <label class="toggle-switch">
-                                    <input type="checkbox" checked>
-                                    <span class="toggle-slider"></span>
-                                </label>
-                            </div>
-                            
-                            <!-- Disable UI Input Hold -->
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin: 15px 0;">
-                                <div>Disable UI Input Hold</div>
-                                <label class="toggle-switch">
-                                    <input type="checkbox">
-                                    <span class="toggle-slider"></span>
-                                </label>
-                            </div>
-                            
-                            <!-- Mouse Look Sensitivity X -->
-                            <div class="slider-container">
-                                <div class="slider-label">Mouse Look Sensitivity X</div>
-                                <input type="range" min="1" max="10" value="5" class="slider" id="sensitivityXSlider">
-                                <div class="slider-value">5</div>
-                            </div>
-                            
-                            <!-- Mouse Look Sensitivity Y -->
-                            <div class="slider-container">
-                                <div class="slider-label">Mouse Look Sensitivity Y</div>
-                                <input type="range" min="1" max="10" value="5" class="slider" id="sensitivityYSlider">
-                                <div class="slider-value">5</div>
-                            </div>
-                            
-                            <!-- Invert Mouse X Axis -->
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin: 15px 0;">
-                                <div>Invert Mouse X Axis</div>
-                                <label class="toggle-switch">
-                                    <input type="checkbox">
-                                    <span class="toggle-slider"></span>
-                                </label>
-                            </div>
-                            
-                            <!-- Invert Mouse Y Axis -->
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin: 15px 0;">
-                                <div>Invert Mouse Y Axis</div>
-                                <label class="toggle-switch">
-                                    <input type="checkbox">
-                                    <span class="toggle-slider"></span>
-                                </label>
-                            </div>
-                        </div>
-                        
-                        <div class="terminal-footer">
-                            <div class="flex items-center">
-                                <span>Controls</span>
-                            </div>
-                            <div>Settings</div>
-                        </div>
-                    </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎨</div>
+                    <h3>Tri-Theme Design</h3>
+                    <p>Switch between KOTOR, Jedi: Survivor, and Professional modes to match your mood or business needs.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🧠</div>
+                    <h3>Advanced AI</h3>
+                    <p>Powered by state-of-the-art NLP technology that understands context and delivers precise, helpful responses.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📈</div>
+                    <h3>Scalable Solutions</h3>
+                    <p>Ideal for individuals and enterprises with customizable workflows and integration capabilities.</p>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
+    
+    <!-- Use Case Showcase -->
+    <section class="showcase">
+        <div class="showcase-container">
+            <h2>Use Case Showcase</h2>
+            <div class="carousel" id="showcase-carousel">
+                <div class="carousel-slide kotor">
+                    <h3>Gaming Community</h3>
+                    <p>Engage with KOTOR-style missions that transform problem-solving into an epic galactic adventure. Perfect for gaming communities, creative writing, and immersive learning experiences.</p>
+                    <img src="https://via.placeholder.com/400x200?text=KOTOR+Theme" alt="KOTOR Theme Preview" style="max-width: 100%; border-radius: 8px;">
+                </div>
+                <div class="carousel-slide jedi">
+                    <h3>Creative Storytelling</h3>
+                    <p>Immerse yourself in Jedi: Survivor narratives with cinematic visuals and dynamic interactions. Ideal for content creators, storytellers, and fans of modern Star Wars aesthetics.</p>
+                    <img src="https://via.placeholder.com/400x200?text=Jedi+Survivor+Theme" alt="Jedi Survivor Theme Preview" style="max-width: 100%; border-radius: 8px;">
+                </div>
+                <div class="carousel-slide professional">
+                    <h3>Business Support</h3>
+                    <p>Automate workflows with Professional Mode, featuring clean interfaces and business-focused tools. Perfect for enterprises, startups, and professionals seeking efficient AI assistance.</p>
+                    <img src="https://via.placeholder.com/400x200?text=Professional+Theme" alt="Professional Theme Preview" style="max-width: 100%; border-radius: 8px;">
+                </div>
+            </div>
+            <div class="carousel-nav">
+                <div class="carousel-dot active" data-slide="0"></div>
+                <div class="carousel-dot" data-slide="1"></div>
+                <div class="carousel-dot" data-slide="2"></div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <p>Built for the Future by PDT AI</p>
+            <div class="footer-links">
+                <a href="login.html">Login</a>
+                <a href="main-menu.html">Main Menu</a>
+                <a href="persona-creation.html">Create Persona</a>
+                <a href="#">Privacy Policy</a>
+            </div>
+        </div>
+    </footer>
 
     <script>
-        // Theme Toggle Function
-        function toggleTheme() {
-            const body = document.body;
-            if (body.classList.contains('kotor-theme')) {
-                body.classList.remove('kotor-theme');
-                body.classList.add('jedi-survivor-theme');
-                updateControlsForTheme('jedi');
-                createParticles('jedi');
-            } else {
-                body.classList.remove('jedi-survivor-theme');
-                body.classList.add('kotor-theme');
-                updateControlsForTheme('kotor');
-                createParticles('kotor');
-            }
-        }
-
-        // Update Controls Based on Theme
-        function updateControlsForTheme(theme) {
-            const responseOptions = document.getElementById('response-options');
-            const buttons = responseOptions.querySelectorAll('.holographic-button');
-            
-            if (theme === 'jedi') {
-                buttons.forEach((button, index) => {
-                    const text = button.textContent.replace(/^\d+\.\s*/, '').trim();
-                    button.innerHTML = `<span class="response-number">${index + 1}</span>${text}`;
-                });
-            } else {
-                buttons.forEach((button, index) => {
-                    const text = button.textContent.replace(/^\d+/, '').trim();
-                    button.innerHTML = `<span class="response-number">${index + 1}</span>${index + 1}. ${text}`;
-                });
-            }
-        }
-
-        // Ripple Effect for Buttons
+        // Create particles for hero section
         document.addEventListener('DOMContentLoaded', function() {
-            const buttons = document.querySelectorAll('.holographic-button, .theme-toggle');
-            
-            buttons.forEach(button => {
-                button.addEventListener('click', function(e) {
-                    this.classList.remove('ripple');
-                    void this.offsetWidth; // Force reflow
-                    this.classList.add('ripple');
-                });
-            });
-
-            // Add new mission entry with animation
-            const addNewEntryBtn = document.querySelector('.mission-category');
-            if (addNewEntryBtn) {
-                addNewEntryBtn.addEventListener('click', function() {
-                    const entries = document.querySelectorAll('.mission-entry');
-                    entries.forEach(entry => entry.classList.remove('new-entry'));
-                    
-                    setTimeout(() => {
-                        const firstEntry = document.querySelector('.mission-entry');
-                        if (firstEntry) {
-                            firstEntry.classList.add('new-entry');
-                        }
-                    }, 100);
-                });
-            }
-
-            // Initialize particles based on current theme
-            if (document.body.classList.contains('jedi-survivor-theme')) {
-                createParticles('jedi');
-            } else {
-                createParticles('kotor');
-            }
-
-            // Update slider values
-            const sliders = document.querySelectorAll('.slider');
-            sliders.forEach(slider => {
-                const valueDisplay = slider.nextElementSibling;
-                slider.addEventListener('input', function() {
-                    valueDisplay.textContent = this.value;
-                });
-            });
-            
-            // Add button to toggle settings UI
-            const responseOptions = document.getElementById('response-options');
-            if (responseOptions) {
-                const settingsButton = document.createElement('button');
-                settingsButton.className = 'holographic-button';
-                settingsButton.innerHTML = '<span class="response-number">4</span>Settings';
-                responseOptions.appendChild(settingsButton);
-                
-                const settingsUI = document.querySelector('.jedi-settings');
-                settingsButton.addEventListener('click', function() {
-                    if (settingsUI) {
-                        const isVisible = settingsUI.style.display !== 'none';
-                        settingsUI.style.display = isVisible ? 'none' : 'block';
-                    }
-                });
-            }
+            createParticles();
+            initCarousel();
+            initThemeSwitcher();
+            createNeuralNetwork();
+            createWaves();
         });
 
-        // Create Particles for Both Themes
-        function createParticles(theme = 'jedi') {
-            const particlesContainer = document.getElementById('particles');
+        function createParticles() {
+            const particlesContainer = document.getElementById('hero-particles');
             particlesContainer.innerHTML = '';
             
-            const particleCount = theme === 'kotor' ? 70 : 80;
+            // Determine particle count and style based on theme
+            let particleCount = 30;
+            let particleColor, particleOpacity, particleSize;
+            
+            // Get current theme
+            const currentTheme = localStorage.getItem('pdtAiTheme') || 'kotor';
+            
+            if (currentTheme === 'kotor') {
+                particleCount = 35;
+                particleColor = '#00BFFF';
+                particleOpacity = 0.45;
+                particleSize = 4;
+            } else if (currentTheme === 'jedi') {
+                particleCount = 40;
+                particleColor = '#00D4FF';
+                particleOpacity = 0.35;
+                particleSize = 3.5;
+            } else if (currentTheme === 'professional') {
+                particleCount = 32;
+                particleColor = '#0078D4';
+                particleOpacity = 0.28;
+                particleSize = 2.5;
+            }
             
             for (let i = 0; i < particleCount; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'particle';
+                
+                // Apply theme-specific styling
+                particle.style.backgroundColor = particleColor;
+                particle.style.opacity = particleOpacity;
+                particle.style.width = `${particleSize}px`;
+                particle.style.height = `${particleSize}px`;
+                particle.style.boxShadow = `0 0 ${particleSize * 2}px ${particleColor}`;
                 
                 // Random position
                 const x = Math.random() * 100;
@@ -1336,32 +1040,273 @@
                 particle.style.top = `${y}%`;
                 
                 // Random drift direction and speed
-                const xDrift = (Math.random() - 0.5) * 250;
-                const yDrift = (Math.random() - 0.5) * 250;
+                const xDrift = (Math.random() - 0.5) * 400;
+                const yDrift = (Math.random() - 0.5) * 400;
                 particle.style.setProperty('--x-drift', `${xDrift}px`);
                 particle.style.setProperty('--y-drift', `${yDrift}px`);
                 
                 // Random animation duration
-                const duration = 2 + Math.random() * 4;
+                const duration = 2 + Math.random() * 5;
                 particle.style.setProperty('--drift-duration', `${duration}s`);
                 
                 // Random delay
                 const delay = Math.random() * 5;
                 particle.style.animationDelay = `${delay}s`;
                 
-                // Random size for more variety
-                const minSize = theme === 'kotor' ? 1 : 1;
-                const maxSize = theme === 'kotor' ? 3 : 3.5;
-                const size = minSize + Math.random() * maxSize;
-                particle.style.width = `${size}px`;
-                particle.style.height = `${size}px`;
-                
-                // Random opacity
-                const opacity = 0.4 + Math.random() * 0.6;
-                particle.style.opacity = opacity;
-                
                 particlesContainer.appendChild(particle);
             }
+        }
+
+        function initCarousel() {
+            const carousel = document.getElementById('showcase-carousel');
+            const dots = document.querySelectorAll('.carousel-dot');
+            
+            dots.forEach(dot => {
+                dot.addEventListener('click', function() {
+                    const slideIndex = this.getAttribute('data-slide');
+                    const slideWidth = carousel.querySelector('.carousel-slide').offsetWidth;
+                    
+                    carousel.scrollTo({
+                        left: slideWidth * slideIndex,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Update active dot
+                    dots.forEach(d => d.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+            
+            // Update dots on scroll
+            carousel.addEventListener('scroll', function() {
+                const slideWidth = carousel.querySelector('.carousel-slide').offsetWidth;
+                const scrollPosition = carousel.scrollLeft;
+                const activeIndex = Math.round(scrollPosition / slideWidth);
+                
+                dots.forEach((dot, index) => {
+                    if (index === activeIndex) {
+                        dot.classList.add('active');
+                    } else {
+                        dot.classList.remove('active');
+                    }
+                });
+            });
+        }
+
+        // Initialize theme from localStorage or default to KOTOR
+        function initThemeSwitcher() {
+            const savedTheme = localStorage.getItem('pdtAiTheme') || 'kotor';
+            setTheme(savedTheme);
+            
+            const themeSwitcher = document.querySelector('.theme-switcher');
+            const themeButton = document.querySelector('.theme-switcher-button');
+            const themeOptions = document.querySelectorAll('.theme-option');
+            
+            // Toggle dropdown
+            themeButton.addEventListener('click', function() {
+                themeSwitcher.classList.toggle('active');
+            });
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(event) {
+                if (!themeSwitcher.contains(event.target)) {
+                    themeSwitcher.classList.remove('active');
+                }
+            });
+            
+            // Theme selection
+            themeOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    const theme = this.getAttribute('data-theme');
+                    setTheme(theme);
+                    themeSwitcher.classList.remove('active');
+                });
+            });
+        }
+        
+        function setTheme(theme) {
+            // Create transition overlay
+            const overlay = document.createElement('div');
+            overlay.style.position = 'fixed';
+            overlay.style.top = '0';
+            overlay.style.left = '0';
+            overlay.style.width = '100%';
+            overlay.style.height = '100%';
+            overlay.style.backgroundColor = theme === 'kotor' ? '#00BFFF' : 
+                                           theme === 'jedi' ? '#00D4FF' : '#0078D4';
+            overlay.style.zIndex = '9999';
+            overlay.style.transformOrigin = 'left';
+            overlay.style.transform = 'scaleX(0)';
+            overlay.style.opacity = '0';
+            overlay.style.pointerEvents = 'none';
+            document.body.appendChild(overlay);
+            
+            // Animate the overlay
+            overlay.animate([
+                { transform: 'scaleX(0)', opacity: 0.3 },
+                { transform: 'scaleX(1)', opacity: 0.3 },
+                { transform: 'scaleX(1)', opacity: 0 }
+            ], {
+                duration: 500,
+                easing: 'ease-in-out'
+            }).onfinish = function() {
+                overlay.remove();
+            };
+            
+            // Remove all theme classes
+            document.body.classList.remove('kotor-theme', 'jedi-theme', 'professional-theme');
+            
+            // Add selected theme class
+            document.body.classList.add(`${theme}-theme`);
+            
+            // Update current theme text
+            document.querySelector('.current-theme').textContent = 
+                theme === 'kotor' ? 'KOTOR' : 
+                theme === 'jedi' ? 'Jedi: Survivor' : 
+                'Professional';
+            
+            // Save to localStorage
+            localStorage.setItem('pdtAiTheme', theme);
+            
+            // Recreate particles with theme-specific styling
+            createParticles();
+            
+            // Update neural network colors based on theme
+            updateNeuralNetworkColors(theme);
+            
+            // Update wave colors based on theme
+            updateWaveColors(theme);
+        }
+
+        // Update neural network colors based on theme
+        function updateNeuralNetworkColors(theme) {
+            const nodes = document.querySelectorAll('.neural-node');
+            const connections = document.querySelectorAll('.neural-connection');
+            
+            let nodeColor, connectionColor, nodeShadow;
+            
+            if (theme === 'kotor') {
+                nodeColor = 'rgba(var(--kotor-accent-rgb, 0, 191, 255), 0.5)';
+                connectionColor = 'rgba(var(--kotor-accent-rgb, 0, 191, 255), 0.3)';
+                nodeShadow = '0 0 4px rgba(var(--kotor-accent-rgb, 0, 191, 255), 0.3)';
+            } else if (theme === 'jedi') {
+                nodeColor = 'rgba(var(--jedi-accent-rgb, 0, 212, 255), 0.5)';
+                connectionColor = 'rgba(var(--jedi-accent-rgb, 0, 212, 255), 0.3)';
+                nodeShadow = '0 0 4px rgba(var(--jedi-accent-rgb, 0, 212, 255), 0.3)';
+            } else {
+                nodeColor = 'rgba(var(--prof-accent-rgb, 0, 120, 212), 0.5)';
+                connectionColor = 'rgba(var(--prof-accent-rgb, 0, 120, 212), 0.3)';
+                nodeShadow = '0 0 4px rgba(var(--prof-accent-rgb, 0, 120, 212), 0.3)';
+            }
+            
+            nodes.forEach(node => {
+                node.style.backgroundColor = nodeColor;
+                node.style.boxShadow = nodeShadow;
+            });
+            
+            connections.forEach(connection => {
+                connection.style.backgroundColor = connectionColor;
+            });
+        }
+
+        // Create neural network nodes and connections
+        function createNeuralNetwork() {
+            const nodesContainer = document.getElementById('neural-nodes');
+            const nodeCount = 13;
+            const nodes = [];
+            
+            // Create nodes
+            for (let i = 0; i < nodeCount; i++) {
+                const node = document.createElement('div');
+                node.className = 'neural-node';
+                
+                // Random position
+                const x = Math.random() * 100;
+                const y = Math.random() * 100;
+                node.style.left = `${x}%`;
+                node.style.top = `${y}%`;
+                
+                nodes.push({
+                    element: node,
+                    x: x,
+                    y: y
+                });
+                
+                nodesContainer.appendChild(node);
+            }
+            
+            // Create connections between nodes
+            for (let i = 0; i < nodeCount; i++) {
+                const sourceNode = nodes[i];
+                
+                // Connect to 1-2 other nodes
+                const connectionCount = Math.floor(Math.random() * 2) + 1;
+                
+                for (let j = 0; j < connectionCount; j++) {
+                    // Select a random target node
+                    const targetIndex = Math.floor(Math.random() * nodeCount);
+                    if (targetIndex !== i) {
+                        const targetNode = nodes[targetIndex];
+                        
+                        const connection = document.createElement('div');
+                        connection.className = 'neural-connection';
+                        
+                        // Position at source node
+                        connection.style.left = `${sourceNode.x}%`;
+                        connection.style.top = `${sourceNode.y}%`;
+                        
+                        // Calculate length and angle
+                        const dx = targetNode.x - sourceNode.x;
+                        const dy = targetNode.y - sourceNode.y;
+                        const length = Math.sqrt(dx * dx + dy * dy);
+                        const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+                        
+                        // Set width (length) and rotation
+                        connection.style.width = `${length}%`;
+                        connection.style.transform = `rotate(${angle}deg)`;
+                        
+                        nodesContainer.appendChild(connection);
+                    }
+                }
+            }
+        }
+
+        // Add wave effect to the hero section
+        function createWaves() {
+            const hero = document.querySelector('.hero');
+            const wavesContainer = document.createElement('div');
+            wavesContainer.className = 'waves-container';
+            
+            // Create 3 wave layers
+            for (let i = 0; i < 3; i++) {
+                const wave = document.createElement('div');
+                wave.className = `wave wave-${i+1}`;
+                wavesContainer.appendChild(wave);
+            }
+            
+            hero.appendChild(wavesContainer);
+            
+            // Update wave colors based on theme
+            updateWaveColors(localStorage.getItem('pdtAiTheme') || 'kotor');
+        }
+
+        // Update wave colors based on theme
+        function updateWaveColors(theme) {
+            const waves = document.querySelectorAll('.wave');
+            let waveColor;
+            
+            if (theme === 'kotor') {
+                waveColor = 'rgba(var(--kotor-accent-rgb, 0, 191, 255), ';
+            } else if (theme === 'jedi') {
+                waveColor = 'rgba(var(--jedi-accent-rgb, 0, 212, 255), ';
+            } else {
+                waveColor = 'rgba(var(--prof-accent-rgb, 0, 120, 212), ';
+            }
+            
+            waves.forEach((wave, index) => {
+                const opacity = 0.09 - (index * 0.015);
+                wave.style.background = `${waveColor}${opacity})`;
+            });
         }
     </script>
 </body>

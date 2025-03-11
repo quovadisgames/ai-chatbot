@@ -1,91 +1,136 @@
-/* ===== Professional Theme Styles ===== */
+/* ===== PROFESSIONAL Theme Styles ===== */
 /* This file contains styles specific to the Professional theme */
 
 body.professional-theme {
-    --current-bg: var(--prof-bg);
-    --current-dark: var(--prof-dark);
-    --current-accent: var(--prof-accent);
-    --current-accent-rgb: var(--prof-accent-rgb);
-    --current-text: var(--prof-text);
-    --current-text-secondary: var(--prof-text-secondary);
-    --current-border: var(--prof-border);
-    --current-glow: var(--prof-glow);
-    --current-font: var(--prof-font);
+    --current-bg: var(--professional-bg);
+    --current-dark: var(--professional-dark);
+    --current-accent: var(--professional-accent);
+    --current-accent-rgb: var(--professional-accent-rgb);
+    --current-text: var(--professional-text);
+    --current-text-secondary: var(--professional-text-secondary);
+    --current-border: var(--professional-border);
+    --current-glow: var(--professional-glow);
+    --current-font: var(--professional-font);
 }
 
 /* Professional-specific UI adjustments */
 .professional-theme .neural-grid {
-    background-size: 40px 40px;
-    opacity: 0.3;
+    background-size: 30px 30px;
+    opacity: 0.2;
 }
 
 .professional-theme .neural-node {
-    box-shadow: 0 0 4px rgba(var(--prof-accent-rgb), 0.3);
+    box-shadow: 0 0 4px rgba(var(--professional-accent-rgb), 0.2);
 }
 
 .professional-theme .wave {
-    background: rgba(var(--prof-accent-rgb), 0.04);
+    background: rgba(var(--professional-accent-rgb), 0.03);
 }
 
 /* Professional-specific message styling */
-.professional-theme .ai-message .message-avatar {
-    background-color: var(--prof-accent);
+.professional-theme .message.assistant .message-content {
+    border-left-color: var(--professional-accent);
 }
 
-.professional-theme .ai-message .message-content {
-    border-left-color: var(--prof-accent);
-}
-
-.professional-theme .ai-badge {
-    background-color: rgba(var(--prof-accent-rgb), 0.2);
-    color: var(--prof-accent);
+.professional-theme .ai-avatar {
+    background-color: rgba(var(--professional-accent-rgb), 0.3);
+    border-color: var(--professional-accent);
 }
 
 .professional-theme .message-text pre {
-    border-left-color: var(--prof-accent);
+    border-left-color: var(--professional-accent);
 }
 
+/* Professional-specific button styling */
 .professional-theme .send-button {
-    background-color: var(--prof-accent);
+    background-color: var(--professional-accent);
 }
 
 .professional-theme .send-button:hover:not(:disabled) {
-    background-color: rgba(var(--prof-accent-rgb), 0.8);
+    background-color: rgba(var(--professional-accent-rgb), 0.8);
+}
+
+/* Professional-specific persona card styling */
+.professional-theme .persona-card.dragging {
+    box-shadow: 0 0 10px rgba(var(--professional-accent-rgb), 0.5);
+}
+
+.professional-theme .persona-avatar {
+    background-color: rgba(var(--professional-accent-rgb), 0.3);
+    border-color: var(--professional-accent);
+}
+
+.professional-theme .add-persona-button {
+    background-color: rgba(var(--professional-accent-rgb), 0.2);
+}
+
+.professional-theme .add-persona-button:hover {
+    background-color: rgba(var(--professional-accent-rgb), 0.4);
+}
+
+/* Professional-specific chat rules styling */
+.professional-theme .rule-option.selected {
+    background-color: rgba(var(--professional-accent-rgb), 0.2);
+    border-color: var(--professional-accent);
+}
+
+.professional-theme .creativity-slider::-webkit-slider-thumb {
+    background-color: var(--professional-accent);
+}
+
+.professional-theme .apply-button {
+    background-color: var(--professional-accent);
+}
+
+.professional-theme .apply-button:hover {
+    background-color: rgba(var(--professional-accent-rgb), 0.8);
+}
+
+/* Professional-specific XP display styling */
+.professional-theme .xp-bar-fill {
+    background-color: var(--professional-accent);
+}
+
+/* Professional-specific typing indicator */
+.professional-theme .typing-indicator span {
+    background-color: var(--professional-accent);
+}
+
+/* Professional-specific drop zone styling */
+.professional-theme .persona-drop-zone.drop-active {
+    border-color: var(--professional-accent);
+    background-color: rgba(var(--professional-accent-rgb), 0.1);
+}
+
+/* Professional-specific participant chip styling */
+.professional-theme .participant-chip {
+    background-color: rgba(var(--professional-accent-rgb), 0.1);
+    border-color: rgba(var(--professional-accent-rgb), 0.3);
+}
+
+/* Professional-specific scrollbar */
+.professional-theme .messages-container::-webkit-scrollbar-thumb {
+    background-color: rgba(var(--professional-accent-rgb), 0.3);
 }
 
 /* Professional-specific theme option highlight */
 .professional-theme .theme-option[data-theme="professional"] {
-    background-color: rgba(var(--prof-accent-rgb), 0.2);
-}
-
-/* Professional-specific typing indicator */
-.professional-theme .typing-dots span {
-    background-color: var(--prof-accent);
-}
-
-/* Professional-specific scrollbar */
-.professional-theme .chat-content::-webkit-scrollbar-thumb {
-    background-color: rgba(var(--prof-accent-rgb), 0.3);
-}
-
-/* Professional-specific button states */
-.professional-theme .action-button.copied {
-    background-color: rgba(var(--prof-accent-rgb), 0.3);
+    background-color: rgba(var(--professional-accent-rgb), 0.2);
 }
 
 /* Professional-specific form elements */
 .professional-theme .chat-input:focus {
-    border-color: var(--prof-accent);
+    border-color: var(--professional-accent);
 }
 
 .professional-theme .chat-input-wrapper:focus-within {
-    border-color: var(--prof-accent);
-    box-shadow: 0 0 5px rgba(var(--prof-accent-rgb), 0.3);
+    border-color: var(--professional-accent);
+    box-shadow: 0 0 5px rgba(var(--professional-accent-rgb), 0.3);
 }
 
 /* Professional-specific UI refinements */
 .professional-theme .chat-main {
-    border-left: 1px solid rgba(var(--prof-accent-rgb), 0.3);
+    border-left: 1px solid rgba(var(--professional-accent-rgb), 0.3);
 }
 
 .professional-theme .sidebar {

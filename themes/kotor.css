@@ -28,29 +28,89 @@ body.kotor-theme {
 }
 
 /* KOTOR-specific message styling */
-.kotor-theme .ai-message .message-avatar {
-    background-color: var(--kotor-accent);
-}
-
-.kotor-theme .ai-message .message-content {
+.kotor-theme .message.assistant .message-content {
     border-left-color: var(--kotor-accent);
 }
 
-.kotor-theme .ai-badge {
-    background-color: rgba(var(--kotor-accent-rgb), 0.2);
-    color: var(--kotor-accent);
+.kotor-theme .ai-avatar {
+    background-color: rgba(var(--kotor-accent-rgb), 0.3);
+    border-color: var(--kotor-accent);
 }
 
 .kotor-theme .message-text pre {
     border-left-color: var(--kotor-accent);
 }
 
+/* KOTOR-specific button styling */
 .kotor-theme .send-button {
     background-color: var(--kotor-accent);
 }
 
 .kotor-theme .send-button:hover:not(:disabled) {
     background-color: rgba(var(--kotor-accent-rgb), 0.8);
+}
+
+/* KOTOR-specific persona card styling */
+.kotor-theme .persona-card.dragging {
+    box-shadow: 0 0 10px rgba(var(--kotor-accent-rgb), 0.5);
+}
+
+.kotor-theme .persona-avatar {
+    background-color: rgba(var(--kotor-accent-rgb), 0.3);
+    border-color: var(--kotor-accent);
+}
+
+.kotor-theme .add-persona-button {
+    background-color: rgba(var(--kotor-accent-rgb), 0.2);
+}
+
+.kotor-theme .add-persona-button:hover {
+    background-color: rgba(var(--kotor-accent-rgb), 0.4);
+}
+
+/* KOTOR-specific chat rules styling */
+.kotor-theme .rule-option.selected {
+    background-color: rgba(var(--kotor-accent-rgb), 0.2);
+    border-color: var(--kotor-accent);
+}
+
+.kotor-theme .creativity-slider::-webkit-slider-thumb {
+    background-color: var(--kotor-accent);
+}
+
+.kotor-theme .apply-button {
+    background-color: var(--kotor-accent);
+}
+
+.kotor-theme .apply-button:hover {
+    background-color: rgba(var(--kotor-accent-rgb), 0.8);
+}
+
+/* KOTOR-specific XP display styling */
+.kotor-theme .xp-bar-fill {
+    background-color: var(--kotor-accent);
+}
+
+/* KOTOR-specific typing indicator */
+.kotor-theme .typing-indicator span {
+    background-color: var(--kotor-accent);
+}
+
+/* KOTOR-specific drop zone styling */
+.kotor-theme .persona-drop-zone.drop-active {
+    border-color: var(--kotor-accent);
+    background-color: rgba(var(--kotor-accent-rgb), 0.1);
+}
+
+/* KOTOR-specific participant chip styling */
+.kotor-theme .participant-chip {
+    background-color: rgba(var(--kotor-accent-rgb), 0.1);
+    border-color: rgba(var(--kotor-accent-rgb), 0.3);
+}
+
+/* KOTOR-specific scrollbar */
+.kotor-theme .messages-container::-webkit-scrollbar-thumb {
+    background-color: rgba(var(--kotor-accent-rgb), 0.3);
 }
 
 /* KOTOR-specific theme option highlight */
@@ -61,11 +121,6 @@ body.kotor-theme {
 /* KOTOR-specific typing indicator */
 .kotor-theme .typing-dots span {
     background-color: var(--kotor-accent);
-}
-
-/* KOTOR-specific scrollbar */
-.kotor-theme .chat-content::-webkit-scrollbar-thumb {
-    background-color: rgba(var(--kotor-accent-rgb), 0.3);
 }
 
 /* KOTOR-specific button states */

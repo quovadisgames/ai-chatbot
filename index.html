@@ -313,37 +313,6 @@
             updateWaveColors(theme);
         }
 
-        // Update neural network colors based on theme
-        function updateNeuralNetworkColors(theme) {
-            const nodes = document.querySelectorAll('.neural-node');
-            const connections = document.querySelectorAll('.neural-connection');
-            
-            let nodeColor, connectionColor, nodeShadow;
-            
-            if (theme === 'kotor') {
-                nodeColor = 'rgba(var(--kotor-accent-rgb, 0, 191, 255), 0.5)';
-                connectionColor = 'rgba(var(--kotor-accent-rgb, 0, 191, 255), 0.3)';
-                nodeShadow = '0 0 4px rgba(var(--kotor-accent-rgb, 0, 191, 255), 0.3)';
-            } else if (theme === 'jedi') {
-                nodeColor = 'rgba(var(--jedi-accent-rgb, 0, 212, 255), 0.5)';
-                connectionColor = 'rgba(var(--jedi-accent-rgb, 0, 212, 255), 0.3)';
-                nodeShadow = '0 0 4px rgba(var(--jedi-accent-rgb, 0, 212, 255), 0.3)';
-            } else {
-                nodeColor = 'rgba(var(--prof-accent-rgb, 0, 120, 212), 0.5)';
-                connectionColor = 'rgba(var(--prof-accent-rgb, 0, 120, 212), 0.3)';
-                nodeShadow = '0 0 4px rgba(var(--prof-accent-rgb, 0, 120, 212), 0.3)';
-            }
-            
-            nodes.forEach(node => {
-                node.style.backgroundColor = nodeColor;
-                node.style.boxShadow = nodeShadow;
-            });
-            
-            connections.forEach(connection => {
-                connection.style.backgroundColor = connectionColor;
-            });
-        }
-
         // Create neural network nodes and connections
         function createNeuralNetwork() {
             const nodesContainer = document.getElementById('neural-nodes');
@@ -405,6 +374,41 @@
                     }
                 }
             }
+            
+            // Update colors based on current theme
+            const currentTheme = localStorage.getItem('pdtAiTheme') || 'jedi';
+            updateNeuralNetworkColors(currentTheme);
+        }
+
+        // Update neural network colors based on theme
+        function updateNeuralNetworkColors(theme) {
+            const nodes = document.querySelectorAll('.neural-node');
+            const connections = document.querySelectorAll('.neural-connection');
+            
+            let nodeColor, connectionColor, nodeShadow;
+            
+            if (theme === 'kotor') {
+                nodeColor = 'rgba(var(--kotor-accent-rgb, 0, 191, 255), 0.5)';
+                connectionColor = 'rgba(var(--kotor-accent-rgb, 0, 191, 255), 0.3)';
+                nodeShadow = '0 0 4px rgba(var(--kotor-accent-rgb, 0, 191, 255), 0.3)';
+            } else if (theme === 'jedi') {
+                nodeColor = 'rgba(var(--jedi-accent-rgb, 0, 212, 255), 0.5)';
+                connectionColor = 'rgba(var(--jedi-accent-rgb, 0, 212, 255), 0.3)';
+                nodeShadow = '0 0 4px rgba(var(--jedi-accent-rgb, 0, 212, 255), 0.3)';
+            } else {
+                nodeColor = 'rgba(var(--prof-accent-rgb, 0, 120, 212), 0.5)';
+                connectionColor = 'rgba(var(--prof-accent-rgb, 0, 120, 212), 0.3)';
+                nodeShadow = '0 0 4px rgba(var(--prof-accent-rgb, 0, 120, 212), 0.3)';
+            }
+            
+            nodes.forEach(node => {
+                node.style.backgroundColor = nodeColor;
+                node.style.boxShadow = nodeShadow;
+            });
+            
+            connections.forEach(connection => {
+                connection.style.backgroundColor = connectionColor;
+            });
         }
 
         // Add wave effect to the hero section

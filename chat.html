@@ -15,132 +15,200 @@
     <link rel="stylesheet" href="themes/professional.css">
     <!-- Page-specific styles -->
     <link rel="stylesheet" href="styles/chat-page.css">
-    <style>
-        /* Fix for vertical scrolling */
-        html, body {
-            overflow-x: hidden;
-        }
-        
-        .main-container {
-            display: flex;
-            flex-direction: column;
-            overflow-x: hidden;
-            overflow-y: auto;
-        }
-        
-        .neural-grid, 
-        #neural-nodes, 
-        .particles, 
-        .waves-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-        }
-    </style>
 </head>
 <body class="jedi-theme">
     <div class="main-container">
+        <!-- Background Elements -->
         <div class="neural-grid"></div>
         <div id="neural-nodes"></div>
         <div class="particles" id="particles"></div>
         <div class="waves-container" id="waves-container"></div>
         
-        <a href="index.html" class="back-link">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-            Back to Home
-        </a>
-        
-        <a href="participants.html" class="personas-link">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-            View Personas
-        </a>
-        
-        <div class="theme-switcher">
-            <button class="theme-switcher-button">
-                <span class="current-theme">Jedi: Survivor</span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-            </button>
-            <div class="theme-switcher-dropdown">
-                <div class="theme-option" data-theme="kotor">KOTOR</div>
-                <div class="theme-option" data-theme="jedi">Jedi: Survivor</div>
-                <div class="theme-option" data-theme="professional">Professional</div>
+        <!-- Navigation Bar -->
+        <div class="nav-container">
+            <!-- Navigation Links -->
+            <a href="index.html" class="back-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+                Back to Home
+            </a>
+            
+            <a href="participants.html" class="personas-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                View Personas
+            </a>
+            
+            <!-- Theme Switcher -->
+            <div class="theme-switcher">
+                <button class="theme-switcher-button">
+                    <span class="current-theme">Jedi: Survivor</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div class="theme-switcher-dropdown">
+                    <div class="theme-option" data-theme="kotor">KOTOR</div>
+                    <div class="theme-option" data-theme="jedi">Jedi: Survivor</div>
+                    <div class="theme-option" data-theme="professional">Professional</div>
+                </div>
             </div>
         </div>
         
+        <!-- Main Chat Layout -->
         <div class="chat-layout">
-            <!-- Sidebar -->
-            <div class="sidebar">
+            <!-- Left Sidebar - Chat History -->
+            <div class="sidebar history-sidebar">
                 <div class="sidebar-header">
-                    <div class="sidebar-title">Chat History</div>
-                    <button class="sidebar-toggle">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 12-7-7-7 7"></path><path d="m19 12-7 7-7-7"></path></svg>
+                    <h2 class="sidebar-title">Chat History</h2>
+                    <button class="sidebar-toggle" aria-label="Toggle history sidebar">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
                     </button>
                 </div>
+                
                 <div class="sidebar-search">
                     <input type="text" class="search-input" placeholder="Search chats...">
                 </div>
-                <div class="chat-list">
-                    <div class="chat-item active">
-                        <div class="chat-item-title">Mission: Query #1</div>
-                        <div class="chat-item-preview">Neural network optimization parameters...</div>
+                
+                <div class="chat-history-list">
+                    <div class="chat-history-item">
+                        <div class="chat-history-title">Mission: Query #1</div>
+                        <div class="chat-history-date">2025-03-11</div>
+                        <div class="chat-history-preview">Neural network optimization parameters...</div>
                     </div>
-                    <div class="chat-item">
-                        <div class="chat-item-title">Mission: Data Analysis</div>
-                        <div class="chat-item-preview">Analyzing the latest dataset from...</div>
+                    <div class="chat-history-item">
+                        <div class="chat-history-title">Mission: Data Analysis</div>
+                        <div class="chat-history-date">2025-03-10</div>
+                        <div class="chat-history-preview">Analyzing the latest dataset from...</div>
                     </div>
-                    <div class="chat-item">
-                        <div class="chat-item-title">Mission: Code Review</div>
-                        <div class="chat-item-preview">Reviewing the implementation of...</div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Main Chat Area -->
-            <div class="chat-main">
-                <div class="chat-header">
-                    <div class="chat-title">Mission: Query #1</div>
-                    <div class="participants">
-                        <div class="participant-avatars">
-                            <div class="participant-avatar">U</div>
-                            <div class="participant-avatar">Z</div>
-                        </div>
-                        <a href="participants.html" class="add-participant-btn">Add Participant</a>
+                    <div class="chat-history-item">
+                        <div class="chat-history-title">Mission: Code Review</div>
+                        <div class="chat-history-date">2025-03-09</div>
+                        <div class="chat-history-preview">Reviewing the implementation of...</div>
                     </div>
                 </div>
                 
-                <!-- Chat Content Area -->
-                <div class="chat-content">
-                    <div class="chat-messages">
+                <div class="sidebar-footer">
+                    <button class="new-chat-button">
+                        <span class="icon">+</span> New Chat
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Main Chat Container -->
+            <div class="chat-container">
+                <!-- Persistent Sidebar Toggle Buttons -->
+                <button class="persistent-toggle history-toggle" aria-label="Toggle history sidebar">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                </button>
+                <button class="persistent-toggle personas-toggle" aria-label="Toggle personas sidebar">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+                </button>
+                
+                <!-- Chat Header -->
+                <div class="chat-header">
+                    <div class="chat-info">
+                        <h1 class="chat-title">Mission: Query #1</h1>
+                        <div class="chat-subtitle">
+                            2 participants in this chat
+                        </div>
+                    </div>
+                    
+                    <div class="chat-actions">
+                        <button class="chat-action-button rules-button" aria-label="Chat Rules">
+                            <span class="icon">⚙️</span>
+                            <span class="label">Rules</span>
+                        </button>
+                        
+                        <div class="token-display">
+                            <div class="token-label">Tokens</div>
+                            <div class="token-bar-container">
+                                <div class="token-bar-fill" style="width: 20%; background-color: var(--current-accent)"></div>
+                            </div>
+                            <div class="token-count">50 / 250</div>
+                        </div>
+                        
+                        <div class="xp-display">
+                            <div class="xp-rank">Padawan</div>
+                            <div class="xp-bar-container">
+                                <div class="xp-bar-fill" style="width: 45%"></div>
+                            </div>
+                            <div class="xp-points">45 XP</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Chat Rules Modal (hidden by default) -->
+                <div class="chat-rules-modal" style="display: none;">
+                    <div class="chat-rules-header">
+                        <h3>Chat Rules</h3>
+                        <button class="close-button" aria-label="Close rules">×</button>
+                    </div>
+                    
+                    <div class="chat-rules-content">
+                        <div class="rule-group">
+                            <label>Response Length:</label>
+                            <div class="rule-options">
+                                <button class="rule-option">Short</button>
+                                <button class="rule-option selected">Medium</button>
+                                <button class="rule-option">Long</button>
+                            </div>
+                        </div>
+                        
+                        <div class="rule-group">
+                            <label>Tone:</label>
+                            <div class="rule-options">
+                                <button class="rule-option">Casual</button>
+                                <button class="rule-option selected">Formal</button>
+                                <button class="rule-option">Technical</button>
+                            </div>
+                        </div>
+                        
+                        <div class="rule-group">
+                            <label>Creativity: 70%</label>
+                            <input type="range" min="0" max="100" value="70" class="creativity-slider">
+                        </div>
+                    </div>
+                    
+                    <div class="chat-rules-footer">
+                        <button class="apply-button">Apply Rules</button>
+                    </div>
+                </div>
+                
+                <!-- Chat Messages -->
+                <div class="messages-container" id="drop-target">
+                    <div class="messages-scroll-area">
                         <!-- System Message -->
-                        <div class="message system-message">
-                            <div class="message-content">
-                                <div class="message-text">
-                                    <p>Mission initialized. PDT AI is ready to assist with your query.</p>
-                                </div>
-                                <div class="message-time">Today at 09:15</div>
+                        <div class="message system">
+                            <div class="system-message">
+                                Mission initialized. PDT AI is ready to assist with your query.
                             </div>
                         </div>
                         
                         <!-- User Message -->
-                        <div class="message user-message">
-                            <div class="message-avatar">U</div>
+                        <div class="message user">
+                            <div class="message-avatar">
+                                <div class="user-avatar">U</div>
+                            </div>
                             <div class="message-content">
-                                <div class="message-sender">User</div>
-                                <div class="message-text">
-                                    <p>I need to optimize the neural network parameters for our latest model. The current configuration is using too much memory and the training time is excessive. Can you suggest some optimizations?</p>
+                                <div class="message-header">
+                                    <span class="message-sender">You</span>
+                                    <span class="message-time">09:16</span>
                                 </div>
-                                <div class="message-time">Today at 09:16</div>
+                                <div class="message-text">
+                                    I need to optimize the neural network parameters for our latest model. The current configuration is using too much memory and the training time is excessive. Can you suggest some optimizations?
+                                </div>
                             </div>
                         </div>
                         
                         <!-- AI Message -->
-                        <div class="message ai-message">
-                            <div class="message-avatar">Z</div>
+                        <div class="message assistant">
+                            <div class="message-avatar">
+                                <div class="ai-avatar">
+                                    <img src="/avatars/jedi-master.png" alt="Jedi Master Zex" class="avatar-image">
+                                </div>
+                            </div>
                             <div class="message-content">
-                                <div class="message-sender">Zeta-7 <span class="ai-badge">AI</span></div>
+                                <div class="message-header">
+                                    <span class="message-sender">Jedi Master Zex</span>
+                                    <span class="message-time">09:17</span>
+                                </div>
                                 <div class="message-text">
                                     <p>Based on your description, there are several optimization strategies we can implement:</p>
                                     <ol>
@@ -159,35 +227,37 @@
                                     </ol>
                                     <p>Would you like me to elaborate on any of these approaches?</p>
                                 </div>
-                                <div class="message-time">Today at 09:17</div>
-                                <div class="message-actions">
-                                    <button class="action-button copy-button" title="Copy to clipboard">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-                                    </button>
-                                    <button class="action-button regenerate-button" title="Regenerate response">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"></path></svg>
-                                    </button>
-                                </div>
                             </div>
                         </div>
                         
                         <!-- User Message -->
-                        <div class="message user-message">
-                            <div class="message-avatar">U</div>
+                        <div class="message user">
+                            <div class="message-avatar">
+                                <div class="user-avatar">U</div>
+                            </div>
                             <div class="message-content">
-                                <div class="message-sender">User</div>
-                                <div class="message-text">
-                                    <p>I'd like to know more about mixed precision training. How much memory savings can we expect, and are there any drawbacks?</p>
+                                <div class="message-header">
+                                    <span class="message-sender">You</span>
+                                    <span class="message-time">09:19</span>
                                 </div>
-                                <div class="message-time">Today at 09:19</div>
+                                <div class="message-text">
+                                    I'd like to know more about mixed precision training. How much memory savings can we expect, and are there any drawbacks?
+                                </div>
                             </div>
                         </div>
                         
                         <!-- AI Message with Code -->
-                        <div class="message ai-message">
-                            <div class="message-avatar">Z</div>
+                        <div class="message assistant">
+                            <div class="message-avatar">
+                                <div class="ai-avatar">
+                                    <img src="/avatars/jedi-master.png" alt="Jedi Master Zex" class="avatar-image">
+                                </div>
+                            </div>
                             <div class="message-content">
-                                <div class="message-sender">Zeta-7 <span class="ai-badge">AI</span></div>
+                                <div class="message-header">
+                                    <span class="message-sender">Jedi Master Zex</span>
+                                    <span class="message-time">09:21</span>
+                                </div>
                                 <div class="message-text">
                                     <p>Mixed precision training can reduce memory usage by up to 50% while potentially increasing training speed by 2-3x on hardware with tensor cores (like NVIDIA's Volta, Turing, and Ampere architectures).</p>
                                     
@@ -236,37 +306,134 @@ for epoch in range(num_epochs):
                                     
                                     <p>This implementation automatically handles the conversion between FP32 and FP16 where appropriate, and the gradient scaler helps prevent underflow in the gradients.</p>
                                 </div>
-                                <div class="message-time">Today at 09:21</div>
-                                <div class="message-actions">
-                                    <button class="action-button copy-button" title="Copy to clipboard">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-                                    </button>
-                                    <button class="action-button regenerate-button" title="Regenerate response">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"></path></svg>
-                                    </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Loading Message (when AI is typing) -->
+                        <div class="message assistant loading" style="display: none;">
+                            <div class="message-avatar">
+                                <div class="ai-avatar">
+                                    <img src="/avatars/jedi-master.png" alt="Jedi Master Zex" class="avatar-image">
+                                </div>
+                            </div>
+                            <div class="message-content">
+                                <div class="message-header">
+                                    <span class="message-sender">Jedi Master Zex</span>
+                                    <span class="message-time">09:22</span>
+                                </div>
+                                <div class="typing-indicator">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 
-                <!-- Chat Input Area -->
+                <!-- Chat Input -->
                 <div class="chat-input-container">
-                    <div class="chat-input-wrapper">
-                        <textarea class="chat-input" placeholder="Type your message here..." rows="1"></textarea>
-                        <div class="input-actions">
-                            <button class="action-button attach-button" title="Attach file">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"></path></svg>
-                            </button>
-                            <button class="send-button" disabled>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
-                                Send
-                            </button>
+                    <form class="chat-form">
+                        <div class="participants-chips">
+                            <div class="participant-chip">
+                                <img src="/avatars/jedi-master.png" alt="Jedi Master Zex" class="chip-avatar">
+                                <span class="chip-name">Jedi Master Zex</span>
+                            </div>
+                            <div class="participant-chip">
+                                <img src="/avatars/agent.png" alt="Agent PD-7" class="chip-avatar">
+                                <span class="chip-name">Agent PD-7</span>
+                                <button type="button" class="chip-remove" aria-label="Remove Agent PD-7">×</button>
+                            </div>
+                        </div>
+                        
+                        <div class="input-row">
+                            <textarea class="chat-input" placeholder="Message Jedi Master Zex..." rows="1"></textarea>
+                            
+                            <div class="input-actions">
+                                <button type="button" class="stop-button" style="display: none;">Stop</button>
+                                <button type="submit" class="send-button" disabled>Send</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Right Sidebar - Personas -->
+            <div class="sidebar personas-sidebar">
+                <div class="sidebar-header">
+                    <h2 class="sidebar-title">Personas</h2>
+                    <button class="sidebar-toggle" aria-label="Toggle personas sidebar">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                    </button>
+                </div>
+                
+                <div class="sidebar-search">
+                    <input type="text" class="search-input" placeholder="Search personas...">
+                </div>
+                
+                <div class="personas-list">
+                    <div class="persona-card" draggable="true">
+                        <div class="persona-avatar">
+                            <img src="/avatars/jedi-master.png" alt="Jedi Master Zex" class="avatar-image">
+                        </div>
+                        
+                        <div class="persona-info">
+                            <div class="persona-name">Jedi Master Zex</div>
+                            <div class="persona-role">Mentor</div>
+                            <div class="persona-response-time">
+                                <span class="response-label">Response:</span>
+                                <span class="response-value medium">Medium</span>
+                            </div>
+                        </div>
+                        
+                        <div class="persona-actions">
+                            <button class="add-persona-button">Add</button>
                         </div>
                     </div>
-                    <div class="chat-input-info">
-                        <span class="info-text">PDT AI may produce inaccurate information about people, places, or facts.</span>
+                    
+                    <div class="persona-card" draggable="true">
+                        <div class="persona-avatar">
+                            <img src="/avatars/agent.png" alt="Agent PD-7" class="avatar-image">
+                        </div>
+                        
+                        <div class="persona-info">
+                            <div class="persona-name">Agent PD-7</div>
+                            <div class="persona-role">Scout</div>
+                            <div class="persona-response-time">
+                                <span class="response-label">Response:</span>
+                                <span class="response-value fast">Fast</span>
+                            </div>
+                        </div>
+                        
+                        <div class="persona-actions">
+                            <button class="add-persona-button">Add</button>
+                        </div>
                     </div>
+                    
+                    <div class="persona-card" draggable="true">
+                        <div class="persona-avatar">
+                            <img src="/avatars/support.png" alt="Support Bot" class="avatar-image">
+                        </div>
+                        
+                        <div class="persona-info">
+                            <div class="persona-name">Support Bot</div>
+                            <div class="persona-role">Engineer</div>
+                            <div class="persona-response-time">
+                                <span class="response-label">Response:</span>
+                                <span class="response-value slow">Slow</span>
+                            </div>
+                        </div>
+                        
+                        <div class="persona-actions">
+                            <button class="add-persona-button">Add</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="sidebar-footer">
+                    <button class="create-persona-button">
+                        <span class="icon">+</span> Create Persona
+                    </button>
                 </div>
             </div>
         </div>
@@ -329,14 +496,58 @@ for epoch in range(num_epochs):
                     currentThemeSpan.textContent = 'Professional';
                 }
             }
+            
+            // Chat Rules Modal Functionality
+            const rulesButton = document.querySelector('.rules-button');
+            const chatRulesModal = document.querySelector('.chat-rules-modal');
+            const closeButton = document.querySelector('.close-button');
+            const applyButton = document.querySelector('.apply-button');
+            const ruleOptions = document.querySelectorAll('.rule-option');
+            const creativitySlider = document.querySelector('.creativity-slider');
+            
+            // Toggle rules modal
+            rulesButton.addEventListener('click', function() {
+                chatRulesModal.style.display = chatRulesModal.style.display === 'none' ? 'block' : 'none';
+            });
+            
+            // Close modal
+            closeButton.addEventListener('click', function() {
+                chatRulesModal.style.display = 'none';
+            });
+            
+            // Apply rules
+            applyButton.addEventListener('click', function() {
+                chatRulesModal.style.display = 'none';
+                // In a real app, this would apply the selected rules
+            });
+            
+            // Rule option selection
+            ruleOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Remove selected class from siblings
+                    const siblings = Array.from(this.parentNode.children);
+                    siblings.forEach(sibling => sibling.classList.remove('selected'));
+                    
+                    // Add selected class to clicked option
+                    this.classList.add('selected');
+                });
+            });
+            
+            // Creativity slider
+            creativitySlider.addEventListener('input', function() {
+                const value = this.value;
+                this.parentNode.querySelector('label').textContent = `Creativity: ${value}%`;
+            });
         });
 
         // Chat Input Functionality
         document.addEventListener('DOMContentLoaded', function() {
             const chatInput = document.querySelector('.chat-input');
             const sendButton = document.querySelector('.send-button');
-            const chatMessages = document.querySelector('.chat-messages');
-            const chatContent = document.querySelector('.chat-content');
+            const stopButton = document.querySelector('.stop-button');
+            const messagesScrollArea = document.querySelector('.messages-scroll-area');
+            const chatForm = document.querySelector('.chat-form');
+            const messagesContainer = document.querySelector('.messages-container');
             
             // Auto-resize textarea
             chatInput.addEventListener('input', function() {
@@ -351,9 +562,12 @@ for epoch in range(num_epochs):
                 }
             });
             
-            // Send message on button click
-            sendButton.addEventListener('click', function() {
-                sendMessage();
+            // Send message on form submit
+            chatForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                if (!sendButton.hasAttribute('disabled')) {
+                    sendMessage();
+                }
             });
             
             // Send message on Enter key (but allow Shift+Enter for new line)
@@ -366,268 +580,323 @@ for epoch in range(num_epochs):
                 }
             });
             
+            // Stop button functionality
+            stopButton.addEventListener('click', function() {
+                const loadingMessage = document.querySelector('.message.assistant.loading');
+                if (loadingMessage) {
+                    loadingMessage.style.display = 'none';
+                }
+                
+                stopButton.style.display = 'none';
+                sendButton.style.display = 'block';
+            });
+            
             // Function to send a message
             function sendMessage() {
                 const messageText = chatInput.value.trim();
                 if (messageText.length === 0) return;
                 
                 // Create user message element
-                const userMessage = createUserMessage(messageText);
-                chatMessages.appendChild(userMessage);
+                const userMessage = document.createElement('div');
+                userMessage.className = 'message user';
+                userMessage.innerHTML = `
+                    <div class="message-avatar">
+                        <div class="user-avatar">U</div>
+                    </div>
+                    <div class="message-content">
+                        <div class="message-header">
+                            <span class="message-sender">You</span>
+                            <span class="message-time">${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                        </div>
+                        <div class="message-text">
+                            ${messageText.replace(/\n/g, '<br>')}
+                        </div>
+                    </div>
+                `;
+                
+                // Add user message to chat
+                messagesScrollArea.appendChild(userMessage);
                 
                 // Clear input and reset height
                 chatInput.value = '';
                 chatInput.style.height = 'auto';
                 sendButton.setAttribute('disabled', true);
                 
+                // Show typing indicator
+                const loadingMessage = document.querySelector('.message.assistant.loading');
+                loadingMessage.style.display = 'flex';
+                
+                // Show stop button, hide send button
+                stopButton.style.display = 'block';
+                sendButton.style.display = 'none';
+                
                 // Scroll to bottom
                 scrollToBottom();
                 
-                // Show typing indicator
-                showTypingIndicator();
-                
                 // Simulate AI response after a delay
                 setTimeout(() => {
-                    // Remove typing indicator
-                    removeTypingIndicator();
+                    // Hide typing indicator
+                    loadingMessage.style.display = 'none';
+                    
+                    // Show send button, hide stop button
+                    stopButton.style.display = 'none';
+                    sendButton.style.display = 'block';
                     
                     // Create AI response
-                    const aiResponse = createAIResponse(messageText);
-                    chatMessages.appendChild(aiResponse);
+                    const aiResponse = document.createElement('div');
+                    aiResponse.className = 'message assistant';
+                    aiResponse.innerHTML = `
+                        <div class="message-avatar">
+                            <div class="ai-avatar">
+                                <img src="/avatars/jedi-master.png" alt="Jedi Master Zex" class="avatar-image">
+                            </div>
+                        </div>
+                        <div class="message-content">
+                            <div class="message-header">
+                                <span class="message-sender">Jedi Master Zex</span>
+                                <span class="message-time">${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                            </div>
+                            <div class="message-text">
+                                <p>I've analyzed your request and here are my thoughts:</p>
+                                <p>The approach you're describing could work, but there are some important considerations to keep in mind. The efficiency of the solution depends on several factors including the scale of data, processing requirements, and specific constraints of your environment.</p>
+                                <p>Would you like me to provide a more detailed analysis or suggest some alternative approaches?</p>
+                            </div>
+                        </div>
+                    `;
+                    
+                    // Add AI response to chat
+                    messagesScrollArea.appendChild(aiResponse);
                     
                     // Scroll to bottom again
                     scrollToBottom();
                     
-                    // Add event listeners to new message actions
-                    setupMessageActions();
-                }, 1500 + Math.random() * 1000);
-            }
-            
-            // Create a user message element
-            function createUserMessage(text) {
-                const now = new Date();
-                const timeString = `Today at ${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
-                
-                const messageDiv = document.createElement('div');
-                messageDiv.className = 'message user-message';
-                messageDiv.innerHTML = `
-                    <div class="message-avatar">U</div>
-                    <div class="message-content">
-                        <div class="message-sender">User</div>
-                        <div class="message-text">
-                            <p>${text.replace(/\n/g, '<br>')}</p>
-                        </div>
-                        <div class="message-time">${timeString}</div>
-                    </div>
-                `;
-                
-                return messageDiv;
-            }
-            
-            // Create an AI response element
-            function createAIResponse(userMessage) {
-                const now = new Date();
-                const timeString = `Today at ${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
-                
-                // Generate a response based on user message
-                let responseText = generateAIResponse(userMessage);
-                
-                const messageDiv = document.createElement('div');
-                messageDiv.className = 'message ai-message';
-                messageDiv.innerHTML = `
-                    <div class="message-avatar">Z</div>
-                    <div class="message-content">
-                        <div class="message-sender">Zeta-7 <span class="ai-badge">AI</span></div>
-                        <div class="message-text">
-                            ${responseText}
-                        </div>
-                        <div class="message-time">${timeString}</div>
-                        <div class="message-actions">
-                            <button class="action-button copy-button" title="Copy to clipboard">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-                            </button>
-                            <button class="action-button regenerate-button" title="Regenerate response">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"></path></svg>
-                            </button>
-                        </div>
-                    </div>
-                `;
-                
-                return messageDiv;
-            }
-            
-            // Generate a simple AI response based on user input
-            function generateAIResponse(userMessage) {
-                userMessage = userMessage.toLowerCase();
-                
-                if (userMessage.includes('hello') || userMessage.includes('hi') || userMessage.includes('hey')) {
-                    return '<p>Hello! How can I assist you with your mission today?</p>';
-                } else if (userMessage.includes('thank')) {
-                    return '<p>You\'re welcome! Is there anything else you need assistance with?</p>';
-                } else if (userMessage.includes('help')) {
-                    return '<p>I\'m here to help! Could you please provide more details about what you need assistance with?</p>';
-                } else if (userMessage.includes('neural') || userMessage.includes('network') || userMessage.includes('ai') || userMessage.includes('model')) {
-                    return `
-                        <p>Regarding your query about neural networks, here are some key points to consider:</p>
-                        <ul>
-                            <li>Modern neural architectures like transformers have shown remarkable capabilities in various domains</li>
-                            <li>Optimization techniques such as gradient accumulation and mixed precision training can significantly improve performance</li>
-                            <li>Data quality often matters more than model size for many practical applications</li>
-                        </ul>
-                        <p>Would you like me to elaborate on any specific aspect of neural network technology?</p>
-                    `;
-                } else if (userMessage.includes('code') || userMessage.includes('program') || userMessage.includes('script')) {
-                    return `
-                        <p>Here's a simple example that might help:</p>
-                        <pre><code class="language-python">import tensorflow as tf
-
-# Create a simple neural network
-model = tf.keras.Sequential([
-    tf.keras.layers.Dense(128, activation='relu', input_shape=(784,)),
-    tf.keras.layers.Dropout(0.2),
-    tf.keras.layers.Dense(10, activation='softmax')
-])
-
-# Compile the model
-model.compile(
-    optimizer='adam',
-    loss='sparse_categorical_crossentropy',
-    metrics=['accuracy']
-)
-
-# Train the model
-model.fit(x_train, y_train, epochs=5)
-</code></pre>
-                        <p>This creates a basic neural network with one hidden layer. You can customize it based on your specific requirements.</p>
-                    `;
-                } else {
-                    return `
-                        <p>I've analyzed your request and here are my thoughts:</p>
-                        <p>The approach you're describing could work, but there are some important considerations to keep in mind. The efficiency of the solution depends on several factors including the scale of data, processing requirements, and specific constraints of your environment.</p>
-                        <p>Would you like me to provide a more detailed analysis or suggest some alternative approaches?</p>
-                    `;
-                }
-            }
-            
-            // Show typing indicator
-            function showTypingIndicator() {
-                const typingIndicator = document.createElement('div');
-                typingIndicator.className = 'message ai-message typing-indicator';
-                typingIndicator.innerHTML = `
-                    <div class="message-avatar">Z</div>
-                    <div class="message-content">
-                        <div class="typing-dots">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </div>
-                    </div>
-                `;
-                
-                chatMessages.appendChild(typingIndicator);
-                scrollToBottom();
-            }
-            
-            // Remove typing indicator
-            function removeTypingIndicator() {
-                const typingIndicator = document.querySelector('.typing-indicator');
-                if (typingIndicator) {
-                    typingIndicator.remove();
-                }
+                    // Update token usage
+                    updateTokenUsage();
+                }, 2000);
             }
             
             // Scroll chat to bottom
             function scrollToBottom() {
-                chatContent.scrollTop = chatContent.scrollHeight;
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
             }
             
-            // Setup message action buttons
-            function setupMessageActions() {
-                // Copy buttons
-                document.querySelectorAll('.copy-button').forEach(button => {
-                    button.addEventListener('click', function() {
-                        const messageText = this.closest('.message-content').querySelector('.message-text').innerText;
-                        navigator.clipboard.writeText(messageText).then(() => {
-                            // Show copied feedback
-                            const originalTitle = this.getAttribute('title');
-                            this.setAttribute('title', 'Copied!');
-                            this.classList.add('copied');
-                            
-                            setTimeout(() => {
-                                this.setAttribute('title', originalTitle);
-                                this.classList.remove('copied');
-                            }, 2000);
-                        });
-                    });
-                });
+            // Update token usage
+            function updateTokenUsage() {
+                const tokenBarFill = document.querySelector('.token-bar-fill');
+                const tokenCount = document.querySelector('.token-count');
                 
-                // Regenerate buttons
-                document.querySelectorAll('.regenerate-button').forEach(button => {
-                    button.addEventListener('click', function() {
-                        const messageContent = this.closest('.message-content');
-                        const messageText = messageContent.querySelector('.message-text');
-                        
-                        // Show regenerating state
-                        const originalHTML = messageText.innerHTML;
-                        messageText.innerHTML = '<p>Regenerating response...</p>';
-                        
-                        // Simulate regeneration after a delay
-                        setTimeout(() => {
-                            const newResponse = generateAIResponse(
-                                document.querySelector('.user-message:last-of-type .message-text').innerText
-                            );
-                            messageText.innerHTML = newResponse;
-                        }, 1000);
-                    });
-                });
-            }
-            
-            // Initial setup of message actions
-            setupMessageActions();
-            
-            // Sidebar toggle functionality
-            const sidebarToggle = document.querySelector('.sidebar-toggle');
-            const sidebar = document.querySelector('.sidebar');
-            
-            sidebarToggle.addEventListener('click', function() {
-                sidebar.classList.toggle('collapsed');
+                // Get current width as percentage
+                const currentWidth = parseFloat(tokenBarFill.style.width);
+                // Add 10% for each message, max 100%
+                const newWidth = Math.min(currentWidth + 10, 100);
                 
-                // Update toggle icon
-                const toggleIcon = this.querySelector('svg');
-                if (sidebar.classList.contains('collapsed')) {
-                    toggleIcon.innerHTML = '<path d="m9 18 6-6-6-6"></path>';
+                // Update width
+                tokenBarFill.style.width = `${newWidth}%`;
+                
+                // Update color based on usage
+                if (newWidth < 50) {
+                    tokenBarFill.style.backgroundColor = 'var(--current-accent)';
+                } else if (newWidth < 80) {
+                    tokenBarFill.style.backgroundColor = 'orange';
                 } else {
-                    toggleIcon.innerHTML = '<path d="m19 12-7-7-7 7"></path><path d="m19 12-7 7-7-7"></path>';
+                    tokenBarFill.style.backgroundColor = 'red';
+                }
+                
+                // Update count text
+                const current = Math.round((newWidth / 100) * 250);
+                tokenCount.textContent = `${current} / 250`;
+            }
+            
+            // Initial scroll to bottom
+            scrollToBottom();
+        });
+
+        // Sidebar Toggle Functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const historySidebarToggle = document.querySelector('.history-sidebar .sidebar-toggle');
+            const historySidebar = document.querySelector('.history-sidebar');
+            const chatContainer = document.querySelector('.chat-container');
+            
+            const personasSidebarToggle = document.querySelector('.personas-sidebar .sidebar-toggle');
+            const personasSidebar = document.querySelector('.personas-sidebar');
+            
+            // Persistent toggle buttons
+            const historyPersistentToggle = document.querySelector('.persistent-toggle.history-toggle');
+            const personasPersistentToggle = document.querySelector('.persistent-toggle.personas-toggle');
+            
+            // Function to toggle history sidebar
+            function toggleHistorySidebar() {
+                historySidebar.classList.toggle('collapsed');
+                chatContainer.classList.toggle('history-collapsed');
+                
+                // Force a reflow to ensure the layout updates properly
+                window.dispatchEvent(new Event('resize'));
+            }
+            
+            // Function to toggle personas sidebar
+            function togglePersonasSidebar() {
+                personasSidebar.classList.toggle('collapsed');
+                chatContainer.classList.toggle('personas-collapsed');
+                
+                // Force a reflow to ensure the layout updates properly
+                window.dispatchEvent(new Event('resize'));
+            }
+            
+            // History sidebar toggle events
+            historySidebarToggle.addEventListener('click', toggleHistorySidebar);
+            historyPersistentToggle.addEventListener('click', toggleHistorySidebar);
+            
+            // Personas sidebar toggle events
+            personasSidebarToggle.addEventListener('click', togglePersonasSidebar);
+            personasPersistentToggle.addEventListener('click', togglePersonasSidebar);
+            
+            // Initial scroll to bottom of messages
+            const messagesContainer = document.querySelector('.messages-container');
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        });
+
+        // Drag and Drop Functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const personaCards = document.querySelectorAll('.persona-card');
+            const dropTarget = document.getElementById('drop-target');
+            const participantsChips = document.querySelector('.participants-chips');
+            
+            // Drag start
+            personaCards.forEach(card => {
+                card.addEventListener('dragstart', function(e) {
+                    e.dataTransfer.setData('text/plain', this.querySelector('.persona-name').textContent);
+                    this.classList.add('dragging');
+                });
+                
+                card.addEventListener('dragend', function() {
+                    this.classList.remove('dragging');
+                });
+                
+                // Add button click
+                const addButton = card.querySelector('.add-persona-button');
+                addButton.addEventListener('click', function() {
+                    const personaName = card.querySelector('.persona-name').textContent;
+                    const personaAvatar = card.querySelector('.avatar-image').src;
+                    addPersonaToChat(personaName, personaAvatar);
+                });
+            });
+            
+            // Drop target events
+            dropTarget.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                this.classList.add('drop-active');
+            });
+            
+            dropTarget.addEventListener('dragleave', function() {
+                this.classList.remove('drop-active');
+            });
+            
+            dropTarget.addEventListener('drop', function(e) {
+                e.preventDefault();
+                this.classList.remove('drop-active');
+                
+                const personaName = e.dataTransfer.getData('text/plain');
+                const personaCard = Array.from(personaCards).find(card => 
+                    card.querySelector('.persona-name').textContent === personaName
+                );
+                
+                if (personaCard) {
+                    const personaAvatar = personaCard.querySelector('.avatar-image').src;
+                    addPersonaToChat(personaName, personaAvatar);
                 }
             });
             
-            // Chat list item selection
-            const chatItems = document.querySelectorAll('.chat-item');
-            
-            chatItems.forEach(item => {
-                item.addEventListener('click', function() {
-                    // Remove active class from all items
-                    chatItems.forEach(i => i.classList.remove('active'));
+            // Function to add persona to chat
+            function addPersonaToChat(personaName, personaAvatar) {
+                // Check if persona is already in chat
+                const existingChips = Array.from(participantsChips.children);
+                const alreadyExists = existingChips.some(chip => 
+                    chip.querySelector('.chip-name').textContent === personaName
+                );
+                
+                if (alreadyExists) {
+                    alert(`${personaName} is already in the chat`);
+                    return;
+                }
+                
+                // Create new chip
+                const newChip = document.createElement('div');
+                newChip.className = 'participant-chip';
+                newChip.innerHTML = `
+                    <img src="${personaAvatar}" alt="${personaName}" class="chip-avatar">
+                    <span class="chip-name">${personaName}</span>
+                    <button type="button" class="chip-remove" aria-label="Remove ${personaName}">×</button>
+                `;
+                
+                // Add chip to participants
+                participantsChips.appendChild(newChip);
+                
+                // Add system message
+                const systemMessage = document.createElement('div');
+                systemMessage.className = 'message system';
+                systemMessage.innerHTML = `
+                    <div class="system-message">
+                        ${personaName} has joined the chat.
+                    </div>
+                `;
+                
+                // Add system message to chat
+                const messagesScrollArea = document.querySelector('.messages-scroll-area');
+                messagesScrollArea.appendChild(systemMessage);
+                
+                // Scroll to bottom
+                const messagesContainer = document.querySelector('.messages-container');
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                
+                // Add remove functionality to new chip
+                const removeButton = newChip.querySelector('.chip-remove');
+                removeButton.addEventListener('click', function() {
+                    // Remove chip
+                    newChip.remove();
                     
-                    // Add active class to clicked item
-                    this.classList.add('active');
-                    
-                    // Update chat title
-                    const chatTitle = document.querySelector('.chat-title');
-                    chatTitle.textContent = this.querySelector('.chat-item-title').textContent;
-                    
-                    // In a real app, this would load the selected chat history
-                    // For this demo, we'll just clear the chat and add a system message
-                    chatMessages.innerHTML = `
-                        <div class="message system-message">
-                            <div class="message-content">
-                                <div class="message-text">
-                                    <p>Switched to ${this.querySelector('.chat-item-title').textContent}</p>
-                                </div>
-                                <div class="message-time">Today at ${new Date().getHours().toString().padStart(2, '0')}:${new Date().getMinutes().toString().padStart(2, '0')}</div>
-                            </div>
+                    // Add system message for removal
+                    const removeMessage = document.createElement('div');
+                    removeMessage.className = 'message system';
+                    removeMessage.innerHTML = `
+                        <div class="system-message">
+                            ${personaName} has left the chat.
                         </div>
                     `;
+                    
+                    // Add system message to chat
+                    messagesScrollArea.appendChild(removeMessage);
+                    
+                    // Scroll to bottom
+                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                });
+            }
+            
+            // Add remove functionality to existing chips
+            const removeButtons = document.querySelectorAll('.chip-remove');
+            removeButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const chip = this.closest('.participant-chip');
+                    const personaName = chip.querySelector('.chip-name').textContent;
+                    
+                    // Remove chip
+                    chip.remove();
+                    
+                    // Add system message for removal
+                    const removeMessage = document.createElement('div');
+                    removeMessage.className = 'message system';
+                    removeMessage.innerHTML = `
+                        <div class="system-message">
+                            ${personaName} has left the chat.
+                        </div>
+                    `;
+                    
+                    // Add system message to chat
+                    const messagesScrollArea = document.querySelector('.messages-scroll-area');
+                    messagesScrollArea.appendChild(removeMessage);
+                    
+                    // Scroll to bottom
+                    const messagesContainer = document.querySelector('.messages-container');
+                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
                 });
             });
         });

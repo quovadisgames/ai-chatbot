@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KOTOR Theme Preview - PDT AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* KOTOR/Star Wars Inspired Theme */
+        :root {
+            --terminal-bg: #1A2526;
+            --terminal-dark: #0F1419;
+            --terminal-accent: #00BFFF;
+            --terminal-warning: #FF4500;
+            --terminal-success: #32CD32;
+            --terminal-text: #FFFFFF;
+            --terminal-text-secondary: rgba(255, 255, 255, 0.7);
+            --terminal-border: rgba(0, 191, 255, 0.5);
+            --terminal-glow: rgba(0, 191, 255, 0.3);
+            --font-exo2: 'Exo 2', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--terminal-bg);
+            color: var(--terminal-text);
+            font-family: var(--font-exo2);
+            min-height: 100vh;
+        }
+
+        /* Base Styles */
+        .kotor-theme {
+            background-color: var(--terminal-bg);
+            color: var(--terminal-text);
+            font-family: var(--font-exo2);
+        }
+
+        /* Background with Grid Overlay */
+        .terminal-background {
+            background-color: var(--terminal-bg);
+            position: relative;
+            overflow: hidden;
+            min-height: 100vh;
+        }
+
+        .terminal-background::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(90deg, rgba(15, 20, 25, 0.3) 1px, transparent 1px) 0 0 / 20px 20px,
+                linear-gradient(0deg, rgba(15, 20, 25, 0.3) 1px, transparent 1px) 0 0 / 20px 20px;
+            z-index: 0;
+            opacity: 0.4;
+        }
+
+        /* Container Styles */
+        .holoscreen-container {
+            background: rgba(15, 20, 25, 0.8);
+            border: 1px solid var(--terminal-border);
+            box-shadow: 0 0 15px var(--terminal-glow);
+            position: relative;
+            z-index: 1;
+            animation: flicker 2s ease-in-out 1;
+            border-radius: 5px;
+            margin: 20px;
+            overflow: hidden;
+        }
+
+        /* Header and Footer */
+        .terminal-header {
+            background-color: var(--terminal-dark);
+            border-bottom: 1px solid var(--terminal-accent);
+            position: relative;
+            padding: 15px 20px;
+            text-align: center;
+        }
+
+        .terminal-footer {
+            background-color: var(--terminal-dark);
+            border-top: 1px solid rgba(0, 191, 255, 0.3);
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--terminal-accent);
+        }
+
+        /* Scanline Effect */
+        .scanline {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                0deg,
+                rgba(0, 191, 255, 0.03) 1px,
+                transparent 1px
+            );
+            background-size: 100% 2px;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        /* Text Styles */
+        .text-glow {
+            text-shadow: 0 0 5px rgba(0, 191, 255, 0.7);
+        }
+
+        .text-glow-sm {
+            text-shadow: 0 0 3px rgba(0, 191, 255, 0.5);
+        }
+
+        h1, h2, h3, h4 {
+            color: var(--terminal-text);
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: 24px;
+            text-shadow: 0 0 8px rgba(0, 191, 255, 0.7);
+        }
+
+        h2 {
+            font-size: 20px;
+            text-shadow: 0 0 6px rgba(0, 191, 255, 0.7);
+        }
+
+        h3 {
+            font-size: 18px;
+            text-shadow: 0 0 5px rgba(0, 191, 255, 0.7);
+        }
+
+        p {
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        /* Button Styles */
+        .holographic-button {
+            background: rgba(0, 191, 255, 0.2);
+            color: #FFFFFF;
+            border: 1px solid #00BFFF;
+            padding: 12px 15px;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            text-shadow: 0 0 3px rgba(0, 191, 255, 0.5);
+            margin: 5px;
+            min-width: 150px;
+        }
+
+        .holographic-button:hover {
+            background: rgba(0, 191, 255, 0.4);
+            box-shadow: 0 0 15px rgba(0, 191, 255, 0.5);
+        }
+
+        .holographic-button:active {
+            background: #00BFFF;
+            color: #0F1419;
+        }
+
+        .holographic-button::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(0, 191, 255, 0.2),
+                transparent
+            );
+            animation: pulse 2s infinite;
+        }
+
+        .holographic-button:hover::before {
+            animation: pulse 1s infinite;
+        }
+
+        .holographic-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Number Badge */
+        .response-number {
+            display: inline-block;
+            background: rgba(0, 191, 255, 0.3);
+            color: #FFFFFF;
+            width: 20px;
+            height: 20px;
+            line-height: 20px;
+            text-align: center;
+            border-radius: 50%;
+            margin-right: 8px;
+            font-size: 12px;
+        }
+
+        /* Status Indicator */
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #00BFFF;
+            margin-right: 8px;
+            animation: blink 2s infinite;
+            display: inline-block;
+        }
+
+        .status-dot.warning {
+            background-color: var(--terminal-warning);
+        }
+
+        .status-dot.success {
+            background-color: var(--terminal-success);
+        }
+
+        /* Form Elements */
+        .kotor-input {
+            background: rgba(15, 20, 25, 0.6);
+            border: 1px solid rgba(0, 191, 255, 0.3);
+            color: white;
+            transition: all 0.3s ease;
+            border-radius: 4px;
+            padding: 10px 12px;
+            width: 100%;
+            margin-bottom: 15px;
+            font-family: var(--font-exo2);
+        }
+
+        .kotor-input:focus {
+            border-color: rgba(0, 191, 255, 0.8);
+            box-shadow: 0 0 8px rgba(0, 191, 255, 0.4);
+            outline: none;
+        }
+
+        .kotor-input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        /* Chat Message Styles */
+        .chat-container {
+            padding: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            padding: 10px 15px;
+            border-radius: 5px;
+            max-width: 80%;
+            position: relative;
+        }
+
+        .ai-message {
+            background-color: rgba(0, 191, 255, 0.1);
+            border-left: 3px solid #00BFFF;
+            align-self: flex-start;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .user-message {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-left: 3px solid rgba(255, 255, 255, 0.5);
+            align-self: flex-end;
+            margin-left: auto;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .message-sender {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .ai-message .message-sender {
+            color: #00BFFF;
+        }
+
+        .user-message .message-sender {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .message-content {
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .timestamp {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 5px;
+            text-align: right;
+        }
+
+        /* Card Styles */
+        .kotor-card {
+            background: rgba(15, 20, 25, 0.8);
+            border: 1px solid var(--terminal-border);
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .kotor-card-header {
+            background-color: var(--terminal-dark);
+            border-bottom: 1px solid var(--terminal-border);
+            padding: 12px 16px;
+        }
+
+        .kotor-card-body {
+            padding: 16px;
+        }
+
+        .kotor-card-footer {
+            background-color: var(--terminal-dark);
+            border-top: 1px solid rgba(0, 191, 255, 0.3);
+            padding: 12px 16px;
+        }
+
+        /* Layout */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        .flex-col {
+            flex-direction: column;
+        }
+
+        .items-center {
+            align-items: center;
+        }
+
+        .justify-between {
+            justify-content: space-between;
+        }
+
+        .gap-4 {
+            gap: 16px;
+        }
+
+        .mt-4 {
+            margin-top: 16px;
+        }
+
+        .mb-4 {
+            margin-bottom: 16px;
+        }
+
+        /* Token Display */
+        .token-display {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            margin-bottom: 16px;
+        }
+
+        .token-bar {
+            height: 8px;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .token-progress {
+            height: 100%;
+            background-color: var(--terminal-accent);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .token-progress.warning {
+            background-color: var(--terminal-warning);
+        }
+
+        .token-progress.success {
+            background-color: var(--terminal-success);
+        }
+
+        .token-text {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+        }
+
+        /* Mission Log */
+        .mission-log {
+            width: 300px;
+            background-color: var(--terminal-dark);
+            border-right: 1px solid var(--terminal-border);
+            padding: 20px;
+        }
+
+        .mission-entry {
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .mission-status {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+
+        .status-active {
+            background-color: rgba(0, 191, 255, 0.2);
+            color: #00BFFF;
+            border: 1px solid rgba(0, 191, 255, 0.5);
+        }
+
+        .status-pending {
+            background-color: rgba(255, 69, 0, 0.2);
+            color: #FF4500;
+            border: 1px solid rgba(255, 69, 0, 0.5);
+        }
+
+        .status-complete {
+            background-color: rgba(50, 205, 50, 0.2);
+            color: #32CD32;
+            border: 1px solid rgba(50, 205, 50, 0.5);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes flicker {
+            0% { opacity: 0.7; }
+            5% { opacity: 0.9; }
+            10% { opacity: 0.7; }
+            15% { opacity: 0.9; }
+            20% { opacity: 1; }
+            100% { opacity: 1; }
+        }
+
+        @keyframes pulse {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        @keyframes blink {
+            0% { opacity: 0.4; }
+            50% { opacity: 1; }
+            100% { opacity: 0.4; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .flex {
+                flex-direction: column;
+            }
+
+            .mission-log {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid var(--terminal-border);
+            }
+        }
+    </style>
+</head>
+<body class="kotor-theme">
+    <div class="terminal-background">
+        <div class="container">
+            <header class="terminal-header">
+                <h1 class="text-glow">PDT AI - GALACTIC INTELLIGENCE TERMINAL</h1>
+                <div class="scanline"></div>
+            </header>
+
+            <div class="section">
+                <h2 class="text-glow">Theme Components Preview</h2>
+                <p>This standalone HTML file demonstrates all the elements of the KOTOR-inspired theme for PDT AI.</p>
+            </div>
+
+            <div class="flex gap-4">
+                <!-- Mission Log -->
+                <div class="mission-log">
+                    <h3 class="text-glow">Mission Log</h3>
+                    
+                    <div class="mission-entry">
+                        <h4>Primary Objective</h4>
+                        <p>Gather intelligence on Sith movements in the Outer Rim territories.</p>
+                        <span class="mission-status status-active">In Progress</span>
+                    </div>
+                    
+                    <div class="mission-entry">
+                        <h4>Secondary Objective</h4>
+                        <p>Analyze intercepted Imperial communications for encryption patterns.</p>
+                        <span class="mission-status status-pending">Awaiting Data</span>
+                    </div>
+                    
+                    <div class="mission-entry">
+                        <h4>Completed Task</h4>
+                        <p>Established secure connection with Republic Intelligence network.</p>
+                        <span class="mission-status status-complete">Complete</span>
+                    </div>
+                    
+                    <div class="mission-entry">
+                        <h4>System Status</h4>
+                        <p>Neural interface operating at optimal capacity. Quantum encryption active.</p>
+                    </div>
+                </div>
+
+                <!-- Main Content -->
+                <div class="flex-col" style="flex: 1;">
+                    <!-- Chat Interface -->
+                    <div class="holoscreen-container mb-4">
+                        <div class="terminal-header">
+                            <h3 class="text-glow">COMMUNICATION INTERFACE</h3>
+                            <div class="scanline"></div>
+                        </div>
+                        
+                        <div class="chat-container">
+                            <div class="message ai-message">
+                                <div class="message-sender">AI ASSISTANT</div>
+                                <div class="message-content">Greetings, Commander. I am T-7, your strategic intelligence assistant. How may I assist with your mission today?</div>
+                                <div class="timestamp">14:30:05 GST</div>
+                            </div>
+
+                            <div class="message user-message">
+                                <div class="message-sender">COMMANDER</div>
+                                <div class="message-content">T-7, I need a status update on our reconnaissance efforts in the Outer Rim.</div>
+                                <div class="timestamp">14:31:22 GST</div>
+                            </div>
+
+                            <div class="message ai-message">
+                                <div class="message-sender">AI ASSISTANT</div>
+                                <div class="message-content">Accessing galactic database... Our scouts report increased Imperial activity near the Taris system. Three Star Destroyers have been detected moving in formation toward the sector. Analysis suggests they may be establishing a new outpost.</div>
+                                <div class="timestamp">14:31:45 GST</div>
+                            </div>
+                        </div>
+                        
+                        <div class="terminal-footer">
+                            <div class="flex items-center">
+                                <div class="status-dot"></div>
+                                <span>Secure Channel</span>
+                            </div>
+                            <div>Encryption: ACTIVE</div>
+                        </div>
+                    </div>
+
+                    <!-- UI Components -->
+                    <div class="holoscreen-container">
+                        <div class="terminal-header">
+                            <h3 class="text-glow">UI COMPONENTS</h3>
+                            <div class="scanline"></div>
+                        </div>
+                        
+                        <div class="kotor-card-body">
+                            <!-- Buttons -->
+                            <h3 class="text-glow">Holographic Buttons</h3>
+                            <div class="flex mb-4">
+                                <button class="holographic-button">
+                                    <span class="response-number">1</span>Standard Button
+                                </button>
+                                <button class="holographic-button">
+                                    <span class="response-number">2</span>Action Button
+                                </button>
+                                <button class="holographic-button" disabled>
+                                    <span class="response-number">3</span>Disabled Button
+                                </button>
+                            </div>
+                            
+                            <!-- Form Elements -->
+                            <h3 class="text-glow">Form Elements</h3>
+                            <div class="mb-4">
+                                <input type="text" class="kotor-input" placeholder="Enter command...">
+                                <input type="password" class="kotor-input" placeholder="Security code...">
+                            </div>
+                            
+                            <!-- Status Indicators -->
+                            <h3 class="text-glow">Status Indicators</h3>
+                            <div class="flex mb-4">
+                                <div style="margin-right: 20px;">
+                                    <div class="status-dot"></div> Active
+                                </div>
+                                <div style="margin-right: 20px;">
+                                    <div class="status-dot warning"></div> Warning
+                                </div>
+                                <div>
+                                    <div class="status-dot success"></div> Success
+                                </div>
+                            </div>
+                            
+                            <!-- Token/Mana Display -->
+                            <h3 class="text-glow">Mana Display</h3>
+                            <div class="token-display mb-4">
+                                <div class="token-text">
+                                    <span class="text-glow-sm">Mana: 75/100</span>
+                                    <span>75%</span>
+                                </div>
+                                <div class="token-bar">
+                                    <div class="token-progress" style="width: 75%;"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="token-display mb-4">
+                                <div class="token-text">
+                                    <span class="text-glow-sm">Mana: 180/250</span>
+                                    <span>72%</span>
+                                </div>
+                                <div class="token-bar">
+                                    <div class="token-progress warning" style="width: 72%;"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="token-display mb-4">
+                                <div class="token-text">
+                                    <span class="text-glow-sm">Mana: 50/500</span>
+                                    <span>10%</span>
+                                </div>
+                                <div class="token-bar">
+                                    <div class="token-progress success" style="width: 10%;"></div>
+                                </div>
+                            </div>
+                            
+                            <!-- Cards -->
+                            <h3 class="text-glow">Cards</h3>
+                            <div class="kotor-card mb-4">
+                                <div class="kotor-card-header">
+                                    <h4 class="text-glow-sm">Intelligence Report</h4>
+                                </div>
+                                <div class="kotor-card-body">
+                                    <p>Intercepted communications indicate a high-level Imperial meeting scheduled for next week. Potential opportunity for intelligence gathering.</p>
+                                </div>
+                                <div class="kotor-card-footer">
+                                    <div class="flex justify-between">
+                                        <span>Priority: High</span>
+                                        <span>Source: Reliable</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="terminal-footer">
+                            <div class="flex items-center">
+                                <div class="status-dot"></div>
+                                <span>System Online</span>
+                            </div>
+                            <div>Theme: KOTOR</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Login Form Example -->
+            <div class="section mt-4">
+                <div class="holoscreen-container" style="max-width: 400px; margin: 0 auto;">
+                    <div class="terminal-header">
+                        <h3 class="text-glow">SECURE ACCESS TERMINAL</h3>
+                        <div class="scanline"></div>
+                    </div>
+                    
+                    <div class="kotor-card-body">
+                        <div style="text-align: center; margin-bottom: 20px;">
+                            <h3 class="text-glow">Authentication Required</h3>
+                            <p style="color: #00BFFF;">Enter your credentials to access the system</p>
+                        </div>
+                        
+                        <form>
+                            <input type="email" class="kotor-input" placeholder="Email address">
+                            <input type="password" class="kotor-input" placeholder="Password">
+                            <button class="holographic-button" style="width: 100%;">
+                                <span class="response-number">→</span>Authenticate
+                            </button>
+                        </form>
+                        
+                        <p style="text-align: center; margin-top: 16px; font-size: 14px; color: #00BFFF;">
+                            No access credentials? <a href="#" style="color: #00BFFF; text-decoration: none; font-weight: bold; text-shadow: 0 0 3px rgba(0, 191, 255, 0.5);">Request Authorization</a> now.
+                        </p>
+                    </div>
+                    
+                    <div class="terminal-footer">
+                        <div class="flex items-center">
+                            <div class="status-dot"></div>
+                            <span>Secure Connection</span>
+                        </div>
+                        <div>Encryption: ACTIVE</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

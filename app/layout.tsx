@@ -2,21 +2,30 @@ import type { Metadata } from 'next';
 import { Toaster } from 'sonner';
 
 import { ThemeProvider } from '@/components/theme-provider';
+import { Exo_2 } from 'next/font/google';
 
 import './globals.css';
+import '@/styles/kotor-theme.css';
+
+// Initialize the Exo 2 font
+const exo2 = Exo_2({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-exo2',
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://chat.vercel.ai'),
-  title: 'Next.js Chatbot Template',
-  description: 'Next.js chatbot template using the AI SDK.',
+  title: 'PDT AI - Galactic Intelligence Terminal',
+  description: 'Advanced AI assistant with KOTOR-inspired interface.',
 };
 
 export const viewport = {
   maximumScale: 1, // Disable auto-zoom on mobile Safari
 };
 
-const LIGHT_THEME_COLOR = 'hsl(0 0% 100%)';
-const DARK_THEME_COLOR = 'hsl(240deg 10% 3.92%)';
+const LIGHT_THEME_COLOR = '#1A2526'; // KOTOR theme background
+const DARK_THEME_COLOR = '#0F1419'; // KOTOR theme dark background
 const THEME_COLOR_SCRIPT = `\
 (function() {
   var html = document.documentElement;
@@ -48,6 +57,7 @@ export default async function RootLayout({
       // prop is necessary to avoid the React hydration mismatch warning.
       // https://github.com/pacocoursey/next-themes?tab=readme-ov-file#with-app
       suppressHydrationWarning
+      className={exo2.variable}
     >
       <head>
         <script
@@ -56,10 +66,10 @@ export default async function RootLayout({
           }}
         />
       </head>
-      <body className="antialiased">
+      <body className="antialiased kotor-theme">
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
+          defaultTheme="dark"
           enableSystem
           disableTransitionOnChange
         >

@@ -1,44 +1,73 @@
 'use client';
 
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import { toast } from 'sonner';
-
+import { useState } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { signIn } from 'next-auth/react';
 import { AuthForm } from '@/components/auth-form';
-import { CustomSubmitButton } from '@/components/custom-submit-button';
 
-import { login, type LoginActionState } from '../actions';
+// Import the Exo 2 font
+import { Exo_2 } from 'next/font/google';
+
+// Import the KOTOR theme styles
+import '@/styles/kotor-theme.css';
+
+// Initialize the font
+const exo2 = Exo_2({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-exo2',
+});
+
+// Custom submit button with sci-fi styling
+function CustomSubmitButton({
+  children,
+  isLoading,
+  isSuccessful,
+}: {
+  children: React.ReactNode;
+  isLoading: boolean;
+  isSuccessful: boolean;
+}) {
+  return (
+    <button
+      className={`holographic-button w-full relative overflow-hidden ${
+        isSuccessful ? 'bg-green-500' : ''
+      }`}
+      disabled={isLoading}
+    >
+      <span className="response-number">→</span>
+      {children}
+    </button>
+  );
+}
 
 export default function Page() {
-  const router = useRouter();
-
-  const [email, setEmail] = useState('');
-  const [isSuccessful, setIsSuccessful] = useState(false);
-  const [state, setState] = useState<LoginActionState>({ status: 'idle' });
   const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    if (state.status === 'failed') {
-      toast.error('Invalid credentials!');
-    } else if (state.status === 'invalid_data') {
-      toast.error('Failed validating your submission!');
-    } else if (state.status === 'success') {
-      setIsSuccessful(true);
-      router.refresh();
-    }
-  }, [state.status, router]);
+  const [isSuccessful, setIsSuccessful] = useState(false);
+  const searchParams = useSearchParams();
+  const emailParam = searchParams?.get('email');
+  const email = emailParam || undefined; // Convert null to undefined
 
   const handleSubmit = async (formData: FormData) => {
-    setEmail(formData.get('email') as string);
     setIsLoading(true);
-    setState({ status: 'in_progress' });
-    
+    setIsSuccessful(false);
+
     try {
-      const result = await login({ status: 'idle' }, formData);
-      setState(result);
+      const res = await signIn('credentials', {
+        redirect: false,
+        email: formData.get('email'),
+        password: formData.get('password'),
+        callbackUrl: '/',
+      });
+
+      if (!res?.error) {
+        setIsSuccessful(true);
+        window.location.href = '/';
+      } else {
+        console.error('Login failed:', res.error);
+      }
     } catch (error) {
-      setState({ status: 'failed' });
       console.error('Login error:', error);
     } finally {
       setIsLoading(false);
@@ -46,29 +75,45 @@ export default function Page() {
   };
 
   return (
-    <div className="flex h-dvh w-screen items-start pt-12 md:pt-0 md:items-center justify-center bg-blue-200 dark:bg-blue-950">
-      <div className="w-full max-w-md overflow-hidden rounded-2xl flex flex-col gap-12">
-        <div className="flex flex-col items-center justify-center gap-2 px-4 text-center sm:px-16">
-          <h3 className="text-xl font-semibold dark:text-zinc-50">Sign In</h3>
-          <p className="text-sm text-gray-500 dark:text-zinc-400">
-            Use your email and password to sign in
-          </p>
+    <div className={`${exo2.variable} kotor-theme`}>
+      <div className="terminal-background flex h-dvh w-screen items-center justify-center">
+        <div className="holoscreen-container w-full max-w-md overflow-hidden rounded-lg flex flex-col gap-8">
+          <div className="terminal-header py-4 px-6 text-center">
+            <h3 className="text-xl font-semibold text-white text-glow">SECURE ACCESS TERMINAL</h3>
+            <div className="scanline"></div>
+          </div>
+          
+          <div className="flex flex-col items-center justify-center gap-2 px-4 text-center sm:px-16">
+            <h3 className="text-xl font-semibold text-white text-glow">Authentication Required</h3>
+            <p className="text-sm text-blue-300">
+              Enter your credentials to access the system
+            </p>
+          </div>
+          
+          <AuthForm action={handleSubmit} defaultEmail={email}>
+            <CustomSubmitButton isSuccessful={isSuccessful} isLoading={isLoading}>
+              {isLoading ? 'Authenticating...' : 'Authenticate'}
+            </CustomSubmitButton>
+            <p className="text-center text-sm text-blue-300 mt-4">
+              {"No access credentials? "}
+              <Link
+                href="/register"
+                className="font-semibold text-blue-400 hover:text-blue-300 text-glow-sm hover:underline transition-colors"
+              >
+                Request Authorization
+              </Link>
+              {' now.'}
+            </p>
+          </AuthForm>
+          
+          <div className="terminal-footer py-2 px-4 text-xs text-blue-400 flex justify-between">
+            <div className="flex items-center">
+              <div className="status-dot"></div>
+              <span>Secure Connection</span>
+            </div>
+            <div>Encryption: ACTIVE</div>
+          </div>
         </div>
-        <AuthForm action={handleSubmit} defaultEmail={email}>
-          <CustomSubmitButton isSuccessful={isSuccessful} isLoading={isLoading}>
-            {isLoading ? 'Signing in...' : 'Sign in'}
-          </CustomSubmitButton>
-          <p className="text-center text-sm text-gray-600 mt-4 dark:text-zinc-400">
-            {"Don't have an account? "}
-            <Link
-              href="/register"
-              className="font-semibold text-gray-800 hover:underline dark:text-zinc-200"
-            >
-              Sign up
-            </Link>
-            {' for free.'}
-          </p>
-        </AuthForm>
       </div>
     </div>
   );

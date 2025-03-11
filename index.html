@@ -1,0 +1,1368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Star Wars RPG UI Theme Preview</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ===== SHARED VARIABLES ===== */
+        :root {
+            /* KOTOR Theme Variables */
+            --kotor-bg: #1A2526;
+            --kotor-dark: #0F1419;
+            --kotor-accent: #00BFFF;
+            --kotor-warning: #FF4500;
+            --kotor-success: #32CD32;
+            --kotor-text: #FFFFFF;
+            --kotor-text-secondary: rgba(255, 255, 255, 0.7);
+            --kotor-border: rgba(0, 191, 255, 0.5);
+            --kotor-glow: rgba(0, 191, 255, 0.3);
+            --kotor-font: 'Exo 2', monospace;
+            
+            /* Jedi Survivor Theme Variables - Updated */
+            --jedi-bg: #000000;
+            --jedi-dark: #0D0D0D;
+            --jedi-accent: #FFFFFF;
+            --jedi-secondary: #8A8D93;
+            --jedi-highlight: #A7C7E7;
+            --jedi-warning: #FF4500;
+            --jedi-success: #32CD32;
+            --jedi-text: #FFFFFF;
+            --jedi-text-secondary: #8A8D93;
+            --jedi-border: rgba(255, 255, 255, 0.15);
+            --jedi-glow: rgba(167, 199, 231, 0.3);
+            --jedi-font: 'Rajdhani', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* ===== THEME BASE STYLES ===== */
+        
+        /* KOTOR Theme */
+        body.kotor-theme {
+            --theme-bg: var(--kotor-bg);
+            --theme-dark: var(--kotor-dark);
+            --theme-accent: var(--kotor-accent);
+            --theme-warning: var(--kotor-warning);
+            --theme-success: var(--kotor-success);
+            --theme-text: var(--kotor-text);
+            --theme-text-secondary: var(--kotor-text-secondary);
+            --theme-border: var(--kotor-border);
+            --theme-glow: var(--kotor-glow);
+            --theme-font: var(--kotor-font);
+            
+            background-color: var(--theme-bg);
+            color: var(--theme-text);
+            font-family: var(--theme-font);
+        }
+        
+        /* Jedi Survivor Theme - Updated */
+        body.jedi-survivor-theme {
+            --theme-bg: var(--jedi-bg);
+            --theme-dark: var(--jedi-dark);
+            --theme-accent: var(--jedi-accent);
+            --theme-secondary: var(--jedi-secondary);
+            --theme-highlight: var(--jedi-highlight);
+            --theme-warning: var(--jedi-warning);
+            --theme-success: var(--jedi-success);
+            --theme-text: var(--jedi-text);
+            --theme-text-secondary: var(--jedi-text-secondary);
+            --theme-border: var(--jedi-border);
+            --theme-glow: var(--jedi-glow);
+            --theme-font: var(--jedi-font);
+            
+            background-color: var(--theme-bg);
+            color: var(--theme-text);
+            font-family: var(--theme-font);
+            background-image: none;
+        }
+
+        /* ===== SHARED STYLES WITH THEME VARIATIONS ===== */
+        
+        /* Background with Grid Overlay */
+        .terminal-background {
+            background-color: var(--theme-bg);
+            position: relative;
+            overflow: hidden;
+            min-height: 100vh;
+        }
+
+        /* Grid overlay for KOTOR theme */
+        .kotor-theme .terminal-background::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(90deg, rgba(15, 20, 25, 0.3) 1px, transparent 1px) 0 0 / 20px 20px,
+                linear-gradient(0deg, rgba(15, 20, 25, 0.3) 1px, transparent 1px) 0 0 / 20px 20px;
+            z-index: 0;
+            opacity: 0.4;
+        }
+        
+        /* Grid overlay for Jedi Survivor theme - Updated */
+        .jedi-survivor-theme .terminal-background::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px) 0 0 / 25px 25px,
+                linear-gradient(0deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px) 0 0 / 25px 25px;
+            z-index: 0;
+            opacity: 0.3;
+        }
+
+        /* Particle Background for Jedi Survivor - Updated */
+        .jedi-survivor-theme .terminal-background::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.2;
+            background: linear-gradient(90deg, transparent, rgba(167, 199, 231, 0.3), transparent);
+            animation: ambientLight 12s infinite linear;
+        }
+        
+        /* Particle Background for KOTOR */
+        .kotor-theme .terminal-background::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.2;
+            background: linear-gradient(90deg, transparent, rgba(0, 191, 255, 0.3), transparent);
+            animation: ambientLight 12s infinite linear;
+        }
+
+        /* Particles for Both Themes */
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            border-radius: 50%;
+            opacity: 0;
+            animation: particleDrift var(--drift-duration, 3s) infinite linear;
+        }
+        
+        .kotor-theme .particle {
+            background-color: #00BFFF;
+            box-shadow: 0 0 6px rgba(0, 191, 255, 0.9);
+        }
+
+        .jedi-survivor-theme .particle {
+            background-color: #FFFFFF;
+            width: 3px;
+            height: 3px;
+            box-shadow: 0 0 6px rgba(255, 255, 255, 0.9);
+        }
+        
+        /* Container Styles */
+        .holoscreen-container {
+            position: relative;
+            z-index: 1;
+            animation: flicker 2s ease-in-out 1;
+            border-radius: 5px;
+            margin: 20px;
+            overflow: hidden;
+        }
+        
+        /* KOTOR holoscreen - Updated */
+        .kotor-theme .holoscreen-container {
+            background: rgba(26, 37, 38, 0.8);
+            border: 1px solid var(--theme-border);
+            box-shadow: 0 0 10px var(--theme-accent);
+            animation: kotor-pulse 4s infinite ease-in-out;
+        }
+        
+        /* Jedi Survivor holoscreen - Updated */
+        .jedi-survivor-theme .holoscreen-container {
+            background: rgba(13, 13, 13, 0.95);
+            border: 1px solid var(--theme-border);
+            box-shadow: none;
+            background-image: none;
+            border-radius: 8px;
+            animation: none;
+        }
+
+        /* Header and Footer */
+        .terminal-header {
+            position: relative;
+            padding: 15px 20px;
+            text-align: center;
+        }
+        
+        .kotor-theme .terminal-header {
+            background-color: var(--theme-dark);
+            border-bottom: 1px solid var(--theme-accent);
+        }
+        
+        .jedi-survivor-theme .terminal-header {
+            background-color: var(--theme-dark);
+            border-bottom: 1px solid var(--theme-border);
+            border-radius: 8px 8px 0 0;
+        }
+
+        .terminal-footer {
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+        }
+        
+        .kotor-theme .terminal-footer {
+            background-color: var(--theme-dark);
+            border-top: 1px solid rgba(0, 191, 255, 0.3);
+            color: var(--theme-accent);
+        }
+        
+        .jedi-survivor-theme .terminal-footer {
+            background-color: var(--theme-dark);
+            border-top: 1px solid var(--theme-border);
+            color: var(--theme-text-secondary);
+            border-radius: 0 0 8px 8px;
+        }
+
+        /* Scanline Effect */
+        .scanline {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
+        }
+        
+        .kotor-theme .scanline {
+            background: linear-gradient(
+                0deg,
+                rgba(0, 191, 255, 0.03) 1px,
+                transparent 1px
+            );
+            background-size: 100% 2px;
+        }
+        
+        .jedi-survivor-theme .scanline {
+            background: linear-gradient(
+                0deg,
+                rgba(255, 183, 3, 0.02) 1px,
+                transparent 1px
+            );
+            background-size: 100% 3px;
+        }
+
+        /* Text Styles */
+        .text-glow {
+            text-shadow: 0 0 5px var(--theme-accent);
+        }
+
+        .text-glow-sm {
+            text-shadow: 0 0 3px var(--theme-accent);
+        }
+
+        h1, h2, h3, h4 {
+            color: var(--theme-text);
+            margin-bottom: 15px;
+        }
+
+        .kotor-theme h1 {
+            font-size: 24px;
+            text-shadow: 0 0 8px rgba(0, 191, 255, 0.7);
+        }
+        
+        .jedi-survivor-theme h1 {
+            font-size: 26px;
+            text-shadow: 0 0 8px var(--theme-accent);
+            letter-spacing: 1px;
+        }
+
+        .kotor-theme h2 {
+            font-size: 20px;
+            text-shadow: 0 0 6px rgba(0, 191, 255, 0.7);
+        }
+        
+        .jedi-survivor-theme h2 {
+            font-size: 22px;
+            text-shadow: 0 0 6px var(--theme-accent);
+            letter-spacing: 0.5px;
+        }
+
+        .kotor-theme h3 {
+            font-size: 18px;
+            text-shadow: 0 0 5px rgba(0, 191, 255, 0.7);
+        }
+        
+        .jedi-survivor-theme h3 {
+            font-size: 20px;
+            text-shadow: 0 0 8px var(--theme-accent);
+            letter-spacing: 0.5px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        
+        .jedi-survivor-theme p {
+            font-weight: 500;
+            font-size: 16px;
+        }
+
+        /* Button Styles - Updated */
+        .holographic-button {
+            padding: 12px 15px;
+            font-family: inherit;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            margin: 5px;
+            min-width: 150px;
+        }
+        
+        .kotor-theme .holographic-button {
+            background: rgba(0, 191, 255, 0.2);
+            color: #FFFFFF;
+            border: 1px solid #00BFFF;
+            text-shadow: 0 0 3px rgba(0, 191, 255, 0.5);
+            border-radius: 4px;
+        }
+        
+        .jedi-survivor-theme .holographic-button {
+            background: transparent;
+            color: #FFFFFF;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            text-shadow: none;
+            font-weight: 500;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 15px;
+        }
+
+        .kotor-theme .holographic-button:hover {
+            background: rgba(0, 191, 255, 0.4);
+            box-shadow: 0 0 15px rgba(0, 191, 255, 0.5);
+        }
+        
+        .jedi-survivor-theme .holographic-button:hover {
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: none;
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .kotor-theme .holographic-button:active {
+            background: #00BFFF;
+            color: #0F1419;
+        }
+        
+        .jedi-survivor-theme .holographic-button:active {
+            background: rgba(255, 255, 255, 0.2);
+            color: #FFFFFF;
+        }
+
+        /* Ripple Effect - New */
+        .holographic-button::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            border-radius: 50%;
+            transform: scale(1);
+            pointer-events: none;
+            transition: all 0s;
+        }
+
+        .kotor-theme .holographic-button::after {
+            background: radial-gradient(circle, rgba(0, 191, 255, 0.8) 0%, rgba(0, 191, 255, 0) 70%);
+        }
+
+        .jedi-survivor-theme .holographic-button::after {
+            background: radial-gradient(circle, rgba(0, 212, 255, 0.8) 0%, rgba(0, 212, 255, 0) 70%);
+        }
+
+        .holographic-button.ripple::after {
+            animation: ripple 0.5s ease-out;
+        }
+
+        .holographic-button::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            animation: pulse 2s infinite;
+        }
+        
+        .kotor-theme .holographic-button::before {
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(0, 191, 255, 0.2),
+                transparent
+            );
+        }
+        
+        .jedi-survivor-theme .holographic-button::before {
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 183, 3, 0.2),
+                transparent
+            );
+        }
+
+        .holographic-button:hover::before {
+            animation: pulse 1s infinite;
+        }
+
+        .holographic-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Number Badge */
+        .response-number {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            line-height: 20px;
+            text-align: center;
+            border-radius: 50%;
+            margin-right: 8px;
+            font-size: 12px;
+        }
+        
+        .kotor-theme .response-number {
+            background: rgba(0, 191, 255, 0.3);
+            color: #FFFFFF;
+        }
+        
+        .jedi-survivor-theme .response-number {
+            background: rgba(255, 183, 3, 0.3);
+            color: #FFFFFF;
+            width: 30px;
+            height: 30px;
+            line-height: 30px;
+            margin-right: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .jedi-survivor-theme .holographic-button:hover .response-number {
+            background: rgba(255, 183, 3, 0.6);
+            box-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+        }
+
+        /* Status Indicator */
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 8px;
+            animation: blink 2s infinite;
+            display: inline-block;
+        }
+        
+        .kotor-theme .status-dot {
+            background-color: #00BFFF;
+        }
+        
+        .jedi-survivor-theme .status-dot {
+            background-color: #FFB703;
+        }
+
+        .status-dot.warning {
+            background-color: var(--theme-warning);
+        }
+
+        .status-dot.success {
+            background-color: var(--theme-success);
+        }
+
+        /* Form Elements */
+        .theme-input {
+            transition: all 0.3s ease;
+            border-radius: 4px;
+            padding: 10px 12px;
+            width: 100%;
+            margin-bottom: 15px;
+            font-family: inherit;
+        }
+        
+        .kotor-theme .theme-input {
+            background: rgba(15, 20, 25, 0.6);
+            border: 1px solid rgba(0, 191, 255, 0.3);
+            color: white;
+        }
+        
+        .jedi-survivor-theme .theme-input {
+            background: rgba(13, 27, 42, 0.7);
+            border: 1px solid rgba(255, 183, 3, 0.3);
+            color: white;
+            border-radius: 8px;
+        }
+
+        .kotor-theme .theme-input:focus {
+            border-color: rgba(0, 191, 255, 0.8);
+            box-shadow: 0 0 8px rgba(0, 191, 255, 0.4);
+            outline: none;
+        }
+        
+        .jedi-survivor-theme .theme-input:focus {
+            border-color: rgba(255, 183, 3, 0.8);
+            box-shadow: 0 0 8px rgba(0, 212, 255, 0.4);
+            outline: none;
+        }
+
+        .theme-input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        /* Chat Message Styles */
+        .chat-container {
+            padding: 20px;
+            height: 400px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            padding: 10px 15px;
+            max-width: 80%;
+            position: relative;
+        }
+
+        .ai-message {
+            align-self: flex-start;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        
+        .kotor-theme .ai-message {
+            background-color: rgba(0, 191, 255, 0.1);
+            border-left: 3px solid #00BFFF;
+            border-radius: 5px;
+        }
+        
+        .jedi-survivor-theme .ai-message {
+            background-color: rgba(255, 183, 3, 0.1);
+            border-left: 3px solid #FFB703;
+            border-radius: 8px;
+        }
+
+        .user-message {
+            align-self: flex-end;
+            margin-left: auto;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        
+        .kotor-theme .user-message {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-left: 3px solid rgba(255, 255, 255, 0.5);
+            border-radius: 5px;
+        }
+        
+        .jedi-survivor-theme .user-message {
+            background-color: rgba(0, 212, 255, 0.1);
+            border-left: 3px solid rgba(0, 212, 255, 0.5);
+            border-radius: 8px;
+        }
+
+        .message-sender {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .kotor-theme .ai-message .message-sender {
+            color: #00BFFF;
+        }
+        
+        .jedi-survivor-theme .ai-message .message-sender {
+            color: #FFB703;
+        }
+
+        .kotor-theme .user-message .message-sender {
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .jedi-survivor-theme .user-message .message-sender {
+            color: rgba(0, 212, 255, 0.9);
+        }
+
+        .message-content {
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        .jedi-survivor-theme .message-content {
+            font-size: 16px;
+        }
+
+        .timestamp {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 5px;
+            text-align: right;
+        }
+
+        /* Mission Log - Updated */
+        .mission-log {
+            width: 25%;
+            min-width: 200px;
+            max-width: 300px;
+            padding: 20px;
+        }
+        
+        .kotor-theme .mission-log {
+            background: linear-gradient(to bottom, var(--theme-dark), var(--theme-bg));
+            border-right: 1px solid var(--theme-border);
+        }
+        
+        .jedi-survivor-theme .mission-log {
+            background-color: var(--theme-dark);
+            border-right: 2px solid var(--theme-border);
+            border-radius: 8px;
+            margin-right: 5px;
+        }
+
+        /* Mission Log Category Label - New */
+        .mission-category {
+            display: inline-block;
+            padding: 3px 10px;
+            margin-bottom: 15px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+
+        .kotor-theme .mission-category {
+            background-color: rgba(0, 191, 255, 0.2);
+            color: #00BFFF;
+            border: 1px solid rgba(0, 191, 255, 0.5);
+            border-radius: 3px;
+        }
+
+        .jedi-survivor-theme .mission-category {
+            background-color: rgba(255, 183, 3, 0.2);
+            color: #FFB703;
+            border: 1px solid rgba(255, 183, 3, 0.5);
+            border-radius: 20px;
+        }
+
+        .mission-entry {
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        /* Floating Mission Log Highlights - New */
+        .mission-entry.new-entry {
+            animation: floatEntry 0.3s ease-out forwards;
+        }
+
+        .mission-status {
+            display: inline-block;
+            padding: 3px 8px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+
+        .kotor-theme .status-active {
+            background-color: rgba(0, 191, 255, 0.2);
+            color: #00BFFF;
+            border: 1px solid rgba(0, 191, 255, 0.5);
+            border-radius: 3px;
+        }
+        
+        .jedi-survivor-theme .status-active {
+            background-color: rgba(255, 183, 3, 0.2);
+            color: #FFB703;
+            border: 1px solid rgba(255, 183, 3, 0.5);
+            border-radius: 20px;
+        }
+
+        .status-pending {
+            background-color: rgba(255, 69, 0, 0.2);
+            color: #FF4500;
+            border: 1px solid rgba(255, 69, 0, 0.5);
+        }
+
+        .jedi-survivor-theme .status-pending {
+            border-radius: 20px;
+        }
+
+        .status-complete {
+            background-color: rgba(50, 205, 50, 0.2);
+            color: #32CD32;
+            border: 1px solid rgba(50, 205, 50, 0.5);
+        }
+
+        .jedi-survivor-theme .status-complete {
+            border-radius: 20px;
+        }
+
+        /* Theme Toggle Button - Updated */
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            padding: 10px 15px;
+            font-family: inherit;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .kotor-theme .theme-toggle {
+            background: rgba(0, 191, 255, 0.2);
+            color: #FFFFFF;
+            border: 1px solid #00BFFF;
+            text-shadow: 0 0 3px rgba(0, 191, 255, 0.5);
+            border-radius: 4px;
+        }
+        
+        .jedi-survivor-theme .theme-toggle {
+            background: rgba(255, 183, 3, 0.3);
+            color: #FFFFFF;
+            border: 2px solid #FFB703;
+            text-shadow: 0 0 3px rgba(255, 183, 3, 0.5);
+            border-radius: 50px;
+        }
+        
+        .kotor-theme .theme-toggle:hover {
+            background: rgba(0, 191, 255, 0.4);
+            box-shadow: 0 0 15px rgba(0, 191, 255, 0.5);
+            transform: scale(1.05);
+            animation: kotor-toggle-pulse 0.8s infinite alternate;
+        }
+        
+        .jedi-survivor-theme .theme-toggle:hover {
+            background: rgba(255, 183, 3, 0.4);
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
+            transform: scale(1.05);
+            animation: jedi-toggle-pulse 0.8s infinite alternate;
+        }
+
+        /* Layout */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        .flex-col {
+            flex-direction: column;
+        }
+
+        .items-center {
+            align-items: center;
+        }
+
+        .justify-between {
+            justify-content: space-between;
+        }
+
+        .gap-4 {
+            gap: 16px;
+        }
+
+        .mt-4 {
+            margin-top: 16px;
+        }
+
+        .mb-4 {
+            margin-bottom: 16px;
+        }
+
+        /* Animations - Updated and New */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes flicker {
+            0% { opacity: 0.7; }
+            5% { opacity: 0.9; }
+            10% { opacity: 0.7; }
+            15% { opacity: 0.9; }
+            20% { opacity: 1; }
+            100% { opacity: 1; }
+        }
+
+        @keyframes pulse {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        @keyframes blink {
+            0% { opacity: 0.4; }
+            50% { opacity: 1; }
+            100% { opacity: 0.4; }
+        }
+
+        @keyframes kotor-pulse {
+            0% { box-shadow: 0 0 10px rgba(0, 191, 255, 0.5); }
+            50% { box-shadow: 0 0 15px rgba(0, 191, 255, 0.8); }
+            100% { box-shadow: 0 0 10px rgba(0, 191, 255, 0.5); }
+        }
+
+        @keyframes jedi-pulse {
+            0% { box-shadow: 0 0 10px rgba(0, 212, 255, 0.5); }
+            50% { box-shadow: 0 0 15px rgba(0, 212, 255, 0.8); }
+            100% { box-shadow: 0 0 10px rgba(0, 212, 255, 0.5); }
+        }
+
+        @keyframes kotor-toggle-pulse {
+            0% { box-shadow: 0 0 5px rgba(0, 191, 255, 0.5); }
+            100% { box-shadow: 0 0 12px rgba(0, 191, 255, 0.8); }
+        }
+
+        @keyframes jedi-toggle-pulse {
+            0% { box-shadow: 0 0 5px rgba(0, 212, 255, 0.5); }
+            100% { box-shadow: 0 0 12px rgba(0, 212, 255, 0.8); }
+        }
+
+        @keyframes ripple {
+            0% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(20);
+                opacity: 0;
+            }
+        }
+
+        @keyframes floatEntry {
+            0% { 
+                opacity: 0; 
+                transform: translateY(10px); 
+            }
+            50% { 
+                transform: translateY(-2px) rotate(0.5deg); 
+            }
+            75% { 
+                transform: translateY(1px) rotate(-0.5deg); 
+            }
+            100% { 
+                opacity: 1; 
+                transform: translateY(0) rotate(0); 
+            }
+        }
+
+        @keyframes particleDrift {
+            0% {
+                opacity: 0;
+                transform: translateY(0) translateX(0) scale(0.8);
+            }
+            10% {
+                opacity: 0.7;
+                transform: translateY(var(--y-drift, 10px) * 0.1) translateX(var(--x-drift, 10px) * 0.1) scale(1);
+            }
+            90% {
+                opacity: 0.7;
+                transform: translateY(var(--y-drift, 90px) * 0.9) translateX(var(--x-drift, 90px) * 0.9) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(var(--y-drift, 100px)) translateX(var(--x-drift, 100px)) scale(0.8);
+            }
+        }
+
+        @keyframes ambientLight {
+            0% { transform: translateX(-100%); opacity: 0.1; }
+            50% { opacity: 0.3; }
+            100% { transform: translateX(100%); opacity: 0.1; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .flex {
+                flex-direction: column;
+            }
+
+            .mission-log {
+                width: 100%;
+                max-width: 100%;
+                border-right: none;
+                border-bottom: 1px solid var(--theme-border);
+            }
+            
+            .theme-toggle {
+                position: relative;
+                top: 0;
+                right: 0;
+                margin: 10px auto;
+                display: block;
+            }
+        }
+
+        /* Toggle Switch Styles - New */
+        .jedi-survivor-theme .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+            margin-left: 10px;
+        }
+
+        .jedi-survivor-theme .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .jedi-survivor-theme .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: .4s;
+            border-radius: 12px;
+        }
+
+        .jedi-survivor-theme .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+        }
+
+        .jedi-survivor-theme input:checked + .toggle-slider {
+            background-color: rgba(167, 199, 231, 0.3);
+        }
+
+        .jedi-survivor-theme input:checked + .toggle-slider:before {
+            transform: translateX(26px);
+        }
+
+        /* Slider Styles - New */
+        .jedi-survivor-theme .slider-container {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+
+        .jedi-survivor-theme .slider-label {
+            min-width: 200px;
+            margin-right: 15px;
+        }
+
+        .jedi-survivor-theme .slider-value {
+            min-width: 30px;
+            text-align: right;
+            margin-left: 10px;
+        }
+
+        .jedi-survivor-theme .slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.15);
+            outline: none;
+            opacity: 0.7;
+            transition: opacity .2s;
+        }
+
+        .jedi-survivor-theme .slider:hover {
+            opacity: 1;
+        }
+
+        .jedi-survivor-theme .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            background: white;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+
+        .jedi-survivor-theme .slider::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            background: white;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body class="kotor-theme">
+    <div class="terminal-background">
+        <div class="particles" id="particles"></div>
+        <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+        
+        <div class="container">
+            <header class="terminal-header">
+                <h1 class="text-glow">GALACTIC INTELLIGENCE TERMINAL</h1>
+                <div class="scanline"></div>
+            </header>
+
+            <div class="section">
+                <h2 class="text-glow">AI RPG Interface</h2>
+                <p>This interface demonstrates a sci-fi RPG-inspired chat UI with two swappable themes: KOTOR and Jedi: Survivor.</p>
+            </div>
+
+            <div class="flex gap-4">
+                <!-- Mission Log -->
+                <div class="mission-log">
+                    <div class="mission-category">Mission Log</div>
+                    
+                    <div class="mission-entry new-entry">
+                        <h4>Objective: Gather Intel</h4>
+                        <p>Gather intelligence on enemy movements in the Outer Rim territories.</p>
+                        <span class="mission-status status-active">In Progress</span>
+                    </div>
+                    
+                    <div class="mission-entry">
+                        <h4>Secondary Objective</h4>
+                        <p>Analyze intercepted communications for encryption patterns.</p>
+                        <span class="mission-status status-pending">Awaiting Data</span>
+                    </div>
+                    
+                    <div class="mission-entry">
+                        <h4>Completed Task</h4>
+                        <p>Established secure connection with Intelligence network.</p>
+                        <span class="mission-status status-complete">Complete</span>
+                    </div>
+                    
+                    <div class="mission-entry">
+                        <h4>System Status</h4>
+                        <p>Neural interface operating at optimal capacity. Quantum encryption active.</p>
+                    </div>
+                </div>
+
+                <!-- Main Content -->
+                <div class="flex-col" style="flex: 1; width: 70%;">
+                    <!-- Chat Interface -->
+                    <div class="holoscreen-container mb-4">
+                        <div class="terminal-header">
+                            <h3 class="text-glow">COMMUNICATION INTERFACE</h3>
+                            <div class="scanline"></div>
+                        </div>
+                        
+                        <div class="chat-container">
+                            <div class="message ai-message">
+                                <div class="message-sender">AI ASSISTANT</div>
+                                <div class="message-content">Greetings, Commander. I am your strategic intelligence assistant. How may I assist with your mission today?</div>
+                                <div class="timestamp">14:30:05 GST</div>
+                            </div>
+
+                            <div class="message user-message">
+                                <div class="message-sender">USER</div>
+                                <div class="message-content">I need a status update on our reconnaissance efforts.</div>
+                                <div class="timestamp">14:31:22 GST</div>
+                            </div>
+
+                            <div class="message ai-message">
+                                <div class="message-sender">AI ASSISTANT</div>
+                                <div class="message-content">Accessing galactic database... Our scouts report increased enemy activity near the Taris system. Three capital ships have been detected moving in formation toward the sector. Analysis suggests they may be establishing a new outpost.</div>
+                                <div class="timestamp">14:31:45 GST</div>
+                            </div>
+                        </div>
+                        
+                        <div class="terminal-footer">
+                            <div class="flex items-center">
+                                <div class="status-dot"></div>
+                                <span>Secure Channel</span>
+                            </div>
+                            <div>Encryption: ACTIVE</div>
+                        </div>
+                    </div>
+
+                    <!-- Response Options -->
+                    <div class="flex mb-4" id="response-options">
+                        <button class="holographic-button">
+                            <span class="response-number">1</span>Request Update
+                        </button>
+                        <button class="holographic-button">
+                            <span class="response-number">2</span>Change Objective
+                        </button>
+                        <button class="holographic-button">
+                            <span class="response-number">3</span>End Transmission
+                        </button>
+                    </div>
+                    
+                    <!-- Jedi Survivor Settings UI - New -->
+                    <div class="holoscreen-container mb-4 jedi-settings" style="display: none;">
+                        <div class="terminal-header">
+                            <h3 class="text-glow">SETTINGS</h3>
+                            <div class="scanline"></div>
+                        </div>
+                        
+                        <div style="padding: 20px;">
+                            <!-- Vibration Setting -->
+                            <div class="slider-container">
+                                <div class="slider-label">Vibration</div>
+                                <input type="range" min="0" max="100" value="100" class="slider" id="vibrationSlider">
+                                <div class="slider-value">100</div>
+                            </div>
+                            
+                            <!-- Trigger Effect Function -->
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin: 15px 0;">
+                                <div>Trigger Effect Function</div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            
+                            <!-- Disable UI Input Hold -->
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin: 15px 0;">
+                                <div>Disable UI Input Hold</div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            
+                            <!-- Mouse Look Sensitivity X -->
+                            <div class="slider-container">
+                                <div class="slider-label">Mouse Look Sensitivity X</div>
+                                <input type="range" min="1" max="10" value="5" class="slider" id="sensitivityXSlider">
+                                <div class="slider-value">5</div>
+                            </div>
+                            
+                            <!-- Mouse Look Sensitivity Y -->
+                            <div class="slider-container">
+                                <div class="slider-label">Mouse Look Sensitivity Y</div>
+                                <input type="range" min="1" max="10" value="5" class="slider" id="sensitivityYSlider">
+                                <div class="slider-value">5</div>
+                            </div>
+                            
+                            <!-- Invert Mouse X Axis -->
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin: 15px 0;">
+                                <div>Invert Mouse X Axis</div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            
+                            <!-- Invert Mouse Y Axis -->
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin: 15px 0;">
+                                <div>Invert Mouse Y Axis</div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="terminal-footer">
+                            <div class="flex items-center">
+                                <span>Controls</span>
+                            </div>
+                            <div>Settings</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Theme Toggle Function
+        function toggleTheme() {
+            const body = document.body;
+            if (body.classList.contains('kotor-theme')) {
+                body.classList.remove('kotor-theme');
+                body.classList.add('jedi-survivor-theme');
+                updateControlsForTheme('jedi');
+                createParticles('jedi');
+            } else {
+                body.classList.remove('jedi-survivor-theme');
+                body.classList.add('kotor-theme');
+                updateControlsForTheme('kotor');
+                createParticles('kotor');
+            }
+        }
+
+        // Update Controls Based on Theme
+        function updateControlsForTheme(theme) {
+            const responseOptions = document.getElementById('response-options');
+            const buttons = responseOptions.querySelectorAll('.holographic-button');
+            
+            if (theme === 'jedi') {
+                buttons.forEach((button, index) => {
+                    const text = button.textContent.replace(/^\d+\.\s*/, '').trim();
+                    button.innerHTML = `<span class="response-number">${index + 1}</span>${text}`;
+                });
+            } else {
+                buttons.forEach((button, index) => {
+                    const text = button.textContent.replace(/^\d+/, '').trim();
+                    button.innerHTML = `<span class="response-number">${index + 1}</span>${index + 1}. ${text}`;
+                });
+            }
+        }
+
+        // Ripple Effect for Buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            const buttons = document.querySelectorAll('.holographic-button, .theme-toggle');
+            
+            buttons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    this.classList.remove('ripple');
+                    void this.offsetWidth; // Force reflow
+                    this.classList.add('ripple');
+                });
+            });
+
+            // Add new mission entry with animation
+            const addNewEntryBtn = document.querySelector('.mission-category');
+            if (addNewEntryBtn) {
+                addNewEntryBtn.addEventListener('click', function() {
+                    const entries = document.querySelectorAll('.mission-entry');
+                    entries.forEach(entry => entry.classList.remove('new-entry'));
+                    
+                    setTimeout(() => {
+                        const firstEntry = document.querySelector('.mission-entry');
+                        if (firstEntry) {
+                            firstEntry.classList.add('new-entry');
+                        }
+                    }, 100);
+                });
+            }
+
+            // Initialize particles based on current theme
+            if (document.body.classList.contains('jedi-survivor-theme')) {
+                createParticles('jedi');
+            } else {
+                createParticles('kotor');
+            }
+
+            // Update slider values
+            const sliders = document.querySelectorAll('.slider');
+            sliders.forEach(slider => {
+                const valueDisplay = slider.nextElementSibling;
+                slider.addEventListener('input', function() {
+                    valueDisplay.textContent = this.value;
+                });
+            });
+            
+            // Add button to toggle settings UI
+            const responseOptions = document.getElementById('response-options');
+            if (responseOptions) {
+                const settingsButton = document.createElement('button');
+                settingsButton.className = 'holographic-button';
+                settingsButton.innerHTML = '<span class="response-number">4</span>Settings';
+                responseOptions.appendChild(settingsButton);
+                
+                const settingsUI = document.querySelector('.jedi-settings');
+                settingsButton.addEventListener('click', function() {
+                    if (settingsUI) {
+                        const isVisible = settingsUI.style.display !== 'none';
+                        settingsUI.style.display = isVisible ? 'none' : 'block';
+                    }
+                });
+            }
+        });
+
+        // Create Particles for Both Themes
+        function createParticles(theme = 'jedi') {
+            const particlesContainer = document.getElementById('particles');
+            particlesContainer.innerHTML = '';
+            
+            const particleCount = theme === 'kotor' ? 70 : 80;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                // Random position
+                const x = Math.random() * 100;
+                const y = Math.random() * 100;
+                particle.style.left = `${x}%`;
+                particle.style.top = `${y}%`;
+                
+                // Random drift direction and speed
+                const xDrift = (Math.random() - 0.5) * 250;
+                const yDrift = (Math.random() - 0.5) * 250;
+                particle.style.setProperty('--x-drift', `${xDrift}px`);
+                particle.style.setProperty('--y-drift', `${yDrift}px`);
+                
+                // Random animation duration
+                const duration = 2 + Math.random() * 4;
+                particle.style.setProperty('--drift-duration', `${duration}s`);
+                
+                // Random delay
+                const delay = Math.random() * 5;
+                particle.style.animationDelay = `${delay}s`;
+                
+                // Random size for more variety
+                const minSize = theme === 'kotor' ? 1 : 1;
+                const maxSize = theme === 'kotor' ? 3 : 3.5;
+                const size = minSize + Math.random() * maxSize;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Random opacity
+                const opacity = 0.4 + Math.random() * 0.6;
+                particle.style.opacity = opacity;
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+    </script>
+</body>
+</html>

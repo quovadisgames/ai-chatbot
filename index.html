@@ -7,982 +7,117 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700&family=Inter:wght@300;400;500;600;700&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        /* ===== SHARED VARIABLES ===== */
-        :root {
-            /* PDT AI Brand Colors */
-            --pdt-accent: #00A1D6;
-            --pdt-accent-rgb: 0, 161, 214;
-            --pdt-dark: #0D0D0D;
-            --pdt-light: #E0E1DD;
-            
-            /* KOTOR Theme Variables */
-            --kotor-bg: #1A2526;
-            --kotor-dark: #0F1419;
-            --kotor-accent: #00BFFF;
-            --kotor-accent-rgb: 0, 191, 255;
-            --kotor-warning: #FF4500;
-            --kotor-success: #32CD32;
-            --kotor-text: #FFFFFF;
-            --kotor-text-secondary: rgba(255, 255, 255, 0.7);
-            --kotor-border: rgba(0, 191, 255, 0.5);
-            --kotor-glow: rgba(0, 191, 255, 0.3);
-            --kotor-font: 'Exo 2', monospace;
-            
-            /* Jedi Survivor Theme Variables */
-            --jedi-bg: #000000;
-            --jedi-dark: #0D0D0D;
-            --jedi-accent: #00D4FF;
-            --jedi-accent-rgb: 0, 212, 255;
-            --jedi-secondary: #8A8D93;
-            --jedi-highlight: #A7C7E7;
-            --jedi-warning: #FF4500;
-            --jedi-success: #32CD32;
-            --jedi-text: #FFFFFF;
-            --jedi-text-secondary: #8A8D93;
-            --jedi-border: rgba(255, 255, 255, 0.15);
-            --jedi-glow: rgba(167, 199, 231, 0.3);
-            --jedi-font: 'Rajdhani', sans-serif;
-            
-            /* Professional Theme Variables - New */
-            --prof-bg: #2E2E2E;
-            --prof-dark: #1E1E1E;
-            --prof-accent: #0078D4;
-            --prof-accent-rgb: 0, 120, 212;
-            --prof-warning: #FF4500;
-            --prof-success: #32CD32;
-            --prof-text: #F5F5F5;
-            --prof-text-secondary: rgba(245, 245, 245, 0.7);
-            --prof-border: rgba(0, 120, 212, 0.5);
-            --prof-glow: rgba(0, 120, 212, 0.3);
-            --prof-font: 'Inter', sans-serif;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--pdt-dark);
-            color: var(--pdt-light);
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-
-        /* ===== LANDING PAGE STYLES ===== */
-        
-        /* Hero Section */
-        .hero {
-            min-height: 100vh;
-            background: radial-gradient(circle at center, var(--current-bg, #1B263B) 0%, #0D0D0D 100%);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 2rem;
-            position: relative;
-            overflow: hidden;
-            animation: fadeIn 1s ease-in-out;
-        }
-
-        /* Neural Network Grid Background */
-        .neural-grid {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0.4;
-            background-image: 
-                linear-gradient(to right, rgba(var(--current-accent-rgb, 0, 161, 214), 0.07) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(var(--current-accent-rgb, 0, 161, 214), 0.07) 1px, transparent 1px);
-            background-size: 50px 50px;
-            z-index: 0;
-            animation: pulseGrid 5s infinite ease-in-out;
-        }
-
-        .neural-node {
-            position: absolute;
-            width: 5px;
-            height: 5px;
-            background-color: rgba(var(--current-accent-rgb, 0, 161, 214), 0.5);
-            border-radius: 50%;
-            z-index: 0;
-            box-shadow: 0 0 4px rgba(var(--current-accent-rgb, 0, 161, 214), 0.3);
-        }
-
-        .neural-connection {
-            position: absolute;
-            height: 0.75px;
-            background-color: rgba(var(--current-accent-rgb, 0, 161, 214), 0.2);
-            transform-origin: left center;
-            z-index: 0;
-        }
-
-        .hero-content {
-            max-width: 1200px;
-            z-index: 2;
-            padding: 2rem;
-            position: relative;
-        }
-
-        .hero h1 {
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 48px;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-            color: var(--pdt-light);
-            text-shadow: 0 0 8px var(--pdt-accent);
-            line-height: 1.2;
-        }
-
-        .hero p {
-            font-size: 24px;
-            margin-bottom: 2rem;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-            line-height: 1.4;
-        }
-
-        .cta-button {
-            display: inline-block;
-            padding: 15px 30px;
-            background: rgba(var(--current-accent-rgb, 0, 161, 214), 0.3);
-            color: white;
-            border: 2px solid var(--pdt-accent);
-            border-radius: 8px;
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 18px;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .cta-button::before {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            border-radius: 8px;
-            background: transparent;
-            border: 2px solid transparent;
-            animation: holographicAura 3s infinite ease-in-out;
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        .cta-button:hover {
-            background: rgba(var(--current-accent-rgb, 0, 161, 214), 0.5);
-            box-shadow: 0 0 15px var(--pdt-accent);
-            transform: translateY(-2px);
-        }
-
-        .logo {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            width: 100px;
-            height: 40px;
-            background-color: rgba(128, 128, 128, 0.2);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-radius: 4px;
-            font-family: 'Rajdhani', sans-serif;
-            font-weight: 700;
-            color: var(--pdt-light);
-            z-index: 10;
-        }
-
-        /* Feature Section */
-        .features {
-            padding: 5rem 2rem;
-            background-color: #0D0D0D;
-            position: relative;
-        }
-
-        .features-container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .features h2 {
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 36px;
-            text-align: center;
-            margin-bottom: 3rem;
-            color: var(--pdt-light);
-            text-shadow: 0 0 5px var(--pdt-accent);
-        }
-
-        .feature-cards {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 2rem;
-        }
-
-        .feature-card {
-            background-color: #2E2E2E;
-            border-radius: 8px;
-            padding: 2rem;
-            width: calc(25% - 2rem);
-            min-width: 250px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s ease;
-            animation: slideIn 0.5s ease-in-out;
-            animation-fill-mode: both;
-            position: relative;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .feature-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                90deg,
-                transparent,
-                rgba(255, 255, 255, 0.05),
-                transparent
-            );
-            transition: all 0.5s ease;
-        }
-
-        .feature-card:hover::before {
-            left: 100%;
-        }
-
-        .feature-card:nth-child(1) { animation-delay: 0.1s; }
-        .feature-card:nth-child(2) { animation-delay: 0.2s; }
-        .feature-card:nth-child(3) { animation-delay: 0.3s; }
-        .feature-card:nth-child(4) { animation-delay: 0.4s; }
-
-        .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 0 15px var(--pdt-accent);
-            border-color: var(--pdt-accent);
-        }
-
-        .feature-card h3 {
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 24px;
-            margin-bottom: 1rem;
-            color: var(--pdt-accent);
-        }
-
-        .feature-card p {
-            color: #F5F5F5;
-            line-height: 1.5;
-        }
-
-        .feature-icon {
-            font-size: 48px;
-            margin-bottom: 1rem;
-            color: var(--pdt-accent);
-            transition: all 0.3s ease;
-        }
-
-        .feature-card:hover .feature-icon {
-            transform: scale(1.1);
-        }
-
-        /* Use Case Showcase */
-        .showcase {
-            padding: 5rem 2rem;
-            background-color: #0A0A0A;
-            position: relative;
-        }
-
-        .showcase-container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .showcase h2 {
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 36px;
-            text-align: center;
-            margin-bottom: 3rem;
-            color: var(--pdt-light);
-            text-shadow: 0 0 5px var(--pdt-accent);
-        }
-
-        .carousel {
-            display: flex;
-            overflow-x: auto;
-            scroll-snap-type: x mandatory;
-            scroll-behavior: smooth;
-            -webkit-overflow-scrolling: touch;
-            margin-bottom: 1rem;
-        }
-
-        .carousel::-webkit-scrollbar {
-            display: none;
-        }
-
-        .carousel-slide {
-            flex: 0 0 100%;
-            scroll-snap-align: start;
-            padding: 2rem;
-            border-radius: 8px;
-            margin-right: 1rem;
-            min-height: 400px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .carousel-slide::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.4);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            z-index: 1;
-        }
-
-        .carousel-slide:hover::before {
-            opacity: 1;
-        }
-
-        .carousel-slide h3, .carousel-slide p, .carousel-slide img {
-            position: relative;
-            z-index: 2;
-        }
-
-        .carousel-slide h3 {
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 28px;
-            margin-bottom: 1rem;
-        }
-
-        .carousel-slide p {
-            font-size: 18px;
-            max-width: 600px;
-            margin: 0 auto 2rem;
-            line-height: 1.5;
-        }
-
-        /* Theme-specific carousel slides */
-        .carousel-slide.kotor {
-            background-color: var(--kotor-bg);
-            color: var(--kotor-text);
-            background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.3)), 
-                              url('https://via.placeholder.com/1200x600?text=KOTOR+Background');
-            background-size: cover;
-            background-position: center;
-            border: 1px solid var(--kotor-border);
-            box-shadow: 0 0 15px var(--kotor-glow);
-        }
-
-        .carousel-slide.kotor h3 {
-            color: var(--kotor-accent);
-            text-shadow: 0 0 5px var(--kotor-accent);
-        }
-
-        .carousel-slide.kotor img {
-            border: 1px solid var(--kotor-border);
-            box-shadow: 0 0 10px var(--kotor-glow);
-        }
-
-        .carousel-slide.jedi {
-            background-color: var(--jedi-bg);
-            color: var(--jedi-text);
-            background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.3)), 
-                              url('https://via.placeholder.com/1200x600?text=Jedi+Background');
-            background-size: cover;
-            background-position: center;
-            border: 1px solid var(--jedi-border);
-            box-shadow: 0 0 15px var(--jedi-glow);
-        }
-
-        .carousel-slide.jedi h3 {
-            color: var(--jedi-accent);
-            text-shadow: 0 0 5px var(--jedi-accent);
-        }
-
-        .carousel-slide.jedi img {
-            border: 1px solid var(--jedi-border);
-            box-shadow: 0 0 10px var(--jedi-glow);
-        }
-
-        .carousel-slide.professional {
-            background-color: var(--prof-bg);
-            color: var(--prof-text);
-            background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.3)), 
-                              url('https://via.placeholder.com/1200x600?text=Professional+Background');
-            background-size: cover;
-            background-position: center;
-            border: 1px solid var(--prof-border);
-            box-shadow: 0 0 15px var(--prof-glow);
-        }
-
-        .carousel-slide.professional h3 {
-            color: var(--prof-accent);
-            text-shadow: 0 0 5px var(--prof-accent);
-        }
-
-        .carousel-slide.professional img {
-            border: 1px solid var(--prof-border);
-            box-shadow: 0 0 10px var(--prof-glow);
-        }
-
-        .carousel-nav {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-        }
-
-        .carousel-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background-color: rgba(255, 255, 255, 0.3);
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .carousel-dot.active {
-            background-color: var(--pdt-accent);
-            transform: scale(1.2);
-        }
-
-        /* Footer */
-        footer {
-            padding: 3rem 2rem;
-            background-color: #0D0D0D;
-            text-align: center;
-            position: relative;
-        }
-
-        .footer-container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        footer p {
-            font-size: 16px;
-            margin-bottom: 1rem;
-        }
-
-        .footer-links {
-            margin-top: 1.5rem;
-        }
-
-        .footer-links a {
-            color: var(--pdt-accent);
-            text-decoration: none;
-            margin: 0 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .footer-links a:hover {
-            color: #FFB703;
-            text-decoration: underline;
-        }
-
-        /* Particles */
-        .particles {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        .particle {
-            position: absolute;
-            background-color: #E0E1DD;
-            width: 2px;
-            height: 2px;
-            border-radius: 50%;
-            opacity: 0.15;
-            animation: particleDrift var(--drift-duration, 3s) infinite linear;
-            box-shadow: 0 0 6px rgba(var(--current-accent-rgb, 0, 161, 214), 0.6);
-        }
-
-        /* Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(var(--current-accent-rgb, 0, 161, 214), 0.4); }
-            70% { box-shadow: 0 0 0 10px rgba(var(--current-accent-rgb, 0, 161, 214), 0); }
-            100% { box-shadow: 0 0 0 0 rgba(var(--current-accent-rgb, 0, 161, 214), 0); }
-        }
-
-        @keyframes pulseGrid {
-            0% { opacity: 0.3; }
-            50% { opacity: 0.5; }
-            100% { opacity: 0.3; }
-        }
-
-        @keyframes holographicAura {
-            0% { 
-                border-color: rgba(var(--current-accent-rgb, 0, 161, 214), 0.3);
-                box-shadow: 0 0 5px rgba(var(--current-accent-rgb, 0, 161, 214), 0.3);
-            }
-            50% { 
-                border-color: rgba(var(--current-accent-rgb, 0, 161, 214), 0.7);
-                box-shadow: 0 0 15px rgba(var(--current-accent-rgb, 0, 161, 214), 0.5);
-            }
-            100% { 
-                border-color: rgba(var(--current-accent-rgb, 0, 161, 214), 0.3);
-                box-shadow: 0 0 5px rgba(var(--current-accent-rgb, 0, 161, 214), 0.3);
-            }
-        }
-
-        @keyframes particleDrift {
-            0% {
-                opacity: 0;
-                transform: translateY(0) translateX(0) scale(0.8);
-            }
-            10% {
-                opacity: 0.3;
-                transform: translateY(var(--y-drift, 10px) * 0.1) translateX(var(--x-drift, 10px) * 0.1) scale(1);
-            }
-            90% {
-                opacity: 0.3;
-                transform: translateY(var(--y-drift, 90px) * 0.9) translateX(var(--x-drift, 90px) * 0.9) scale(1);
-            }
-            100% {
-                opacity: 0;
-                transform: translateY(var(--y-drift, 100px)) translateX(var(--x-drift, 100px)) scale(0.8);
-            }
-        }
-
-        /* Responsive Styles */
-        @media (max-width: 1024px) {
-            .feature-card {
-                width: calc(50% - 2rem);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 36px;
-            }
-            
-            .hero p {
-                font-size: 18px;
-            }
-            
-            .feature-card {
-                width: 100%;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .hero h1 {
-                font-size: 28px;
-            }
-            
-            .hero p {
-                font-size: 16px;
-            }
-            
-            .cta-button {
-                padding: 12px 24px;
-                font-size: 16px;
-            }
-        }
-
-        /* Preserve existing theme styles for chat.html reference */
-        /* These styles are kept for reference but not used on the landing page */
-        .theme-styles-reference {
-            display: none;
-        }
-
-        /* Theme Switcher Styles */
-        .theme-switcher {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            z-index: 10;
-        }
-
-        .theme-switcher-button {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background-color: rgba(0, 0, 0, 0.3);
-            border: 1px solid var(--pdt-accent);
-            border-radius: 4px;
-            color: var(--pdt-light);
-            padding: 8px 12px;
-            font-family: 'Rajdhani', sans-serif;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .theme-switcher-button::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                90deg,
-                transparent,
-                rgba(var(--current-accent-rgb, 0, 161, 214), 0.2),
-                transparent
-            );
-            transition: all 0.5s ease;
-        }
-
-        .theme-switcher-button:hover::after {
-            left: 100%;
-        }
-
-        .theme-switcher-button:hover {
-            background-color: rgba(var(--current-accent-rgb, 0, 161, 214), 0.2);
-            box-shadow: 0 0 10px rgba(var(--current-accent-rgb, 0, 161, 214), 0.3);
-        }
-
-        .theme-switcher-dropdown {
-            position: absolute;
-            top: 100%;
-            right: 0;
-            width: 180px;
-            background-color: #1A1A1A;
-            border: 1px solid var(--pdt-accent);
-            border-radius: 4px;
-            margin-top: 4px;
-            overflow: hidden;
-            display: none;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-        }
-
-        .theme-switcher.active .theme-switcher-dropdown {
-            display: block;
-            animation: fadeIn 0.2s ease-in-out;
-        }
-
-        .theme-option {
-            padding: 10px 16px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .theme-option::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                90deg,
-                transparent,
-                rgba(255, 255, 255, 0.05),
-                transparent
-            );
-            transition: all 0.5s ease;
-        }
-
-        .theme-option:hover::before {
-            left: 100%;
-        }
-
-        .theme-option:hover {
-            background-color: rgba(var(--current-accent-rgb, 0, 161, 214), 0.2);
-        }
-
-        .theme-option[data-theme="kotor"]:hover {
-            background-color: rgba(var(--kotor-accent-rgb, 0, 191, 255), 0.2);
-        }
-
-        .theme-option[data-theme="jedi"]:hover {
-            background-color: rgba(var(--jedi-accent-rgb, 0, 212, 255), 0.2);
-        }
-
-        .theme-option[data-theme="professional"]:hover {
-            background-color: rgba(var(--prof-accent-rgb, 0, 120, 212), 0.2);
-        }
-
-        /* Theme-specific body classes */
-        body.kotor-theme {
-            --current-bg: var(--kotor-bg);
-            --current-dark: var(--kotor-dark);
-            --current-accent: var(--kotor-accent);
-            --current-accent-rgb: var(--kotor-accent-rgb);
-            --current-text: var(--kotor-text);
-            --current-text-secondary: var(--kotor-text-secondary);
-            --current-border: var(--kotor-border);
-            --current-glow: var(--kotor-glow);
-            --current-font: var(--kotor-font);
-        }
-
-        body.jedi-theme {
-            --current-bg: var(--jedi-bg);
-            --current-dark: var(--jedi-dark);
-            --current-accent: var(--jedi-accent);
-            --current-accent-rgb: var(--jedi-accent-rgb);
-            --current-text: var(--jedi-text);
-            --current-text-secondary: var(--jedi-text-secondary);
-            --current-border: var(--jedi-border);
-            --current-glow: var(--jedi-glow);
-            --current-font: var(--jedi-font);
-        }
-
-        body.professional-theme {
-            --current-bg: var(--prof-bg);
-            --current-dark: var(--prof-dark);
-            --current-accent: var(--prof-accent);
-            --current-accent-rgb: var(--prof-accent-rgb);
-            --current-text: var(--prof-text);
-            --current-text-secondary: var(--prof-text-secondary);
-            --current-border: var(--prof-border);
-            --current-glow: var(--prof-glow);
-            --current-font: var(--prof-font);
-        }
-
-        /* Apply theme variables to elements */
-        .hero {
-            background: radial-gradient(circle at center, var(--current-bg, #1B263B) 0%, #0D0D0D 100%);
-        }
-
-        .hero h1 {
-            font-family: var(--current-font, 'Rajdhani'), sans-serif;
-            text-shadow: 0 0 8px var(--current-accent, var(--pdt-accent));
-        }
-
-        .cta-button {
-            border: 2px solid var(--current-accent, var(--pdt-accent));
-            font-family: var(--current-font, 'Rajdhani'), sans-serif;
-        }
-
-        .cta-button:hover {
-            box-shadow: 0 0 15px var(--current-accent, var(--pdt-accent));
-        }
-
-        .features h2, .showcase h2 {
-            font-family: var(--current-font, 'Rajdhani'), sans-serif;
-            text-shadow: 0 0 5px var(--current-accent, var(--pdt-accent));
-        }
-
-        .feature-card h3 {
-            font-family: var(--current-font, 'Rajdhani'), sans-serif;
-            color: var(--current-accent, var(--pdt-accent));
-        }
-
-        .feature-card:hover {
-            box-shadow: 0 0 10px var(--current-accent, var(--pdt-accent));
-        }
-
-        .carousel-dot.active {
-            background-color: var(--current-accent, var(--pdt-accent));
-        }
-
-        @keyframes themeTransition {
-            0% {
-                transform: scaleX(0);
-                opacity: 1;
-            }
-            50% {
-                transform: scaleX(1);
-                opacity: 1;
-            }
-            100% {
-                transform: scaleX(1);
-                opacity: 0;
-            }
-        }
-
-        /* Waves Effect */
-        .waves-container {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 300px;
-            overflow: hidden;
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        .wave {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 100px;
-            background: rgba(var(--current-accent-rgb, 0, 161, 214), 0.05);
-            border-radius: 50% 50% 0 0 / 100% 100% 0 0;
-            transform-origin: bottom center;
-        }
-
-        .wave-1 {
-            animation: wave 15s linear infinite;
-            height: 90px;
-            opacity: 1;
-        }
-
-        .wave-2 {
-            animation: wave 10s linear infinite;
-            height: 120px;
-            opacity: 0.8;
-            animation-delay: -5s;
-        }
-
-        .wave-3 {
-            animation: wave 8s linear infinite;
-            height: 150px;
-            opacity: 0.5;
-            animation-delay: -2s;
-        }
-
-        @keyframes wave {
-            0% {
-                transform: scaleX(1) translateX(0);
-            }
-            50% {
-                transform: scaleX(1.4) translateX(-15%);
-            }
-            100% {
-                transform: scaleX(1) translateX(0);
-            }
-        }
-    </style>
+    <!-- Main stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+    <!-- Theme stylesheets -->
+    <link rel="stylesheet" href="themes/kotor.css">
+    <link rel="stylesheet" href="themes/jedi.css">
+    <link rel="stylesheet" href="themes/professional.css">
+    <!-- Landing page specific styles -->
+    <link rel="stylesheet" href="styles/landing-page.css">
 </head>
-<body>
-    <div class="logo">PDT AI</div>
-    
-    <!-- Theme Switcher -->
-    <div class="theme-switcher">
-        <button class="theme-switcher-button">
-            <span class="current-theme">Theme</span>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-        </button>
-        <div class="theme-switcher-dropdown">
-            <div class="theme-option" data-theme="kotor">KOTOR</div>
-            <div class="theme-option" data-theme="jedi">Jedi: Survivor</div>
-            <div class="theme-option" data-theme="professional">Professional</div>
-        </div>
-    </div>
-    
-    <!-- Hero Section -->
-    <section class="hero">
+<body class="jedi-theme">
+    <div class="main-container">
         <div class="neural-grid"></div>
         <div id="neural-nodes"></div>
-        <div class="particles" id="hero-particles"></div>
-        <div class="hero-content">
-            <h1>Unlock AI Potential with PDT AI—Three Themes, Infinite Possibilities</h1>
-            <p>Innovative AI with RPG flair, cinematic immersion, or professional precision</p>
-            <a href="login.html" class="cta-button">Get Started</a>
-        </div>
-    </section>
-    
-    <!-- Feature Section -->
-    <section class="features">
-        <div class="features-container">
-            <h2>Key Features</h2>
-            <div class="feature-cards">
-                <div class="feature-card">
-                    <div class="feature-icon">🚀</div>
-                    <h3>RPG-Like Flow</h3>
-                    <p>Solve problems with galactic missions and interactive storytelling that makes AI assistance feel like an adventure.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🎨</div>
-                    <h3>Tri-Theme Design</h3>
-                    <p>Switch between KOTOR, Jedi: Survivor, and Professional modes to match your mood or business needs.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🧠</div>
-                    <h3>Advanced AI</h3>
-                    <p>Powered by state-of-the-art NLP technology that understands context and delivers precise, helpful responses.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">📈</div>
-                    <h3>Scalable Solutions</h3>
-                    <p>Ideal for individuals and enterprises with customizable workflows and integration capabilities.</p>
-                </div>
+        <div class="particles" id="particles"></div>
+        <div class="waves-container" id="waves-container"></div>
+        
+        <div class="logo">PDT AI</div>
+        
+        <!-- Theme Switcher -->
+        <div class="theme-switcher">
+            <button class="theme-switcher-button">
+                <span class="current-theme">Theme</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
+            <div class="theme-switcher-dropdown">
+                <div class="theme-option" data-theme="kotor">KOTOR</div>
+                <div class="theme-option" data-theme="jedi">Jedi: Survivor</div>
+                <div class="theme-option" data-theme="professional">Professional</div>
             </div>
         </div>
-    </section>
-    
-    <!-- Use Case Showcase -->
-    <section class="showcase">
-        <div class="showcase-container">
-            <h2>Use Case Showcase</h2>
-            <div class="carousel" id="showcase-carousel">
-                <div class="carousel-slide kotor">
-                    <h3>Gaming Community</h3>
-                    <p>Engage with KOTOR-style missions that transform problem-solving into an epic galactic adventure. Perfect for gaming communities, creative writing, and immersive learning experiences.</p>
-                    <img src="https://via.placeholder.com/400x200?text=KOTOR+Theme" alt="KOTOR Theme Preview" style="max-width: 100%; border-radius: 8px;">
-                </div>
-                <div class="carousel-slide jedi">
-                    <h3>Creative Storytelling</h3>
-                    <p>Immerse yourself in Jedi: Survivor narratives with cinematic visuals and dynamic interactions. Ideal for content creators, storytellers, and fans of modern Star Wars aesthetics.</p>
-                    <img src="https://via.placeholder.com/400x200?text=Jedi+Survivor+Theme" alt="Jedi Survivor Theme Preview" style="max-width: 100%; border-radius: 8px;">
-                </div>
-                <div class="carousel-slide professional">
-                    <h3>Business Support</h3>
-                    <p>Automate workflows with Professional Mode, featuring clean interfaces and business-focused tools. Perfect for enterprises, startups, and professionals seeking efficient AI assistance.</p>
-                    <img src="https://via.placeholder.com/400x200?text=Professional+Theme" alt="Professional Theme Preview" style="max-width: 100%; border-radius: 8px;">
+        
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Unlock AI Potential with PDT AI—Three Themes, Infinite Possibilities</h1>
+                <p>Innovative AI with RPG flair, cinematic immersion, or professional precision</p>
+                <a href="login.html" class="cta-button">Get Started</a>
+            </div>
+        </section>
+        
+        <!-- Feature Section -->
+        <section class="features">
+            <div class="features-container">
+                <h2>Key Features</h2>
+                <div class="feature-cards">
+                    <div class="feature-card">
+                        <div class="feature-icon">🚀</div>
+                        <h3>RPG-Like Flow</h3>
+                        <p>Solve problems with galactic missions and interactive storytelling that makes AI assistance feel like an adventure.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🎨</div>
+                        <h3>Tri-Theme Design</h3>
+                        <p>Switch between KOTOR, Jedi: Survivor, and Professional modes to match your mood or business needs.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🧠</div>
+                        <h3>Advanced AI</h3>
+                        <p>Powered by state-of-the-art NLP technology that understands context and delivers precise, helpful responses.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📈</div>
+                        <h3>Scalable Solutions</h3>
+                        <p>Ideal for individuals and enterprises with customizable workflows and integration capabilities.</p>
+                    </div>
                 </div>
             </div>
-            <div class="carousel-nav">
-                <div class="carousel-dot active" data-slide="0"></div>
-                <div class="carousel-dot" data-slide="1"></div>
-                <div class="carousel-dot" data-slide="2"></div>
+        </section>
+        
+        <!-- Use Case Showcase -->
+        <section class="showcase">
+            <div class="showcase-container">
+                <h2>Use Case Showcase</h2>
+                <div class="carousel" id="showcase-carousel">
+                    <div class="carousel-slide kotor">
+                        <h3>Gaming Community</h3>
+                        <p>Engage with KOTOR-style missions that transform problem-solving into an epic galactic adventure. Perfect for gaming communities, creative writing, and immersive learning experiences.</p>
+                        <img src="https://via.placeholder.com/400x200?text=KOTOR+Theme" alt="KOTOR Theme Preview" style="max-width: 100%; border-radius: 8px;">
+                    </div>
+                    <div class="carousel-slide jedi">
+                        <h3>Creative Storytelling</h3>
+                        <p>Immerse yourself in Jedi: Survivor narratives with cinematic visuals and dynamic interactions. Ideal for content creators, storytellers, and fans of modern Star Wars aesthetics.</p>
+                        <img src="https://via.placeholder.com/400x200?text=Jedi+Survivor+Theme" alt="Jedi Survivor Theme Preview" style="max-width: 100%; border-radius: 8px;">
+                    </div>
+                    <div class="carousel-slide professional">
+                        <h3>Business Support</h3>
+                        <p>Automate workflows with Professional Mode, featuring clean interfaces and business-focused tools. Perfect for enterprises, startups, and professionals seeking efficient AI assistance.</p>
+                        <img src="https://via.placeholder.com/400x200?text=Professional+Theme" alt="Professional Theme Preview" style="max-width: 100%; border-radius: 8px;">
+                    </div>
+                </div>
+                <div class="carousel-nav">
+                    <div class="carousel-dot active" data-slide="0"></div>
+                    <div class="carousel-dot" data-slide="1"></div>
+                    <div class="carousel-dot" data-slide="2"></div>
+                </div>
             </div>
-        </div>
-    </section>
-    
-    <!-- Footer -->
-    <footer>
-        <div class="footer-container">
-            <p>Built for the Future by PDT AI</p>
-            <div class="footer-links">
-                <a href="login.html">Login</a>
-                <a href="main-menu.html">Main Menu</a>
-                <a href="persona-creation.html">Create Persona</a>
-                <a href="#">Privacy Policy</a>
+        </section>
+        
+        <!-- Footer -->
+        <footer>
+            <div class="footer-container">
+                <p>Built for the Future by PDT AI</p>
+                <div class="footer-links">
+                    <a href="login.html">Login</a>
+                    <a href="main-menu.html">Main Menu</a>
+                    <a href="persona-creation.html">Create Persona</a>
+                    <a href="#">Privacy Policy</a>
+                </div>
             </div>
-        </div>
-    </footer>
+        </footer>
+    </div>
 
     <script>
         // Create particles for hero section
@@ -995,7 +130,7 @@
         });
 
         function createParticles() {
-            const particlesContainer = document.getElementById('hero-particles');
+            const particlesContainer = document.getElementById('particles');
             particlesContainer.innerHTML = '';
             
             // Determine particle count and style based on theme
@@ -1212,6 +347,7 @@
         // Create neural network nodes and connections
         function createNeuralNetwork() {
             const nodesContainer = document.getElementById('neural-nodes');
+            nodesContainer.innerHTML = '';
             const nodeCount = 13;
             const nodes = [];
             
@@ -1273,9 +409,8 @@
 
         // Add wave effect to the hero section
         function createWaves() {
-            const hero = document.querySelector('.hero');
-            const wavesContainer = document.createElement('div');
-            wavesContainer.className = 'waves-container';
+            const wavesContainer = document.getElementById('waves-container');
+            wavesContainer.innerHTML = '';
             
             // Create 3 wave layers
             for (let i = 0; i < 3; i++) {
@@ -1283,8 +418,6 @@
                 wave.className = `wave wave-${i+1}`;
                 wavesContainer.appendChild(wave);
             }
-            
-            hero.appendChild(wavesContainer);
             
             // Update wave colors based on theme
             updateWaveColors(localStorage.getItem('pdtAiTheme') || 'kotor');

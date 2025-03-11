@@ -1,0 +1,84 @@
+/* ===== KOTOR Theme Styles ===== */
+/* This file contains styles specific to the KOTOR theme */
+
+body.kotor-theme {
+    --current-bg: var(--kotor-bg);
+    --current-dark: var(--kotor-dark);
+    --current-accent: var(--kotor-accent);
+    --current-accent-rgb: var(--kotor-accent-rgb);
+    --current-text: var(--kotor-text);
+    --current-text-secondary: var(--kotor-text-secondary);
+    --current-border: var(--kotor-border);
+    --current-glow: var(--kotor-glow);
+    --current-font: var(--kotor-font);
+}
+
+/* KOTOR-specific UI adjustments */
+.kotor-theme .neural-grid {
+    background-size: 45px 45px;
+    opacity: 0.5;
+}
+
+.kotor-theme .neural-node {
+    box-shadow: 0 0 6px rgba(var(--kotor-accent-rgb), 0.4);
+}
+
+.kotor-theme .wave {
+    background: rgba(var(--kotor-accent-rgb), 0.07);
+}
+
+/* KOTOR-specific message styling */
+.kotor-theme .ai-message .message-avatar {
+    background-color: var(--kotor-accent);
+}
+
+.kotor-theme .ai-message .message-content {
+    border-left-color: var(--kotor-accent);
+}
+
+.kotor-theme .ai-badge {
+    background-color: rgba(var(--kotor-accent-rgb), 0.2);
+    color: var(--kotor-accent);
+}
+
+.kotor-theme .message-text pre {
+    border-left-color: var(--kotor-accent);
+}
+
+.kotor-theme .send-button {
+    background-color: var(--kotor-accent);
+}
+
+.kotor-theme .send-button:hover:not(:disabled) {
+    background-color: rgba(var(--kotor-accent-rgb), 0.8);
+}
+
+/* KOTOR-specific theme option highlight */
+.kotor-theme .theme-option[data-theme="kotor"] {
+    background-color: rgba(var(--kotor-accent-rgb), 0.2);
+}
+
+/* KOTOR-specific typing indicator */
+.kotor-theme .typing-dots span {
+    background-color: var(--kotor-accent);
+}
+
+/* KOTOR-specific scrollbar */
+.kotor-theme .chat-content::-webkit-scrollbar-thumb {
+    background-color: rgba(var(--kotor-accent-rgb), 0.3);
+}
+
+/* KOTOR-specific button states */
+.kotor-theme .action-button.copied {
+    background-color: rgba(var(--kotor-accent-rgb), 0.3);
+}
+
+/* KOTOR-specific form elements */
+.kotor-theme .chat-input:focus {
+    border-color: var(--kotor-accent);
+}
+
+.kotor-theme .chat-input-wrapper:focus-within {
+    border-color: var(--kotor-accent);
+    box-shadow: 0 0 5px rgba(var(--kotor-accent-rgb), 0.3);
+} 

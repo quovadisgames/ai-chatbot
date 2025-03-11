@@ -1,0 +1,187 @@
+/* ===== LOGIN PAGE STYLES ===== */
+
+/* Login Container */
+.login-container {
+    max-width: 450px;
+    width: 90%;
+    margin: 4rem auto;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    padding: 2rem;
+    position: relative;
+    z-index: 5;
+    animation: fadeIn 0.5s ease-in-out;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+/* Login Tabs */
+.login-tabs {
+    display: flex;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.login-tab {
+    flex: 1;
+    text-align: center;
+    padding: 1rem;
+    cursor: pointer;
+    font-family: var(--current-font);
+    font-weight: 600;
+    color: var(--current-text-secondary);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.login-tab:hover {
+    color: var(--current-text);
+}
+
+.login-tab.active {
+    color: var(--current-accent);
+}
+
+.login-tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--current-accent);
+}
+
+/* Login Forms */
+.login-form {
+    display: none;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.login-form.active {
+    display: block;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-family: var(--current-font);
+    font-weight: 500;
+    color: var(--current-text);
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    color: var(--current-text);
+    font-family: var(--current-font);
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--current-accent);
+    box-shadow: 0 0 0 2px rgba(var(--current-accent-rgb), 0.2);
+}
+
+.form-group input::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+/* Submit Button */
+.submit-button {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: rgba(var(--current-accent-rgb), 0.2);
+    border: 1px solid var(--current-accent);
+    border-radius: 4px;
+    color: var(--current-text);
+    font-family: var(--current-font);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.submit-button::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+    );
+    transition: all 0.5s ease;
+}
+
+.submit-button:hover::after {
+    left: 100%;
+}
+
+.submit-button:hover {
+    background-color: rgba(var(--current-accent-rgb), 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(var(--current-accent-rgb), 0.2);
+}
+
+/* Theme-specific Styles */
+.kotor-theme .login-container {
+    border: 2px solid var(--kotor-accent);
+    box-shadow: 0 0 15px var(--kotor-glow);
+}
+
+.jedi-theme .login-container {
+    border: 2px solid var(--jedi-accent2);
+    box-shadow: 0 0 15px var(--jedi-glow);
+}
+
+.professional-theme .login-container {
+    border: 2px solid var(--prof-accent);
+    box-shadow: 0 0 15px var(--prof-glow);
+}
+
+/* Responsive Styles */
+@media (max-width: 576px) {
+    .login-container {
+        width: 95%;
+        padding: 1.5rem;
+        margin: 2rem auto;
+    }
+    
+    .login-tab {
+        padding: 0.75rem;
+    }
+    
+    .form-group {
+        margin-bottom: 1rem;
+    }
+    
+    .form-group input,
+    .submit-button {
+        padding: 0.6rem;
+    }
+}
+
+/* Animation for form transition */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+} 

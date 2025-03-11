@@ -1,0 +1,89 @@
+/* ===== Jedi: Survivor Theme Styles ===== */
+/* This file contains styles specific to the Jedi: Survivor theme */
+
+body.jedi-theme {
+    --current-bg: var(--jedi-bg);
+    --current-dark: var(--jedi-dark);
+    --current-accent: var(--jedi-accent);
+    --current-accent-rgb: var(--jedi-accent-rgb);
+    --current-text: var(--jedi-text);
+    --current-text-secondary: var(--jedi-text-secondary);
+    --current-border: var(--jedi-border);
+    --current-glow: var(--jedi-glow);
+    --current-font: var(--jedi-font);
+}
+
+/* Jedi-specific UI adjustments */
+.jedi-theme .neural-grid {
+    background-size: 50px 50px;
+    opacity: 0.4;
+}
+
+.jedi-theme .neural-node {
+    box-shadow: 0 0 4px rgba(var(--jedi-accent-rgb), 0.3);
+}
+
+.jedi-theme .wave {
+    background: rgba(var(--jedi-accent-rgb), 0.05);
+}
+
+/* Jedi-specific message styling */
+.jedi-theme .ai-message .message-avatar {
+    background-color: var(--jedi-accent2);
+}
+
+.jedi-theme .ai-message .message-content {
+    border-left-color: var(--jedi-accent2);
+}
+
+.jedi-theme .ai-badge {
+    background-color: rgba(var(--jedi-accent-rgb), 0.2);
+    color: var(--jedi-accent);
+}
+
+.jedi-theme .message-text pre {
+    border-left-color: var(--jedi-accent);
+}
+
+.jedi-theme .send-button {
+    background-color: var(--jedi-accent);
+}
+
+.jedi-theme .send-button:hover:not(:disabled) {
+    background-color: rgba(var(--jedi-accent-rgb), 0.8);
+}
+
+/* Jedi-specific theme option highlight */
+.jedi-theme .theme-option[data-theme="jedi"] {
+    background-color: rgba(var(--jedi-accent-rgb), 0.2);
+}
+
+/* Jedi-specific typing indicator */
+.jedi-theme .typing-dots span {
+    background-color: var(--jedi-accent);
+}
+
+/* Jedi-specific scrollbar */
+.jedi-theme .chat-content::-webkit-scrollbar-thumb {
+    background-color: rgba(var(--jedi-accent-rgb), 0.3);
+}
+
+/* Jedi-specific button states */
+.jedi-theme .action-button.copied {
+    background-color: rgba(var(--jedi-accent-rgb), 0.3);
+}
+
+/* Jedi-specific form elements */
+.jedi-theme .chat-input:focus {
+    border-color: var(--jedi-accent);
+}
+
+.jedi-theme .chat-input-wrapper:focus-within {
+    border-color: var(--jedi-accent);
+    box-shadow: 0 0 5px rgba(var(--jedi-accent-rgb), 0.3);
+}
+
+/* Jedi-specific accent elements */
+.jedi-theme .chat-main {
+    border-left: 2px solid var(--jedi-accent2);
+} 

@@ -1,0 +1,102 @@
+/* ===== Professional Theme Styles ===== */
+/* This file contains styles specific to the Professional theme */
+
+body.professional-theme {
+    --current-bg: var(--prof-bg);
+    --current-dark: var(--prof-dark);
+    --current-accent: var(--prof-accent);
+    --current-accent-rgb: var(--prof-accent-rgb);
+    --current-text: var(--prof-text);
+    --current-text-secondary: var(--prof-text-secondary);
+    --current-border: var(--prof-border);
+    --current-glow: var(--prof-glow);
+    --current-font: var(--prof-font);
+}
+
+/* Professional-specific UI adjustments */
+.professional-theme .neural-grid {
+    background-size: 40px 40px;
+    opacity: 0.3;
+}
+
+.professional-theme .neural-node {
+    box-shadow: 0 0 4px rgba(var(--prof-accent-rgb), 0.3);
+}
+
+.professional-theme .wave {
+    background: rgba(var(--prof-accent-rgb), 0.04);
+}
+
+/* Professional-specific message styling */
+.professional-theme .ai-message .message-avatar {
+    background-color: var(--prof-accent);
+}
+
+.professional-theme .ai-message .message-content {
+    border-left-color: var(--prof-accent);
+}
+
+.professional-theme .ai-badge {
+    background-color: rgba(var(--prof-accent-rgb), 0.2);
+    color: var(--prof-accent);
+}
+
+.professional-theme .message-text pre {
+    border-left-color: var(--prof-accent);
+}
+
+.professional-theme .send-button {
+    background-color: var(--prof-accent);
+}
+
+.professional-theme .send-button:hover:not(:disabled) {
+    background-color: rgba(var(--prof-accent-rgb), 0.8);
+}
+
+/* Professional-specific theme option highlight */
+.professional-theme .theme-option[data-theme="professional"] {
+    background-color: rgba(var(--prof-accent-rgb), 0.2);
+}
+
+/* Professional-specific typing indicator */
+.professional-theme .typing-dots span {
+    background-color: var(--prof-accent);
+}
+
+/* Professional-specific scrollbar */
+.professional-theme .chat-content::-webkit-scrollbar-thumb {
+    background-color: rgba(var(--prof-accent-rgb), 0.3);
+}
+
+/* Professional-specific button states */
+.professional-theme .action-button.copied {
+    background-color: rgba(var(--prof-accent-rgb), 0.3);
+}
+
+/* Professional-specific form elements */
+.professional-theme .chat-input:focus {
+    border-color: var(--prof-accent);
+}
+
+.professional-theme .chat-input-wrapper:focus-within {
+    border-color: var(--prof-accent);
+    box-shadow: 0 0 5px rgba(var(--prof-accent-rgb), 0.3);
+}
+
+/* Professional-specific UI refinements */
+.professional-theme .chat-main {
+    border-left: 1px solid rgba(var(--prof-accent-rgb), 0.3);
+}
+
+.professional-theme .sidebar {
+    background: rgba(30, 30, 30, 0.95);
+}
+
+.professional-theme .chat-header,
+.professional-theme .chat-input-container {
+    background-color: rgba(20, 20, 20, 0.3);
+}
+
+.professional-theme .system-message .message-content {
+    background-color: rgba(20, 20, 20, 0.4);
+} 

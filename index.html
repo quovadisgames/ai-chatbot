@@ -27,14 +27,29 @@
         
         <!-- Theme Switcher -->
         <div class="theme-switcher">
-            <button class="theme-switcher-button">
-                <span class="current-theme">Theme</span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-            </button>
+            <div class="theme-button">
+                <button class="theme-switcher-button">
+                    <span class="current-theme">Theme</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+            </div>
             <div class="theme-switcher-dropdown">
                 <div class="theme-option" data-theme="kotor">KOTOR</div>
                 <div class="theme-option" data-theme="jedi">Jedi: Survivor</div>
                 <div class="theme-option" data-theme="professional">Professional</div>
+            </div>
+        </div>
+        
+        <!-- Effects Toggle -->
+        <div class="effects-toggle">
+            <div class="effects-toggle-button">
+                <span class="current-effect">None</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+                </svg>
+            </div>
+            <div class="effects-toggle-dropdown">
+                <div class="effect-option" data-effect="none">None</div>
             </div>
         </div>
         
@@ -119,332 +134,11 @@
         </footer>
     </div>
 
-    <script>
-        // Create particles for hero section
-        document.addEventListener('DOMContentLoaded', function() {
-            createParticles();
-            initCarousel();
-            initThemeSwitcher();
-            createNeuralNetwork();
-            createWaves();
-        });
-
-        function createParticles() {
-            const particlesContainer = document.getElementById('particles');
-            particlesContainer.innerHTML = '';
-            
-            // Determine particle count and style based on theme
-            let particleCount = 30;
-            let particleColor, particleOpacity, particleSize;
-            
-            // Get current theme
-            const currentTheme = localStorage.getItem('pdtAiTheme') || 'kotor';
-            
-            if (currentTheme === 'kotor') {
-                particleCount = 35;
-                particleColor = '#00BFFF';
-                particleOpacity = 0.45;
-                particleSize = 4;
-            } else if (currentTheme === 'jedi') {
-                particleCount = 40;
-                particleColor = '#00D4FF';
-                particleOpacity = 0.35;
-                particleSize = 3.5;
-            } else if (currentTheme === 'professional') {
-                particleCount = 32;
-                particleColor = '#0078D4';
-                particleOpacity = 0.28;
-                particleSize = 2.5;
-            }
-            
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                
-                // Apply theme-specific styling
-                particle.style.backgroundColor = particleColor;
-                particle.style.opacity = particleOpacity;
-                particle.style.width = `${particleSize}px`;
-                particle.style.height = `${particleSize}px`;
-                particle.style.boxShadow = `0 0 ${particleSize * 2}px ${particleColor}`;
-                
-                // Random position
-                const x = Math.random() * 100;
-                const y = Math.random() * 100;
-                particle.style.left = `${x}%`;
-                particle.style.top = `${y}%`;
-                
-                // Random drift direction and speed
-                const xDrift = (Math.random() - 0.5) * 400;
-                const yDrift = (Math.random() - 0.5) * 400;
-                particle.style.setProperty('--x-drift', `${xDrift}px`);
-                particle.style.setProperty('--y-drift', `${yDrift}px`);
-                
-                // Random animation duration
-                const duration = 2 + Math.random() * 5;
-                particle.style.setProperty('--drift-duration', `${duration}s`);
-                
-                // Random delay
-                const delay = Math.random() * 5;
-                particle.style.animationDelay = `${delay}s`;
-                
-                particlesContainer.appendChild(particle);
-            }
-        }
-
-        function initCarousel() {
-            const carousel = document.getElementById('showcase-carousel');
-            const dots = document.querySelectorAll('.carousel-dot');
-            
-            dots.forEach(dot => {
-                dot.addEventListener('click', function() {
-                    const slideIndex = this.getAttribute('data-slide');
-                    const slideWidth = carousel.querySelector('.carousel-slide').offsetWidth;
-                    
-                    carousel.scrollTo({
-                        left: slideWidth * slideIndex,
-                        behavior: 'smooth'
-                    });
-                    
-                    // Update active dot
-                    dots.forEach(d => d.classList.remove('active'));
-                    this.classList.add('active');
-                });
-            });
-            
-            // Update dots on scroll
-            carousel.addEventListener('scroll', function() {
-                const slideWidth = carousel.querySelector('.carousel-slide').offsetWidth;
-                const scrollPosition = carousel.scrollLeft;
-                const activeIndex = Math.round(scrollPosition / slideWidth);
-                
-                dots.forEach((dot, index) => {
-                    if (index === activeIndex) {
-                        dot.classList.add('active');
-                    } else {
-                        dot.classList.remove('active');
-                    }
-                });
-            });
-        }
-
-        // Initialize theme from localStorage or default to KOTOR
-        function initThemeSwitcher() {
-            const savedTheme = localStorage.getItem('pdtAiTheme') || 'kotor';
-            setTheme(savedTheme);
-            
-            const themeSwitcher = document.querySelector('.theme-switcher');
-            const themeButton = document.querySelector('.theme-switcher-button');
-            const themeOptions = document.querySelectorAll('.theme-option');
-            
-            // Toggle dropdown
-            themeButton.addEventListener('click', function() {
-                themeSwitcher.classList.toggle('active');
-            });
-            
-            // Close dropdown when clicking outside
-            document.addEventListener('click', function(event) {
-                if (!themeSwitcher.contains(event.target)) {
-                    themeSwitcher.classList.remove('active');
-                }
-            });
-            
-            // Theme selection
-            themeOptions.forEach(option => {
-                option.addEventListener('click', function() {
-                    const theme = this.getAttribute('data-theme');
-                    setTheme(theme);
-                    themeSwitcher.classList.remove('active');
-                });
-            });
-        }
-        
-        function setTheme(theme) {
-            // Create transition overlay
-            const overlay = document.createElement('div');
-            overlay.style.position = 'fixed';
-            overlay.style.top = '0';
-            overlay.style.left = '0';
-            overlay.style.width = '100%';
-            overlay.style.height = '100%';
-            overlay.style.backgroundColor = theme === 'kotor' ? '#00BFFF' : 
-                                           theme === 'jedi' ? '#00D4FF' : '#0078D4';
-            overlay.style.zIndex = '9999';
-            overlay.style.transformOrigin = 'left';
-            overlay.style.transform = 'scaleX(0)';
-            overlay.style.opacity = '0';
-            overlay.style.pointerEvents = 'none';
-            document.body.appendChild(overlay);
-            
-            // Animate the overlay
-            overlay.animate([
-                { transform: 'scaleX(0)', opacity: 0.3 },
-                { transform: 'scaleX(1)', opacity: 0.3 },
-                { transform: 'scaleX(1)', opacity: 0 }
-            ], {
-                duration: 500,
-                easing: 'ease-in-out'
-            }).onfinish = function() {
-                overlay.remove();
-            };
-            
-            // Remove all theme classes
-            document.body.classList.remove('kotor-theme', 'jedi-theme', 'professional-theme');
-            
-            // Add selected theme class
-            document.body.classList.add(`${theme}-theme`);
-            
-            // Update current theme text
-            document.querySelector('.current-theme').textContent = 
-                theme === 'kotor' ? 'KOTOR' : 
-                theme === 'jedi' ? 'Jedi: Survivor' : 
-                'Professional';
-            
-            // Save to localStorage
-            localStorage.setItem('pdtAiTheme', theme);
-            
-            // Recreate particles with theme-specific styling
-            createParticles();
-            
-            // Update neural network colors based on theme
-            updateNeuralNetworkColors(theme);
-            
-            // Update wave colors based on theme
-            updateWaveColors(theme);
-        }
-
-        // Create neural network nodes and connections
-        function createNeuralNetwork() {
-            const nodesContainer = document.getElementById('neural-nodes');
-            nodesContainer.innerHTML = '';
-            const nodeCount = 13;
-            const nodes = [];
-            
-            // Create nodes
-            for (let i = 0; i < nodeCount; i++) {
-                const node = document.createElement('div');
-                node.className = 'neural-node';
-                
-                // Random position
-                const x = Math.random() * 100;
-                const y = Math.random() * 100;
-                node.style.left = `${x}%`;
-                node.style.top = `${y}%`;
-                
-                nodes.push({
-                    element: node,
-                    x: x,
-                    y: y
-                });
-                
-                nodesContainer.appendChild(node);
-            }
-            
-            // Create connections between nodes
-            for (let i = 0; i < nodeCount; i++) {
-                const sourceNode = nodes[i];
-                
-                // Connect to 1-2 other nodes
-                const connectionCount = Math.floor(Math.random() * 2) + 1;
-                
-                for (let j = 0; j < connectionCount; j++) {
-                    // Select a random target node
-                    const targetIndex = Math.floor(Math.random() * nodeCount);
-                    if (targetIndex !== i) {
-                        const targetNode = nodes[targetIndex];
-                        
-                        const connection = document.createElement('div');
-                        connection.className = 'neural-connection';
-                        
-                        // Position at source node
-                        connection.style.left = `${sourceNode.x}%`;
-                        connection.style.top = `${sourceNode.y}%`;
-                        
-                        // Calculate length and angle
-                        const dx = targetNode.x - sourceNode.x;
-                        const dy = targetNode.y - sourceNode.y;
-                        const length = Math.sqrt(dx * dx + dy * dy);
-                        const angle = Math.atan2(dy, dx) * 180 / Math.PI;
-                        
-                        // Set width (length) and rotation
-                        connection.style.width = `${length}%`;
-                        connection.style.transform = `rotate(${angle}deg)`;
-                        
-                        nodesContainer.appendChild(connection);
-                    }
-                }
-            }
-            
-            // Update colors based on current theme
-            const currentTheme = localStorage.getItem('pdtAiTheme') || 'jedi';
-            updateNeuralNetworkColors(currentTheme);
-        }
-
-        // Update neural network colors based on theme
-        function updateNeuralNetworkColors(theme) {
-            const nodes = document.querySelectorAll('.neural-node');
-            const connections = document.querySelectorAll('.neural-connection');
-            
-            let nodeColor, connectionColor, nodeShadow;
-            
-            if (theme === 'kotor') {
-                nodeColor = 'rgba(var(--kotor-accent-rgb, 0, 191, 255), 0.5)';
-                connectionColor = 'rgba(var(--kotor-accent-rgb, 0, 191, 255), 0.3)';
-                nodeShadow = '0 0 4px rgba(var(--kotor-accent-rgb, 0, 191, 255), 0.3)';
-            } else if (theme === 'jedi') {
-                nodeColor = 'rgba(var(--jedi-accent-rgb, 0, 212, 255), 0.5)';
-                connectionColor = 'rgba(var(--jedi-accent-rgb, 0, 212, 255), 0.3)';
-                nodeShadow = '0 0 4px rgba(var(--jedi-accent-rgb, 0, 212, 255), 0.3)';
-            } else {
-                nodeColor = 'rgba(var(--prof-accent-rgb, 0, 120, 212), 0.5)';
-                connectionColor = 'rgba(var(--prof-accent-rgb, 0, 120, 212), 0.3)';
-                nodeShadow = '0 0 4px rgba(var(--prof-accent-rgb, 0, 120, 212), 0.3)';
-            }
-            
-            nodes.forEach(node => {
-                node.style.backgroundColor = nodeColor;
-                node.style.boxShadow = nodeShadow;
-            });
-            
-            connections.forEach(connection => {
-                connection.style.backgroundColor = connectionColor;
-            });
-        }
-
-        // Add wave effect to the hero section
-        function createWaves() {
-            const wavesContainer = document.getElementById('waves-container');
-            wavesContainer.innerHTML = '';
-            
-            // Create 3 wave layers
-            for (let i = 0; i < 3; i++) {
-                const wave = document.createElement('div');
-                wave.className = `wave wave-${i+1}`;
-                wavesContainer.appendChild(wave);
-            }
-            
-            // Update wave colors based on theme
-            updateWaveColors(localStorage.getItem('pdtAiTheme') || 'kotor');
-        }
-
-        // Update wave colors based on theme
-        function updateWaveColors(theme) {
-            const waves = document.querySelectorAll('.wave');
-            let waveColor;
-            
-            if (theme === 'kotor') {
-                waveColor = 'rgba(var(--kotor-accent-rgb, 0, 191, 255), ';
-            } else if (theme === 'jedi') {
-                waveColor = 'rgba(var(--jedi-accent-rgb, 0, 212, 255), ';
-            } else {
-                waveColor = 'rgba(var(--prof-accent-rgb, 0, 120, 212), ';
-            }
-            
-            waves.forEach((wave, index) => {
-                const opacity = 0.09 - (index * 0.015);
-                wave.style.background = `${waveColor}${opacity})`;
-            });
-        }
-    </script>
+    <!-- JavaScript Files -->
+    <script src="js/landing-page/main.js"></script>
+    <script src="js/landing-page/theme-switcher.js"></script>
+    <script src="js/landing-page/carousel.js"></script>
+    <script src="js/landing-page/effects-toggle.js"></script>
+    <script src="js/landing-page/background-effects.js"></script>
 </body>
 </html>

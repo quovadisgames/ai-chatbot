@@ -339,7 +339,7 @@ export function Chat({
   
   // Function to stop the ongoing request
   const stop = () => {
-    setIsLoading(false);
+      setIsLoading(false);
     toast.info(`You interrupted the response.`);
   };
 
@@ -416,7 +416,7 @@ export function Chat({
   
   // Calculate XP progress percentage
   const xpProgressPercentage = (xpLevel.progress / xpLevel.max) * 100;
-  
+
   return (
     <div className="chat-layout">
       {/* Left Sidebar - Chat History */}
@@ -439,8 +439,8 @@ export function Chat({
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="search-input"
-          />
-        </div>
+        />
+      </div>
         
         <div className="chat-history-list">
           {filteredHistory.map(chat => (
@@ -486,7 +486,7 @@ export function Chat({
             
             <SimpleTokenDisplay 
               current={tokenUsage.current} 
-              limit={tokenUsage.limit}
+              limit={tokenUsage.limit} 
               label="Tokens"
             />
             

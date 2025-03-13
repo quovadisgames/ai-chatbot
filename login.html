@@ -65,387 +65,98 @@
             </div>
         </div>
         
+        <!-- Login container -->
         <div class="login-container">
-            <div class="login-tabs">
-                <div class="login-tab active" data-tab="login">Login</div>
-                <div class="login-tab" data-tab="signup">Sign Up</div>
+            <div class="login-card">
+                <div class="login-header">
+                    <h1>Welcome to PDT AI</h1>
+                    <p>Please sign in to continue</p>
+                </div>
+                
+                <form id="login-form" class="login-form">
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" name="username" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" required>
+                        <button type="button" id="toggle-password" class="toggle-password">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                        </button>
+                    </div>
+                    
+                    <div class="form-options">
+                        <div class="remember-me">
+                            <input type="checkbox" id="remember" name="remember">
+                            <label for="remember">Remember me</label>
+                        </div>
+                        <a href="#" class="forgot-password">Forgot password?</a>
+                    </div>
+                    
+                    <button type="submit" class="login-button">Sign In</button>
+                </form>
+                
+                <div class="login-footer">
+                    <p>Don't have an account? <a href="#">Contact your administrator</a></p>
+                </div>
             </div>
-            
-            <form class="login-form active" id="login-form">
-                <div class="form-group">
-                    <label for="login-email">Email</label>
-                    <input type="email" id="login-email" placeholder="Enter your email" required>
-                </div>
-                <div class="form-group">
-                    <label for="login-password">Password</label>
-                    <input type="password" id="login-password" placeholder="Enter your password" required>
-                </div>
-                <button type="button" class="submit-button" onclick="window.location.href='main-menu.html'">Login</button>
-            </form>
-            
-            <form class="login-form" id="signup-form">
-                <div class="form-group">
-                    <label for="signup-name">Name</label>
-                    <input type="text" id="signup-name" placeholder="Enter your name" required>
-                </div>
-                <div class="form-group">
-                    <label for="signup-email">Email</label>
-                    <input type="email" id="signup-email" placeholder="Enter your email" required>
-                </div>
-                <div class="form-group">
-                    <label for="signup-password">Password</label>
-                    <input type="password" id="signup-password" placeholder="Enter your password" required>
-                </div>
-                <button type="button" class="submit-button" onclick="window.location.href='main-menu.html'">Sign Up</button>
-            </form>
         </div>
     </div>
     
+    <!-- JavaScript -->
+    <script src="js/theme-switcher.js"></script>
+    <script src="js/background-effects.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Initialize tabs
-            initTabs();
-            
-            // Initialize theme switcher
-            initThemeSwitcher();
-            
-            // Create background effects
-            createNeuralNetwork();
-            createParticles();
-            createWaves();
+            // Initialize login form
+            initLoginForm();
         });
         
-        // Tab functionality
-        function initTabs() {
-            const tabs = document.querySelectorAll('.login-tab');
-            const forms = document.querySelectorAll('.login-form');
+        function initLoginForm() {
+            const loginForm = document.getElementById('login-form');
+            const togglePasswordButton = document.getElementById('toggle-password');
+            const passwordInput = document.getElementById('password');
             
-            tabs.forEach(tab => {
-                tab.addEventListener('click', function() {
-                    const tabId = this.getAttribute('data-tab');
+            // Toggle password visibility
+            if (togglePasswordButton && passwordInput) {
+                togglePasswordButton.addEventListener('click', function() {
+                    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                    passwordInput.setAttribute('type', type);
                     
-                    // Remove active class from all tabs and forms
-                    tabs.forEach(t => t.classList.remove('active'));
-                    forms.forEach(f => f.classList.remove('active'));
-                    
-                    // Add active class to current tab and form
-                    this.classList.add('active');
-                    document.getElementById(tabId + '-form').classList.add('active');
-                });
-            });
-        }
-        
-        // Theme switcher functionality
-        function initThemeSwitcher() {
-            const savedTheme = localStorage.getItem('pdtAiTheme') || 'jedi';
-            setTheme(savedTheme);
-            
-            const themeSwitcher = document.querySelector('.theme-switcher');
-            const themeButton = document.querySelector('.theme-switcher-button');
-            const themeOptions = document.querySelectorAll('.theme-option');
-            
-            // Toggle dropdown
-            themeButton.addEventListener('click', function() {
-                themeSwitcher.classList.toggle('active');
-            });
-            
-            // Close dropdown when clicking outside
-            document.addEventListener('click', function(event) {
-                if (!themeSwitcher.contains(event.target)) {
-                    themeSwitcher.classList.remove('active');
-                }
-            });
-            
-            // Theme selection
-            themeOptions.forEach(option => {
-                option.addEventListener('click', function() {
-                    const theme = this.getAttribute('data-theme');
-                    setTheme(theme);
-                    themeSwitcher.classList.remove('active');
-                });
-            });
-        }
-        
-        function setTheme(theme) {
-            // Create transition overlay
-            const overlay = document.createElement('div');
-            overlay.style.position = 'fixed';
-            overlay.style.top = '0';
-            overlay.style.left = '0';
-            overlay.style.width = '100%';
-            overlay.style.height = '100%';
-            overlay.style.backgroundColor = theme === 'kotor' ? '#00BFFF' : 
-                                           theme === 'jedi' ? '#00D4FF' : '#0078D4';
-            overlay.style.zIndex = '9999';
-            overlay.style.transformOrigin = 'left';
-            overlay.style.transform = 'scaleX(0)';
-            overlay.style.opacity = '0';
-            overlay.style.pointerEvents = 'none';
-            document.body.appendChild(overlay);
-            
-            // Animate the overlay
-            overlay.animate([
-                { transform: 'scaleX(0)', opacity: 0.3 },
-                { transform: 'scaleX(1)', opacity: 0.3 },
-                { transform: 'scaleX(1)', opacity: 0 }
-            ], {
-                duration: 500,
-                easing: 'ease-in-out'
-            }).onfinish = function() {
-                overlay.remove();
-            };
-            
-            // Remove all theme classes
-            document.body.classList.remove('kotor-theme', 'jedi-theme', 'professional-theme');
-            
-            // Add selected theme class
-            document.body.classList.add(`${theme}-theme`);
-            
-            // Update current theme text
-            document.querySelector('.current-theme').textContent = 
-                theme === 'kotor' ? 'KOTOR' : 
-                theme === 'jedi' ? 'Jedi: Survivor' : 
-                'Professional';
-            
-            // Save to localStorage
-            localStorage.setItem('pdtAiTheme', theme);
-            
-            // Update login container styling based on theme
-            const loginContainer = document.querySelector('.login-container');
-            if (theme === 'kotor') {
-                loginContainer.style.border = '2px solid var(--kotor-accent)';
-                loginContainer.style.boxShadow = '0 0 10px var(--kotor-accent)';
-            } else if (theme === 'jedi') {
-                loginContainer.style.border = '2px solid var(--jedi-accent2)';
-                loginContainer.style.boxShadow = '0 0 10px var(--jedi-accent)';
-            } else {
-                loginContainer.style.border = '2px solid var(--prof-accent)';
-                loginContainer.style.boxShadow = '0 0 10px var(--prof-accent)';
-            }
-            
-            // Update back link and theme switcher button styling
-            const backLink = document.querySelector('.back-link');
-            const themeButton = document.querySelector('.theme-switcher-button');
-            const themeDropdown = document.querySelector('.theme-switcher-dropdown');
-            
-            if (theme === 'kotor') {
-                backLink.style.border = '1px solid var(--kotor-accent)';
-                themeButton.style.border = '1px solid var(--kotor-accent)';
-                themeDropdown.style.border = '1px solid var(--kotor-accent)';
-            } else if (theme === 'jedi') {
-                backLink.style.border = '1px solid var(--jedi-accent)';
-                themeButton.style.border = '1px solid var(--jedi-accent)';
-                themeDropdown.style.border = '1px solid var(--jedi-accent)';
-            } else {
-                backLink.style.border = '1px solid var(--prof-accent)';
-                themeButton.style.border = '1px solid var(--prof-accent)';
-                themeDropdown.style.border = '1px solid var(--prof-accent)';
-            }
-            
-            // Recreate background effects with theme-specific styling
-            createParticles();
-            updateNeuralNetworkColors(theme);
-            updateWaveColors(theme);
-        }
-        
-        // Create neural network nodes and connections
-        function createNeuralNetwork() {
-            const nodesContainer = document.getElementById('neural-nodes');
-            nodesContainer.innerHTML = '';
-            const nodeCount = 13; // Reduced count as requested
-            const nodes = [];
-            
-            // Create nodes
-            for (let i = 0; i < nodeCount; i++) {
-                const node = document.createElement('div');
-                node.className = 'neural-node';
-                
-                // Random position
-                const x = Math.random() * 100;
-                const y = Math.random() * 100;
-                node.style.left = `${x}%`;
-                node.style.top = `${y}%`;
-                
-                nodes.push({
-                    element: node,
-                    x: x,
-                    y: y
-                });
-                
-                nodesContainer.appendChild(node);
-            }
-            
-            // Create connections between nodes
-            for (let i = 0; i < nodeCount; i++) {
-                const sourceNode = nodes[i];
-                
-                // Connect to 1-2 other nodes (reduced from 2-4)
-                const connectionCount = Math.floor(Math.random() * 2) + 1;
-                
-                for (let j = 0; j < connectionCount; j++) {
-                    // Select a random target node
-                    const targetIndex = Math.floor(Math.random() * nodeCount);
-                    if (targetIndex !== i) {
-                        const targetNode = nodes[targetIndex];
-                        
-                        const connection = document.createElement('div');
-                        connection.className = 'neural-connection';
-                        
-                        // Position at source node
-                        connection.style.left = `${sourceNode.x}%`;
-                        connection.style.top = `${sourceNode.y}%`;
-                        
-                        // Calculate length and angle
-                        const dx = targetNode.x - sourceNode.x;
-                        const dy = targetNode.y - sourceNode.y;
-                        const length = Math.sqrt(dx * dx + dy * dy);
-                        const angle = Math.atan2(dy, dx) * 180 / Math.PI;
-                        
-                        // Set width (length) and rotation
-                        connection.style.width = `${length}%`;
-                        connection.style.transform = `rotate(${angle}deg)`;
-                        
-                        nodesContainer.appendChild(connection);
+                    // Toggle icon
+                    const icon = this.querySelector('svg');
+                    if (type === 'text') {
+                        icon.innerHTML = '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>';
+                    } else {
+                        icon.innerHTML = '<path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>';
                     }
-                }
+                });
             }
             
-            // Update colors based on current theme
-            const currentTheme = localStorage.getItem('pdtAiTheme') || 'jedi';
-            updateNeuralNetworkColors(currentTheme);
-        }
-        
-        // Update neural network colors based on theme
-        function updateNeuralNetworkColors(theme) {
-            const nodes = document.querySelectorAll('.neural-node');
-            const connections = document.querySelectorAll('.neural-connection');
-            
-            let nodeColor, connectionColor, nodeShadow;
-            
-            if (theme === 'kotor') {
-                nodeColor = 'rgba(var(--kotor-accent-rgb, 0, 191, 255), 0.5)';
-                connectionColor = 'rgba(var(--kotor-accent-rgb, 0, 191, 255), 0.2)';
-                nodeShadow = '0 0 4px rgba(var(--kotor-accent-rgb, 0, 191, 255), 0.3)';
-            } else if (theme === 'jedi') {
-                nodeColor = 'rgba(var(--jedi-accent-rgb, 0, 212, 255), 0.5)';
-                connectionColor = 'rgba(var(--jedi-accent-rgb, 0, 212, 255), 0.2)';
-                nodeShadow = '0 0 4px rgba(var(--jedi-accent-rgb, 0, 212, 255), 0.3)';
-            } else {
-                nodeColor = 'rgba(var(--prof-accent-rgb, 0, 120, 212), 0.5)';
-                connectionColor = 'rgba(var(--prof-accent-rgb, 0, 120, 212), 0.2)';
-                nodeShadow = '0 0 4px rgba(var(--prof-accent-rgb, 0, 120, 212), 0.3)';
+            // Form submission
+            if (loginForm) {
+                loginForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const username = document.getElementById('username').value;
+                    const password = document.getElementById('password').value;
+                    
+                    // Simple validation
+                    if (username && password) {
+                        // Show loading state
+                        const loginButton = document.querySelector('.login-button');
+                        loginButton.textContent = 'Signing in...';
+                        loginButton.disabled = true;
+                        
+                        // Simulate login (replace with actual authentication)
+                        setTimeout(() => {
+                            window.location.href = 'main-menu.html';
+                        }, 1500);
+                    }
+                });
             }
-            
-            nodes.forEach(node => {
-                node.style.backgroundColor = nodeColor;
-                node.style.boxShadow = nodeShadow;
-            });
-            
-            connections.forEach(connection => {
-                connection.style.backgroundColor = connectionColor;
-            });
-        }
-        
-        // Create particles
-        function createParticles() {
-            const particlesContainer = document.getElementById('particles');
-            particlesContainer.innerHTML = '';
-            
-            // Determine particle count and style based on theme
-            let particleCount, particleColor, particleOpacity, particleSize, particleGlow;
-            
-            // Get current theme
-            const currentTheme = localStorage.getItem('pdtAiTheme') || 'jedi';
-            
-            if (currentTheme === 'kotor') {
-                particleCount = 10; // Reduced for performance
-                particleColor = '#00BFFF';
-                particleOpacity = 0.45;
-                particleSize = 4;
-                particleGlow = '0 0 8px #00BFFF';
-            } else if (currentTheme === 'jedi') {
-                particleCount = 10; // Reduced for performance
-                particleColor = '#00D4FF';
-                particleOpacity = 0.35;
-                particleSize = 3.5;
-                particleGlow = '0 0 7px #00D4FF';
-            } else if (currentTheme === 'professional') {
-                particleCount = 8; // Reduced for performance
-                particleColor = '#0078D4';
-                particleOpacity = 0.28;
-                particleSize = 2.5;
-                particleGlow = '0 0 5px #0078D4';
-            }
-            
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                
-                // Apply theme-specific styling
-                particle.style.backgroundColor = particleColor;
-                particle.style.opacity = particleOpacity;
-                particle.style.width = `${particleSize}px`;
-                particle.style.height = `${particleSize}px`;
-                particle.style.boxShadow = particleGlow;
-                
-                // Random position
-                const x = Math.random() * 100;
-                const y = Math.random() * 100;
-                particle.style.left = `${x}%`;
-                particle.style.top = `${y}%`;
-                
-                // Random drift direction and speed
-                const xDrift = (Math.random() - 0.5) * 400;
-                const yDrift = (Math.random() - 0.5) * 400;
-                particle.style.setProperty('--x-drift', `${xDrift}px`);
-                particle.style.setProperty('--y-drift', `${yDrift}px`);
-                
-                // Random animation duration
-                const duration = 2 + Math.random() * 5;
-                particle.style.setProperty('--drift-duration', `${duration}s`);
-                
-                // Random delay
-                const delay = Math.random() * 5;
-                particle.style.animationDelay = `${delay}s`;
-                
-                particlesContainer.appendChild(particle);
-            }
-        }
-        
-        // Create waves
-        function createWaves() {
-            const wavesContainer = document.getElementById('waves-container');
-            wavesContainer.innerHTML = '';
-            
-            // Create 3 wave layers
-            for (let i = 0; i < 3; i++) {
-                const wave = document.createElement('div');
-                wave.className = `wave wave-${i+1}`;
-                wavesContainer.appendChild(wave);
-            }
-            
-            // Update wave colors based on theme
-            const currentTheme = localStorage.getItem('pdtAiTheme') || 'jedi';
-            updateWaveColors(currentTheme);
-        }
-        
-        // Update wave colors based on theme
-        function updateWaveColors(theme) {
-            const waves = document.querySelectorAll('.wave');
-            let waveColor;
-            
-            if (theme === 'kotor') {
-                waveColor = 'rgba(var(--kotor-accent-rgb, 0, 191, 255), ';
-            } else if (theme === 'jedi') {
-                waveColor = 'rgba(var(--jedi-accent-rgb, 0, 212, 255), ';
-            } else {
-                waveColor = 'rgba(var(--prof-accent-rgb, 0, 120, 212), ';
-            }
-            
-            waves.forEach((wave, index) => {
-                const opacity = 0.09 - (index * 0.015);
-                wave.style.background = `${waveColor}${opacity})`;
-            });
         }
     </script>
 </body>

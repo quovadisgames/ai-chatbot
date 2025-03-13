@@ -3,55 +3,92 @@
 
 /* ===== SHARED VARIABLES ===== */
 :root {
-    /* PDT AI Brand Colors */
-    --pdt-accent: #00A1D6;
-    --pdt-accent-rgb: 0, 161, 214;
-    --pdt-dark: #0D0D0D;
-    --pdt-light: #E0E1DD;
+    /* Base colors */
+    --bg-primary: rgba(20, 20, 20, 0.95);
+    --bg-secondary: rgba(30, 30, 30, 0.9);
+    --bg-tertiary: rgba(40, 40, 40, 0.95);
+    --bg-quaternary: rgba(50, 50, 50, 1);
+    
+    /* Text colors */
+    --text-primary: rgba(255, 255, 255, 0.9);
+    --text-secondary: rgba(255, 255, 255, 0.7);
+    --text-tertiary: rgba(255, 255, 255, 0.5);
+    
+    /* Border colors */
+    --border-color: rgba(255, 255, 255, 0.1);
+    --border-hover: rgba(255, 255, 255, 0.2);
+    
+    /* Accent colors */
+    --accent-blue: #3498db;
+    --accent-green: #2ecc71;
+    --accent-red: #e74c3c;
+    --accent-yellow: #f1c40f;
+    --accent-purple: #9b59b6;
+    
+    /* Fonts */
+    --body-font: 'Inter', sans-serif;
+    --heading-font: 'Exo 2', sans-serif;
+    --mono-font: 'Courier New', monospace;
+    
+    /* Dimensions */
+    --navbar-height: 60px;
+    --sidebar-width: 300px;
+    --sidebar-collapsed-width: 0px;
     
     /* KOTOR Theme Variables */
-    --kotor-bg: #1A2526;
-    --kotor-dark: #0F1419;
-    --kotor-accent: #00BFFF;
+    --kotor-bg: rgba(15, 25, 35, 0.95);
+    --kotor-dark: rgba(10, 15, 25, 1);
+    --kotor-accent: #00bfff; /* Light blue */
     --kotor-accent-rgb: 0, 191, 255;
-    --kotor-warning: #FF4500;
-    --kotor-success: #32CD32;
-    --kotor-text: #FFFFFF;
-    --kotor-text-secondary: rgba(255, 255, 255, 0.7);
-    --kotor-border: rgba(0, 191, 255, 0.5);
-    --kotor-glow: rgba(0, 191, 255, 0.3);
-    --kotor-font: 'Exo 2', monospace;
+    --kotor-text: rgba(220, 230, 255, 0.9);
+    --kotor-text-secondary: rgba(180, 200, 255, 0.7);
+    --kotor-border: rgba(0, 191, 255, 0.3);
+    --kotor-glow: rgba(0, 191, 255, 0.2);
+    --kotor-font: 'Rajdhani';
     
     /* Jedi Survivor Theme Variables */
-    --jedi-bg: #000000;
-    --jedi-dark: #0D0D0D;
-    --jedi-accent: #00D4FF;
-    --jedi-accent-rgb: 0, 212, 255;
-    --jedi-secondary: #8A8D93;
-    --jedi-highlight: #A7C7E7;
-    --jedi-warning: #FF4500;
-    --jedi-success: #32CD32;
-    --jedi-text: #FFFFFF;
-    --jedi-text-secondary: #8A8D93;
-    --jedi-border: rgba(255, 255, 255, 0.15);
-    --jedi-glow: rgba(167, 199, 231, 0.3);
-    --jedi-font: 'Rajdhani', sans-serif;
-    --jedi-accent2: #FFB703;
+    --jedi-bg: rgba(20, 20, 25, 0.95);
+    --jedi-dark: rgba(15, 15, 20, 1);
+    --jedi-accent: #4ade80; /* Green */
+    --jedi-accent-rgb: 74, 222, 128;
+    --jedi-text: rgba(230, 230, 230, 0.9);
+    --jedi-text-secondary: rgba(200, 200, 200, 0.7);
+    --jedi-border: rgba(74, 222, 128, 0.3);
+    --jedi-glow: rgba(74, 222, 128, 0.2);
+    --jedi-font: 'Exo 2';
     
     /* Professional Theme Variables */
-    --prof-bg: #2E2E2E;
-    --prof-dark: #1E1E1E;
-    --prof-accent: #0078D4;
-    --prof-accent-rgb: 0, 120, 212;
-    --prof-warning: #FF4500;
-    --prof-success: #32CD32;
-    --prof-text: #F5F5F5;
-    --prof-text-secondary: rgba(245, 245, 245, 0.7);
-    --prof-border: rgba(0, 120, 212, 0.5);
-    --prof-glow: rgba(0, 120, 212, 0.3);
-    --prof-font: 'Inter', sans-serif;
+    --professional-bg: rgba(25, 25, 30, 0.95);
+    --professional-dark: rgba(20, 20, 25, 1);
+    --professional-accent: #6366f1; /* Indigo */
+    --professional-accent-rgb: 99, 102, 241;
+    --professional-text: rgba(240, 240, 245, 0.9);
+    --professional-text-secondary: rgba(210, 210, 215, 0.7);
+    --professional-border: rgba(99, 102, 241, 0.3);
+    --professional-glow: rgba(99, 102, 241, 0.2);
+    --professional-font: 'Inter';
+}
+
+/* Theme Classes */
+.kotor-theme {
+    /* Apply KOTOR theme variables */
+    --current-bg: var(--kotor-bg);
+    --current-dark: var(--kotor-dark);
+    --current-accent: var(--kotor-accent);
+    --current-accent-rgb: var(--kotor-accent-rgb);
+    --current-text: var(--kotor-text);
+    --current-text-secondary: var(--kotor-text-secondary);
+    --current-border: var(--kotor-border);
+    --current-glow: var(--kotor-glow);
+    --current-font: var(--kotor-font);
     
-    /* Current Theme Variables (set by theme classes) */
+    /* Override base colors */
+    background-color: var(--kotor-bg);
+    color: var(--kotor-text);
+    font-family: var(--kotor-font), var(--body-font);
+}
+
+.jedi-theme {
     --current-bg: var(--jedi-bg);
     --current-dark: var(--jedi-dark);
     --current-accent: var(--jedi-accent);
@@ -63,6 +100,18 @@
     --current-font: var(--jedi-font);
 }
 
+.professional-theme {
+    --current-bg: var(--professional-bg);
+    --current-dark: var(--professional-dark);
+    --current-accent: var(--professional-accent);
+    --current-accent-rgb: var(--professional-accent-rgb);
+    --current-text: var(--professional-text);
+    --current-text-secondary: var(--professional-text-secondary);
+    --current-border: var(--professional-border);
+    --current-glow: var(--professional-glow);
+    --current-font: var(--professional-font);
+}
+
 /* ===== RESET & BASE STYLES ===== */
 * {
     margin: 0;
@@ -72,53 +121,134 @@
 
 html, body {
     height: 100%;
-    width: 100%;
+    font-family: var(--body-font);
     font-size: 16px;
-    overflow-x: hidden;
+    line-height: 1.5;
+    color: var(--text-primary);
+    background-color: #000;
+    overflow: hidden;
 }
 
 body {
-    font-family: 'Inter', sans-serif;
-    background-color: var(--pdt-dark);
-    color: var(--pdt-light);
-    min-height: 100vh;
-    overflow-x: hidden;
-    line-height: 1.5;
+    position: relative;
+}
+
+a {
+    color: var(--current-accent);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+a:hover {
+    color: rgba(var(--current-accent-rgb), 0.8);
+}
+
+button {
+    background: none;
+    border: none;
+    font-family: var(--body-font);
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+input, textarea {
+    font-family: var(--body-font);
+    font-size: 1rem;
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 8px 12px;
+    transition: all 0.2s ease;
+}
+
+input:focus, textarea:focus {
+    outline: none;
+    border-color: var(--current-accent);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--heading-font);
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-tertiary);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(var(--current-accent-rgb), 0.5);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(var(--current-accent-rgb), 0.7);
+}
+
+.hidden {
+    display: none !important;
+}
+
+.flex {
+    display: flex;
+}
+
+.flex-column {
     display: flex;
     flex-direction: column;
 }
 
-a {
-    color: inherit;
-    text-decoration: none;
+.align-center {
+    align-items: center;
 }
 
-button, input, select, textarea {
-    font-family: inherit;
-    font-size: inherit;
-    color: inherit;
+.justify-center {
+    justify-content: center;
 }
 
-button {
-    cursor: pointer;
+.space-between {
+    justify-content: space-between;
 }
 
-ul, ol {
-    list-style: none;
+.text-center {
+    text-align: center;
 }
 
 /* ===== LAYOUT COMPONENTS ===== */
 
 /* Main Container */
 .main-container {
-    min-height: 100vh;
-    background: radial-gradient(circle at center, var(--current-bg) 0%, #0D0D0D 100%);
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
-    position: relative;
-    overflow-x: hidden;
-    overflow-y: auto;
-    animation: fadeIn 1s ease-in-out;
+}
+
+/* Navigation */
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background-color: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-color);
+    z-index: 100;
+    height: 60px;
 }
 
 /* Neural Network */
@@ -351,8 +481,8 @@ ul, ol {
 }
 
 @keyframes slideIn {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
 }
 
 @keyframes pulseGrid {
@@ -393,14 +523,9 @@ ul, ol {
 }
 
 @keyframes pulse {
-    0%, 100% {
-        transform: scale(1);
-        opacity: 0.5;
-    }
-    50% {
-        transform: scale(1.3);
-        opacity: 0.8;
-    }
+    0% { opacity: 0.6; }
+    50% { opacity: 1; }
+    100% { opacity: 0.6; }
 }
 
 /* ===== CHAT INTERFACE STYLES ===== */

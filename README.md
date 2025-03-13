@@ -1,61 +1,76 @@
-<a href="https://chat.vercel.ai/">
-  <img alt="Next.js 14 and App Router-ready AI chatbot." src="app/(chat)/opengraph-image.png">
-  <h1 align="center">Next.js AI Chatbot</h1>
-</a>
+# PDT AI Chat Interface
 
-<p align="center">
-  An Open-Source AI Chatbot Template Built With Next.js and the AI SDK by Vercel.
-</p>
-
-<p align="center">
-  <a href="#features"><strong>Features</strong></a> ·
-  <a href="#model-providers"><strong>Model Providers</strong></a> ·
-  <a href="#deploy-your-own"><strong>Deploy Your Own</strong></a> ·
-  <a href="#running-locally"><strong>Running locally</strong></a>
-</p>
-<br/>
+A modern, responsive chat interface for AI interactions with a Star Wars KOTOR theme.
 
 ## Features
 
-- [Next.js](https://nextjs.org) App Router
-  - Advanced routing for seamless navigation and performance
-  - React Server Components (RSCs) and Server Actions for server-side rendering and increased performance
-- [AI SDK](https://sdk.vercel.ai/docs)
-  - Unified API for generating text, structured objects, and tool calls with LLMs
-  - Hooks for building dynamic chat and generative user interfaces
-  - Supports OpenAI (default), Anthropic, Cohere, and other model providers
-- [shadcn/ui](https://ui.shadcn.com)
-  - Styling with [Tailwind CSS](https://tailwindcss.com)
-  - Component primitives from [Radix UI](https://radix-ui.com) for accessibility and flexibility
-- Data Persistence
-  - [Vercel Postgres powered by Neon](https://vercel.com/storage/postgres) for saving chat history and user data
-  - [Vercel Blob](https://vercel.com/storage/blob) for efficient file storage
-- [NextAuth.js](https://github.com/nextauthjs/next-auth)
-  - Simple and secure authentication
+### Core Chat Functionality
+- **Message Exchange**: Seamless conversation flow between user and AI
+- **Message Formatting**: Support for text formatting, code blocks, and other rich content
+- **Typing Indicators**: Visual feedback when the AI is generating a response
+- **Message Actions**: Copy, regenerate, and rate responses
+- **Thread Support**: Organize conversations into threads for better context management
 
-## Model Providers
+### Enhanced Code Experience
+- **Syntax Highlighting**: Automatic language detection and syntax highlighting for code blocks
+- **Code Actions**: Copy and expand code blocks with a single click
+- **Code Modal**: Expanded view for code with line numbers and additional actions
+- **Run Code Option**: Execute code snippets directly from the chat interface
 
-This template ships with OpenAI `gpt-4o` as the default. However, with the [AI SDK](https://sdk.vercel.ai/docs), you can switch LLM providers to [OpenAI](https://openai.com), [Anthropic](https://anthropic.com), [Cohere](https://cohere.com/), and [many more](https://sdk.vercel.ai/providers/ai-sdk-providers) with just a few lines of code.
+### Persona Management
+- **Drag-and-Drop Interface**: Easily add personas to conversations
+- **Multi-Select**: Select multiple personas at once for group conversations
+- **Search Functionality**: Quickly find personas by name or role
+- **Premium Personas**: Access to special AI personas with enhanced capabilities
+- **Token Impact**: Visual indicator of how personas affect token usage
 
-## Deploy Your Own
+### User Experience
+- **Responsive Design**: Optimized for desktop, tablet, and mobile devices
+- **Theme Support**: KOTOR theme with dark mode aesthetics
+- **Notification System**: Informative notifications for user actions and system events
+- **Accessibility**: ARIA labels and keyboard navigation support
 
-You can deploy your own version of the Next.js AI Chatbot to Vercel with one click:
+### Visual Enhancements
+- **Animated Elements**: Subtle animations for improved user engagement
+- **Resource Bar**: Visual representation of system resources (Force points)
+- **Participant Management**: Easy-to-use interface for managing conversation participants
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fai-chatbot&env=AUTH_SECRET,OPENAI_API_KEY&envDescription=Learn%20more%20about%20how%20to%20get%20the%20API%20Keys%20for%20the%20application&envLink=https%3A%2F%2Fgithub.com%2Fvercel%2Fai-chatbot%2Fblob%2Fmain%2F.env.example&demo-title=AI%20Chatbot&demo-description=An%20Open-Source%20AI%20Chatbot%20Template%20Built%20With%20Next.js%20and%20the%20AI%20SDK%20by%20Vercel.&demo-url=https%3A%2F%2Fchat.vercel.ai&stores=[{%22type%22:%22postgres%22},{%22type%22:%22blob%22}])
+## Technical Implementation
 
-## Running locally
+### CSS Architecture
+- **Theme Variables**: Centralized color scheme and styling variables
+- **Component-Based Styling**: Modular CSS for maintainable code
+- **Responsive Grid Layout**: Flexible layout that adapts to different screen sizes
+- **Animation System**: Consistent animation timing and effects
 
-You will need to use the environment variables [defined in `.env.example`](.env.example) to run Next.js AI Chatbot. It's recommended you use [Vercel Environment Variables](https://vercel.com/docs/projects/environment-variables) for this, but a `.env` file is all that is necessary.
+### JavaScript Modules
+- **Chat Input Handling**: Auto-resizing input area with keyboard shortcuts
+- **Code Block Interactions**: Expandable code blocks with syntax highlighting
+- **Notification System**: Customizable notifications with different types and durations
+- **Drag-and-Drop API**: Intuitive persona management with drag-and-drop functionality
 
-> Note: You should not commit your `.env` file or it will expose secrets that will allow others to control access to your various OpenAI and authentication provider accounts.
+### Accessibility
+- **Semantic HTML**: Proper use of HTML elements for better screen reader support
+- **ARIA Attributes**: Enhanced accessibility for interactive elements
+- **Keyboard Navigation**: Complete keyboard support for all interactions
+- **Focus Management**: Proper focus handling for modals and interactive elements
 
-1. Install Vercel CLI: `npm i -g vercel`
-2. Link local instance with Vercel and GitHub accounts (creates `.vercel` directory): `vercel link`
-3. Download your environment variables: `vercel env pull`
+## Getting Started
 
-```bash
-pnpm install
-pnpm dev
-```
+1. Clone the repository
+2. Open `chat.html` in your browser
+3. Interact with the AI chat interface
+4. Experiment with different personas and features
 
-Your app template should now be running on [localhost:3000](http://localhost:3000/).
+## Browser Support
+
+- Chrome (latest)
+- Firefox (latest)
+- Safari (latest)
+- Edge (latest)
+
+## Credits
+
+- Star Wars KOTOR theme inspired by the classic BioWare game
+- Icons from Feather Icons (https://feathericons.com/)
+- Font families: Inter, JetBrains Mono

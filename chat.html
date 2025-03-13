@@ -15,8 +15,13 @@
     <link rel="stylesheet" href="themes/professional.css">
     <!-- Page-specific styles -->
     <link rel="stylesheet" href="styles/chat-page.css">
+    <!-- Token Optimizer styles -->
+    <link rel="stylesheet" href="css/token-optimizer.css">
+    <!-- Credits and Premium Features styles -->
+    <link rel="stylesheet" href="css/credits.css">
+    <link rel="stylesheet" href="css/premium-personas.css">
 </head>
-<body class="jedi-theme">
+<body class="kotor-theme">
     <div class="main-container">
         <!-- Background Elements -->
         <div class="neural-grid"></div>
@@ -51,6 +56,46 @@
             </div>
         </div>
         
+        <!-- Resource Bar -->
+        <div class="resource-bar">
+            <div class="resource-container">
+                <div class="resource-item">
+                    <div class="resource-icon credits-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"></path><path d="M12 18V6"></path></svg>
+                    </div>
+                    <div class="resource-details">
+                        <span class="resource-label">Credits</span>
+                        <span class="resource-value" id="credits-value">1,250</span>
+                    </div>
+                </div>
+                
+                <div class="resource-item">
+                    <div class="resource-icon tokens-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                    </div>
+                    <div class="resource-details">
+                        <span class="resource-label">Tokens</span>
+                        <span class="resource-value" id="tokens-value">350/500</span>
+                    </div>
+                </div>
+                
+                <div class="resource-item">
+                    <div class="resource-icon premium-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.4H22l-6 4.6 2.3 7-6.3-4.6L5.7 21l2.3-7-6-4.6h7.6L12 2z"/></svg>
+                    </div>
+                    <div class="resource-details">
+                        <span class="resource-label">Premium</span>
+                        <span class="resource-value premium-status" id="premium-status">Pro</span>
+                    </div>
+                </div>
+            </div>
+            
+            <a href="store.html" class="store-button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+                Store
+            </a>
+        </div>
+        
         <!-- Main Chat Layout -->
         <div class="chat-layout">
             <!-- Left Sidebar - Chat History -->
@@ -63,29 +108,46 @@
                 </div>
                 
                 <div class="sidebar-search">
-                    <input type="text" class="search-input" placeholder="Search chats...">
+                    <input type="text" class="search-input" id="conversation-search" placeholder="Search chats...">
+                    <button class="clear-search-button" id="clear-search-button" aria-label="Clear search">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </button>
                 </div>
                 
-                <div class="chat-history-list">
-                    <div class="chat-history-item">
+                <div class="search-options" id="search-options">
+                    <div class="search-option">
+                        <input type="checkbox" id="search-case-sensitive" />
+                        <label for="search-case-sensitive">Case sensitive</label>
+                    </div>
+                    <div class="search-option">
+                        <input type="checkbox" id="search-whole-word" />
+                        <label for="search-whole-word">Match whole words</label>
+                    </div>
+                    <div class="search-option">
+                        <input type="checkbox" id="search-include-system" />
+                        <label for="search-include-system">Include system messages</label>
+                    </div>
+                </div>
+                
+                <div class="chat-history-list" id="conversation-list">
+                    <!-- Conversation items will be dynamically generated by the ConversationManager -->
+                    <div class="chat-history-item" data-conversation-id="example-1">
                         <div class="chat-history-title">Mission: Query #1</div>
                         <div class="chat-history-date">2025-03-11</div>
                         <div class="chat-history-preview">Neural network optimization parameters...</div>
-                    </div>
-                    <div class="chat-history-item">
-                        <div class="chat-history-title">Mission: Data Analysis</div>
-                        <div class="chat-history-date">2025-03-10</div>
-                        <div class="chat-history-preview">Analyzing the latest dataset from...</div>
-                    </div>
-                    <div class="chat-history-item">
-                        <div class="chat-history-title">Mission: Code Review</div>
-                        <div class="chat-history-date">2025-03-09</div>
-                        <div class="chat-history-preview">Reviewing the implementation of...</div>
+                        <div class="chat-history-actions">
+                            <button class="rename-conversation-button" aria-label="Rename conversation">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>
+                            </button>
+                            <button class="delete-conversation-button" aria-label="Delete conversation">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                            </button>
+                        </div>
                     </div>
                 </div>
                 
                 <div class="sidebar-footer">
-                    <button class="new-chat-button">
+                    <button class="new-chat-button" id="sidebar-new-chat-button">
                         <span class="icon">+</span> New Chat
                     </button>
                 </div>
@@ -104,75 +166,99 @@
                 <!-- Chat Header -->
                 <div class="chat-header">
                     <div class="chat-info">
-                        <h1 class="chat-title">Mission: Query #1</h1>
-                        <div class="chat-subtitle">
-                            2 participants in this chat
+                        <h1 class="chat-title" id="active-conversation-title">Mission: Query #1</h1>
+                        <div class="chat-subtitle" id="conversation-participants">
+                            <span class="participants-count">2 participants</span>
+                            <button class="participants-dropdown-toggle" aria-label="View participants">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                            </button>
+                            <div class="participants-dropdown">
+                                <div class="participants-list">
+                                    <div class="participant-item">
+                                        <img src="avatars/jedi-master.svg" alt="Jedi Master Zex" class="participant-avatar">
+                                        <div class="participant-info">
+                                            <span class="participant-name">Jedi Master Zex</span>
+                                            <span class="participant-status online">Online</span>
+                                        </div>
+                                        <div class="participant-role">Mentor</div>
+                                    </div>
+                                    <div class="participant-item">
+                                        <img src="avatars/agent.svg" alt="Agent PD-7" class="participant-avatar">
+                                        <div class="participant-info">
+                                            <span class="participant-name">Agent PD-7</span>
+                                            <span class="participant-status busy">Busy</span>
+                                        </div>
+                                        <div class="participant-role">Scout</div>
+                                    </div>
+                                </div>
+                                <div class="participants-actions">
+                                    <button class="add-participant-action">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>
+                                        Add Participant
+                                    </button>
+                                    <button class="manage-participants-action">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                                        Manage
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     
-                    <div class="chat-actions">
-                        <button class="chat-action-button rules-button" aria-label="Chat Rules">
-                            <span class="icon">⚙️</span>
-                            <span class="label">Rules</span>
-                        </button>
-                        
-                        <div class="token-display">
+                    <div class="chat-actions-ribbon">
+                        <!-- Token Display -->
+                        <div class="token-display" id="token-display">
                             <div class="token-label">Tokens</div>
                             <div class="token-bar-container">
-                                <div class="token-bar-fill" style="width: 20%; background-color: var(--current-accent)"></div>
+                                <div class="token-bar-fill" style="width: 20%"></div>
                             </div>
-                            <div class="token-count">50 / 250</div>
+                            <div class="token-count" id="token-count">50 / 250</div>
                         </div>
                         
-                        <div class="xp-display">
-                            <div class="xp-rank">Padawan</div>
-                            <div class="xp-bar-container">
-                                <div class="xp-bar-fill" style="width: 45%"></div>
-                            </div>
-                            <div class="xp-points">45 XP</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Chat Rules Modal (hidden by default) -->
-                <div class="chat-rules-modal" style="display: none;">
-                    <div class="chat-rules-header">
-                        <h3>Chat Rules</h3>
-                        <button class="close-button" aria-label="Close rules">×</button>
-                    </div>
-                    
-                    <div class="chat-rules-content">
-                        <div class="rule-group">
-                            <label>Response Length:</label>
-                            <div class="rule-options">
-                                <button class="rule-option">Short</button>
-                                <button class="rule-option selected">Medium</button>
-                                <button class="rule-option">Long</button>
-                            </div>
-                        </div>
+                        <!-- Optimize Button (Only one instance, in the header) -->
+                        <button class="chat-action-button optimize-button" aria-label="Optimize chat">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+                            <span>Optimize</span>
+                        </button>
                         
-                        <div class="rule-group">
-                            <label>Tone:</label>
-                            <div class="rule-options">
-                                <button class="rule-option">Casual</button>
-                                <button class="rule-option selected">Formal</button>
-                                <button class="rule-option">Technical</button>
+                        <!-- Clear Chat Button -->
+                        <button class="chat-action-button clear-chat-button" id="clear-chat-button" aria-label="Clear Chat">
+                            <i class="icon">🗑️</i>
+                            <span>Clear</span>
+                        </button>
+                        
+                        <!-- Search Button -->
+                        <div class="chat-search">
+                            <button class="chat-search-toggle" id="chat-search-toggle" aria-label="Search in chat">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                            </button>
+                            <div class="chat-search-container" id="chat-search-container" style="display: none;">
+                                <input type="text" class="chat-search-input" id="chat-search-input" placeholder="Search in chat...">
+                                <div class="chat-search-controls">
+                                    <button class="chat-search-prev" id="chat-search-prev" disabled aria-label="Previous match">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
+                                    </button>
+                                    <button class="chat-search-next" id="chat-search-next" disabled aria-label="Next match">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                    </button>
+                                    <button class="chat-search-close" id="chat-search-close" aria-label="Close search">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                                    </button>
+                                </div>
+                                <div class="chat-search-results" id="chat-search-results"></div>
                             </div>
                         </div>
                         
-                        <div class="rule-group">
-                            <label>Creativity: 70%</label>
-                            <input type="range" min="0" max="100" value="70" class="creativity-slider">
-                        </div>
-                    </div>
-                    
-                    <div class="chat-rules-footer">
-                        <button class="apply-button">Apply Rules</button>
+                        <!-- Rules Button -->
+                        <button class="chat-action-button rules-button" aria-label="Chat Rules">
+                            <i class="icon">⚙️</i>
+                            <span>Rules</span>
+                        </button>
                     </div>
                 </div>
                 
                 <!-- Chat Messages -->
-                <div class="messages-container" id="drop-target">
+                <div class="chat-messages" id="chat-messages">
                     <div class="messages-scroll-area">
                         <!-- System Message -->
                         <div class="message system">
@@ -188,11 +274,22 @@
                             </div>
                             <div class="message-content">
                                 <div class="message-header">
-                                    <span class="message-sender">You</span>
-                                    <span class="message-time">09:16</span>
+                                    <div class="message-sender-info">
+                                        <span class="message-sender">You</span>
+                                        <span class="message-role-badge">User</span>
+                                    </div>
+                                    <span class="message-time" title="March 15, 2025 at 09:16">09:16</span>
                                 </div>
                                 <div class="message-text">
                                     I need to optimize the neural network parameters for our latest model. The current configuration is using too much memory and the training time is excessive. Can you suggest some optimizations?
+                                </div>
+                                <div class="message-actions">
+                                    <button class="message-action-button" aria-label="Edit message">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>
+                                    </button>
+                                    <button class="message-action-button" aria-label="Delete message">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -201,13 +298,16 @@
                         <div class="message assistant">
                             <div class="message-avatar">
                                 <div class="ai-avatar">
-                                    <img src="/avatars/jedi-master.png" alt="Jedi Master Zex" class="avatar-image">
+                                    <img src="avatars/jedi-master.svg" alt="Jedi Master Zex" class="avatar-image">
                                 </div>
                             </div>
                             <div class="message-content">
                                 <div class="message-header">
-                                    <span class="message-sender">Jedi Master Zex</span>
-                                    <span class="message-time">09:17</span>
+                                    <div class="message-sender-info">
+                                        <span class="message-sender">Jedi Master Zex</span>
+                                        <span class="message-role-badge">Mentor</span>
+                                    </div>
+                                    <span class="message-time" title="March 15, 2025 at 09:17">09:17</span>
                                 </div>
                                 <div class="message-text">
                                     <p>Based on your description, there are several optimization strategies we can implement:</p>
@@ -227,21 +327,43 @@
                                     </ol>
                                     <p>Would you like me to elaborate on any of these approaches?</p>
                                 </div>
+                                <div class="message-actions">
+                                    <button class="message-action-button" aria-label="Copy message">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                                    </button>
+                                    <button class="message-action-button" aria-label="Regenerate response">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg>
+                                    </button>
+                                    <button class="message-action-button" aria-label="Rate response">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                         
-                        <!-- User Message -->
+                        <!-- User Message with Thread -->
                         <div class="message user">
                             <div class="message-avatar">
                                 <div class="user-avatar">U</div>
                             </div>
                             <div class="message-content">
                                 <div class="message-header">
-                                    <span class="message-sender">You</span>
-                                    <span class="message-time">09:19</span>
+                                    <div class="message-sender-info">
+                                        <span class="message-sender">You</span>
+                                        <span class="message-role-badge">User</span>
+                                    </div>
+                                    <span class="message-time" title="March 15, 2025 at 09:19">09:19</span>
                                 </div>
                                 <div class="message-text">
                                     I'd like to know more about mixed precision training. How much memory savings can we expect, and are there any drawbacks?
+                                </div>
+                                <div class="message-actions">
+                                    <button class="message-action-button" aria-label="Edit message">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>
+                                    </button>
+                                    <button class="message-action-button" aria-label="Delete message">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -250,13 +372,16 @@
                         <div class="message assistant">
                             <div class="message-avatar">
                                 <div class="ai-avatar">
-                                    <img src="/avatars/jedi-master.png" alt="Jedi Master Zex" class="avatar-image">
+                                    <img src="avatars/jedi-master.svg" alt="Jedi Master Zex" class="avatar-image">
                                 </div>
                             </div>
                             <div class="message-content">
                                 <div class="message-header">
-                                    <span class="message-sender">Jedi Master Zex</span>
-                                    <span class="message-time">09:21</span>
+                                    <div class="message-sender-info">
+                                        <span class="message-sender">Jedi Master Zex</span>
+                                        <span class="message-role-badge">Mentor</span>
+                                    </div>
+                                    <span class="message-time" title="March 15, 2025 at 09:21">09:21</span>
                                 </div>
                                 <div class="message-text">
                                     <p>Mixed precision training can reduce memory usage by up to 50% while potentially increasing training speed by 2-3x on hardware with tensor cores (like NVIDIA's Volta, Turing, and Ampere architectures).</p>
@@ -277,7 +402,19 @@
                                     
                                     <p>Here's a simple implementation example using PyTorch's automatic mixed precision:</p>
                                     
-                                    <pre><code class="language-python"># Import the necessary libraries
+                                    <div class="code-block-container">
+                                        <div class="code-block-header">
+                                            <span class="code-language">python</span>
+                                            <div class="code-actions">
+                                                <button class="code-action-button" aria-label="Copy code">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                                                </button>
+                                                <button class="code-action-button" aria-label="Expand code">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <pre><code class="language-python"># Import the necessary libraries
 from torch.cuda.amp import autocast, GradScaler
 
 # Initialize the model, optimizer, data loader
@@ -303,8 +440,20 @@ for epoch in range(num_epochs):
         scaler.scale(loss).backward()
         scaler.step(optimizer)
         scaler.update()</code></pre>
+                                    </div>
                                     
                                     <p>This implementation automatically handles the conversion between FP32 and FP16 where appropriate, and the gradient scaler helps prevent underflow in the gradients.</p>
+                                </div>
+                                <div class="message-actions">
+                                    <button class="message-action-button" aria-label="Copy message">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                                    </button>
+                                    <button class="message-action-button" aria-label="Regenerate response">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg>
+                                    </button>
+                                    <button class="message-action-button" aria-label="Rate response">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -313,7 +462,7 @@ for epoch in range(num_epochs):
                         <div class="message assistant loading" style="display: none;">
                             <div class="message-avatar">
                                 <div class="ai-avatar">
-                                    <img src="/avatars/jedi-master.png" alt="Jedi Master Zex" class="avatar-image">
+                                    <img src="avatars/jedi-master.svg" alt="Jedi Master Zex" class="avatar-image">
                                 </div>
                             </div>
                             <div class="message-content">
@@ -333,27 +482,21 @@ for epoch in range(num_epochs):
                 
                 <!-- Chat Input -->
                 <div class="chat-input-container">
-                    <form class="chat-form">
-                        <div class="participants-chips">
-                            <div class="participant-chip">
-                                <img src="/avatars/jedi-master.png" alt="Jedi Master Zex" class="chip-avatar">
-                                <span class="chip-name">Jedi Master Zex</span>
-                            </div>
-                            <div class="participant-chip">
-                                <img src="/avatars/agent.png" alt="Agent PD-7" class="chip-avatar">
-                                <span class="chip-name">Agent PD-7</span>
-                                <button type="button" class="chip-remove" aria-label="Remove Agent PD-7">×</button>
-                            </div>
+                    <div class="chat-input-label">Type your message below</div>
+                    <form class="chat-form" id="chat-form">
+                        <div class="participants-chips" id="active-personas">
+                            <!-- Active personas will be added here dynamically -->
                         </div>
-                        
-                        <div class="input-row">
-                            <textarea class="chat-input" placeholder="Message Jedi Master Zex..." rows="1"></textarea>
-                            
-                            <div class="input-actions">
-                                <button type="button" class="stop-button" style="display: none;">Stop</button>
-                                <button type="submit" class="send-button" disabled>Send</button>
-                            </div>
+                        <div class="chat-input-wrapper">
+                            <textarea id="message-input" class="chat-input" placeholder="Type your message here and press send..." rows="1"></textarea>
+                            <button id="send-button" class="send-button" type="submit" disabled>
+                                <span class="icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                                </span>
+                                <span>Send</span>
+                            </button>
                         </div>
+                        <button type="button" class="stop-button" id="stop-button" style="display: none;">Stop</button>
                     </form>
                 </div>
             </div>
@@ -369,12 +512,43 @@ for epoch in range(num_epochs):
                 
                 <div class="sidebar-search">
                     <input type="text" class="search-input" placeholder="Search personas...">
+                    <button class="clear-search-button" aria-label="Clear search">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </button>
                 </div>
                 
-                <div class="personas-list">
-                    <div class="persona-card" draggable="true">
+                <div class="personas-toolbar">
+                    <div class="personas-view-options">
+                        <button class="view-option active" data-view="grid">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                        </button>
+                        <button class="view-option" data-view="list">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+                        </button>
+                    </div>
+                    <div class="personas-actions">
+                        <button class="personas-action-button" id="select-all-personas" aria-label="Select all personas">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+                        </button>
+                        <button class="personas-action-button" id="add-selected-personas" aria-label="Add selected personas">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                        </button>
+                        <div class="token-impact">
+                            <span class="token-impact-label">Token Impact:</span>
+                            <span class="token-impact-value">0/250</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="personas-list" id="personas-list">
+                    <div class="persona-card" draggable="true" data-persona-id="jedi-master">
+                        <div class="persona-select">
+                            <input type="checkbox" id="select-jedi-master" class="persona-checkbox" aria-label="Select Jedi Master Zex">
+                            <label for="select-jedi-master" class="persona-checkbox-label"></label>
+                        </div>
                         <div class="persona-avatar">
-                            <img src="/avatars/jedi-master.png" alt="Jedi Master Zex" class="avatar-image">
+                            <img src="avatars/jedi-master.svg" alt="Jedi Master Zex" class="avatar-image">
+                            <div class="persona-status online" title="Online"></div>
                         </div>
                         
                         <div class="persona-info">
@@ -387,13 +561,25 @@ for epoch in range(num_epochs):
                         </div>
                         
                         <div class="persona-actions">
-                            <button class="add-persona-button">Add</button>
+                            <button class="add-persona-button" aria-label="Add Jedi Master Zex to chat">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                            </button>
+                            <button class="info-persona-button" aria-label="View Jedi Master Zex info">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                            </button>
                         </div>
+                        
+                        <div class="persona-token-impact">+25 tokens</div>
                     </div>
                     
-                    <div class="persona-card" draggable="true">
+                    <div class="persona-card" draggable="true" data-persona-id="agent-pd7">
+                        <div class="persona-select">
+                            <input type="checkbox" id="select-agent-pd7" class="persona-checkbox" aria-label="Select Agent PD-7">
+                            <label for="select-agent-pd7" class="persona-checkbox-label"></label>
+                        </div>
                         <div class="persona-avatar">
-                            <img src="/avatars/agent.png" alt="Agent PD-7" class="avatar-image">
+                            <img src="avatars/agent.svg" alt="Agent PD-7" class="avatar-image">
+                            <div class="persona-status busy" title="Busy"></div>
                         </div>
                         
                         <div class="persona-info">
@@ -406,13 +592,28 @@ for epoch in range(num_epochs):
                         </div>
                         
                         <div class="persona-actions">
-                            <button class="add-persona-button">Add</button>
+                            <button class="add-persona-button" aria-label="Add Agent PD-7 to chat">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                            </button>
+                            <button class="info-persona-button" aria-label="View Agent PD-7 info">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                            </button>
                         </div>
+                        
+                        <div class="persona-token-impact">+15 tokens</div>
                     </div>
                     
-                    <div class="persona-card" draggable="true">
+                    <div class="persona-card premium" draggable="true" data-persona-id="support-bot">
+                        <div class="persona-select">
+                            <input type="checkbox" id="select-support-bot" class="persona-checkbox" aria-label="Select Support Bot">
+                            <label for="select-support-bot" class="persona-checkbox-label"></label>
+                        </div>
                         <div class="persona-avatar">
-                            <img src="/avatars/support.png" alt="Support Bot" class="avatar-image">
+                            <img src="avatars/support.svg" alt="Support Bot" class="avatar-image">
+                            <div class="persona-status away" title="Away"></div>
+                            <div class="premium-badge" title="Premium Persona">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                            </div>
                         </div>
                         
                         <div class="persona-info">
@@ -425,8 +626,36 @@ for epoch in range(num_epochs):
                         </div>
                         
                         <div class="persona-actions">
-                            <button class="add-persona-button">Add</button>
+                            <button class="add-persona-button" aria-label="Add Support Bot to chat">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                            </button>
+                            <button class="info-persona-button" aria-label="View Support Bot info">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                            </button>
                         </div>
+                        
+                        <div class="persona-token-impact">+35 tokens</div>
+                    </div>
+                </div>
+                
+                <!-- Drop Zone for Drag and Drop -->
+                <div id="persona-drop-zone" class="persona-drop-zone" style="display: none;">
+                    <div class="drop-zone-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+                    </div>
+                    <div class="drop-zone-text">Drop persona here to add to chat</div>
+                </div>
+                
+                <!-- Premium Personas Section -->
+                <div class="premium-personas-section">
+                    <div class="premium-personas-header">
+                        <h3 class="premium-personas-title">Premium Personas</h3>
+                        <button class="premium-personas-toggle" aria-label="Toggle premium personas">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                        </button>
+                    </div>
+                    <div class="premium-personas-content" id="premium-personas-container">
+                        <!-- Premium personas will be loaded here -->
                     </div>
                 </div>
                 
@@ -439,601 +668,71 @@ for epoch in range(num_epochs):
         </div>
     </div>
 
+    <!-- Rename Dialog Template (hidden by default) -->
+    <div class="rename-dialog" id="rename-dialog" style="display: none;">
+        <div class="rename-dialog-content">
+            <div class="rename-dialog-header">
+                <h3>Rename Conversation</h3>
+                <button class="rename-dialog-close" id="rename-dialog-close">×</button>
+            </div>
+            <input type="text" class="rename-dialog-input" id="rename-dialog-input" placeholder="Enter a new name">
+            <input type="hidden" id="rename-conversation-id">
+            <div class="rename-dialog-actions">
+                <button class="rename-dialog-cancel" id="rename-dialog-cancel">Cancel</button>
+                <button class="rename-dialog-save" id="rename-dialog-save">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Code Modal Template (hidden by default) -->
+    <div class="code-modal" id="code-modal">
+        <div class="code-modal-content">
+            <div class="code-modal-header">
+                <div class="code-modal-title">
+                    <span class="code-modal-language">python</span>
+                    <span class="code-modal-filename">example.py</span>
+                </div>
+                <button class="code-modal-close" id="code-modal-close" aria-label="Close code view">×</button>
+            </div>
+            <div class="code-modal-body">
+                <pre><code id="code-modal-code" class="language-python"></code></pre>
+            </div>
+            <div class="code-modal-footer">
+                <div class="code-modal-info">
+                    <span class="code-modal-lines">0 lines</span>
+                </div>
+                <div class="code-modal-actions">
+                    <button class="code-modal-button" id="code-modal-copy" aria-label="Copy code">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                        Copy
+                    </button>
+                    <button class="code-modal-button primary" id="code-modal-run" aria-label="Run code">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                        Run
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/theme-switcher.js"></script>
+    <script src="js/chat-input.js"></script>
+    <script src="js/drag-drop.js"></script>
+    <script src="js/notifications.js"></script>
     <script>
-        // Theme Switcher Functionality
+        // Initialize theme
         document.addEventListener('DOMContentLoaded', function() {
-            const themeSwitcher = document.querySelector('.theme-switcher');
-            const themeSwitcherButton = document.querySelector('.theme-switcher-button');
-            const themeOptions = document.querySelectorAll('.theme-option');
-            const currentThemeSpan = document.querySelector('.current-theme');
+            // Set initial theme
+            const savedTheme = localStorage.getItem('theme') || 'kotor';
+            document.documentElement.setAttribute('data-theme', savedTheme);
             
-            // Toggle theme dropdown
-            themeSwitcherButton.addEventListener('click', function() {
-                themeSwitcher.classList.toggle('active');
-            });
-            
-            // Close dropdown when clicking outside
-            document.addEventListener('click', function(event) {
-                if (!themeSwitcher.contains(event.target)) {
-                    themeSwitcher.classList.remove('active');
+            // Example notification on page load
+            setTimeout(() => {
+                if (window.Notifications) {
+                    window.Notifications.info('Welcome to PDT AI Chat Interface');
                 }
-            });
-            
-            // Theme selection
-            themeOptions.forEach(option => {
-                option.addEventListener('click', function() {
-                    const theme = this.getAttribute('data-theme');
-                    document.body.className = theme + '-theme';
-                    
-                    // Update current theme text
-                    if (theme === 'kotor') {
-                        currentThemeSpan.textContent = 'KOTOR';
-                    } else if (theme === 'jedi') {
-                        currentThemeSpan.textContent = 'Jedi: Survivor';
-                    } else if (theme === 'professional') {
-                        currentThemeSpan.textContent = 'Professional';
-                    }
-                    
-                    // Save theme preference
-                    localStorage.setItem('pdtAiTheme', theme);
-                    
-                    // Close dropdown
-                    themeSwitcher.classList.remove('active');
-                });
-            });
-            
-            // Load saved theme
-            const savedTheme = localStorage.getItem('pdtAiTheme');
-            if (savedTheme) {
-                document.body.className = savedTheme + '-theme';
-                
-                // Update current theme text
-                if (savedTheme === 'kotor') {
-                    currentThemeSpan.textContent = 'KOTOR';
-                } else if (savedTheme === 'jedi') {
-                    currentThemeSpan.textContent = 'Jedi: Survivor';
-                } else if (savedTheme === 'professional') {
-                    currentThemeSpan.textContent = 'Professional';
-                }
-            }
-            
-            // Chat Rules Modal Functionality
-            const rulesButton = document.querySelector('.rules-button');
-            const chatRulesModal = document.querySelector('.chat-rules-modal');
-            const closeButton = document.querySelector('.close-button');
-            const applyButton = document.querySelector('.apply-button');
-            const ruleOptions = document.querySelectorAll('.rule-option');
-            const creativitySlider = document.querySelector('.creativity-slider');
-            
-            // Toggle rules modal
-            rulesButton.addEventListener('click', function() {
-                chatRulesModal.style.display = chatRulesModal.style.display === 'none' ? 'block' : 'none';
-            });
-            
-            // Close modal
-            closeButton.addEventListener('click', function() {
-                chatRulesModal.style.display = 'none';
-            });
-            
-            // Apply rules
-            applyButton.addEventListener('click', function() {
-                chatRulesModal.style.display = 'none';
-                // In a real app, this would apply the selected rules
-            });
-            
-            // Rule option selection
-            ruleOptions.forEach(option => {
-                option.addEventListener('click', function() {
-                    // Remove selected class from siblings
-                    const siblings = Array.from(this.parentNode.children);
-                    siblings.forEach(sibling => sibling.classList.remove('selected'));
-                    
-                    // Add selected class to clicked option
-                    this.classList.add('selected');
-                });
-            });
-            
-            // Creativity slider
-            creativitySlider.addEventListener('input', function() {
-                const value = this.value;
-                this.parentNode.querySelector('label').textContent = `Creativity: ${value}%`;
-            });
-        });
-
-        // Chat Input Functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            const chatInput = document.querySelector('.chat-input');
-            const sendButton = document.querySelector('.send-button');
-            const stopButton = document.querySelector('.stop-button');
-            const messagesScrollArea = document.querySelector('.messages-scroll-area');
-            const chatForm = document.querySelector('.chat-form');
-            const messagesContainer = document.querySelector('.messages-container');
-            
-            // Auto-resize textarea
-            chatInput.addEventListener('input', function() {
-                this.style.height = 'auto';
-                this.style.height = (this.scrollHeight) + 'px';
-                
-                // Enable/disable send button based on input
-                if (this.value.trim().length > 0) {
-                    sendButton.removeAttribute('disabled');
-                } else {
-                    sendButton.setAttribute('disabled', true);
-                }
-            });
-            
-            // Send message on form submit
-            chatForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                if (!sendButton.hasAttribute('disabled')) {
-                    sendMessage();
-                }
-            });
-            
-            // Send message on Enter key (but allow Shift+Enter for new line)
-            chatInput.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter' && !e.shiftKey) {
-                    e.preventDefault();
-                    if (!sendButton.hasAttribute('disabled')) {
-                        sendMessage();
-                    }
-                }
-            });
-            
-            // Stop button functionality
-            stopButton.addEventListener('click', function() {
-                const loadingMessage = document.querySelector('.message.assistant.loading');
-                if (loadingMessage) {
-                    loadingMessage.style.display = 'none';
-                }
-                
-                stopButton.style.display = 'none';
-                sendButton.style.display = 'block';
-            });
-            
-            // Function to send a message
-            function sendMessage() {
-                const messageText = chatInput.value.trim();
-                if (messageText.length === 0) return;
-                
-                // Create user message element
-                const userMessage = document.createElement('div');
-                userMessage.className = 'message user';
-                userMessage.innerHTML = `
-                    <div class="message-avatar">
-                        <div class="user-avatar">U</div>
-                    </div>
-                    <div class="message-content">
-                        <div class="message-header">
-                            <span class="message-sender">You</span>
-                            <span class="message-time">${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
-                        </div>
-                        <div class="message-text">
-                            ${messageText.replace(/\n/g, '<br>')}
-                        </div>
-                    </div>
-                `;
-                
-                // Add user message to chat
-                messagesScrollArea.appendChild(userMessage);
-                
-                // Clear input and reset height
-                chatInput.value = '';
-                chatInput.style.height = 'auto';
-                sendButton.setAttribute('disabled', true);
-                
-                // Show typing indicator
-                const loadingMessage = document.querySelector('.message.assistant.loading');
-                loadingMessage.style.display = 'flex';
-                
-                // Show stop button, hide send button
-                stopButton.style.display = 'block';
-                sendButton.style.display = 'none';
-                
-                // Scroll to bottom
-                scrollToBottom();
-                
-                // Simulate AI response after a delay
-                setTimeout(() => {
-                    // Hide typing indicator
-                    loadingMessage.style.display = 'none';
-                    
-                    // Show send button, hide stop button
-                    stopButton.style.display = 'none';
-                    sendButton.style.display = 'block';
-                    
-                    // Create AI response
-                    const aiResponse = document.createElement('div');
-                    aiResponse.className = 'message assistant';
-                    aiResponse.innerHTML = `
-                        <div class="message-avatar">
-                            <div class="ai-avatar">
-                                <img src="/avatars/jedi-master.png" alt="Jedi Master Zex" class="avatar-image">
-                            </div>
-                        </div>
-                        <div class="message-content">
-                            <div class="message-header">
-                                <span class="message-sender">Jedi Master Zex</span>
-                                <span class="message-time">${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
-                            </div>
-                            <div class="message-text">
-                                <p>I've analyzed your request and here are my thoughts:</p>
-                                <p>The approach you're describing could work, but there are some important considerations to keep in mind. The efficiency of the solution depends on several factors including the scale of data, processing requirements, and specific constraints of your environment.</p>
-                                <p>Would you like me to provide a more detailed analysis or suggest some alternative approaches?</p>
-                            </div>
-                        </div>
-                    `;
-                    
-                    // Add AI response to chat
-                    messagesScrollArea.appendChild(aiResponse);
-                    
-                    // Scroll to bottom again
-                    scrollToBottom();
-                    
-                    // Update token usage
-                    updateTokenUsage();
-                }, 2000);
-            }
-            
-            // Scroll chat to bottom
-            function scrollToBottom() {
-                messagesContainer.scrollTop = messagesContainer.scrollHeight;
-            }
-            
-            // Update token usage
-            function updateTokenUsage() {
-                const tokenBarFill = document.querySelector('.token-bar-fill');
-                const tokenCount = document.querySelector('.token-count');
-                
-                // Get current width as percentage
-                const currentWidth = parseFloat(tokenBarFill.style.width);
-                // Add 10% for each message, max 100%
-                const newWidth = Math.min(currentWidth + 10, 100);
-                
-                // Update width
-                tokenBarFill.style.width = `${newWidth}%`;
-                
-                // Update color based on usage
-                if (newWidth < 50) {
-                    tokenBarFill.style.backgroundColor = 'var(--current-accent)';
-                } else if (newWidth < 80) {
-                    tokenBarFill.style.backgroundColor = 'orange';
-                } else {
-                    tokenBarFill.style.backgroundColor = 'red';
-                }
-                
-                // Update count text
-                const current = Math.round((newWidth / 100) * 250);
-                tokenCount.textContent = `${current} / 250`;
-            }
-            
-            // Initial scroll to bottom
-            scrollToBottom();
-        });
-
-        // Sidebar Toggle Functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            const historySidebarToggle = document.querySelector('.history-sidebar .sidebar-toggle');
-            const historySidebar = document.querySelector('.history-sidebar');
-            const chatContainer = document.querySelector('.chat-container');
-            
-            const personasSidebarToggle = document.querySelector('.personas-sidebar .sidebar-toggle');
-            const personasSidebar = document.querySelector('.personas-sidebar');
-            
-            // Persistent toggle buttons
-            const historyPersistentToggle = document.querySelector('.persistent-toggle.history-toggle');
-            const personasPersistentToggle = document.querySelector('.persistent-toggle.personas-toggle');
-            
-            // Function to toggle history sidebar
-            function toggleHistorySidebar() {
-                historySidebar.classList.toggle('collapsed');
-                chatContainer.classList.toggle('history-collapsed');
-                
-                // Force a reflow to ensure the layout updates properly
-                window.dispatchEvent(new Event('resize'));
-            }
-            
-            // Function to toggle personas sidebar
-            function togglePersonasSidebar() {
-                personasSidebar.classList.toggle('collapsed');
-                chatContainer.classList.toggle('personas-collapsed');
-                
-                // Force a reflow to ensure the layout updates properly
-                window.dispatchEvent(new Event('resize'));
-            }
-            
-            // History sidebar toggle events
-            historySidebarToggle.addEventListener('click', toggleHistorySidebar);
-            historyPersistentToggle.addEventListener('click', toggleHistorySidebar);
-            
-            // Personas sidebar toggle events
-            personasSidebarToggle.addEventListener('click', togglePersonasSidebar);
-            personasPersistentToggle.addEventListener('click', togglePersonasSidebar);
-            
-            // Initial scroll to bottom of messages
-            const messagesContainer = document.querySelector('.messages-container');
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        });
-
-        // Drag and Drop Functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            const personaCards = document.querySelectorAll('.persona-card');
-            const dropTarget = document.getElementById('drop-target');
-            const participantsChips = document.querySelector('.participants-chips');
-            
-            // Drag start
-            personaCards.forEach(card => {
-                card.addEventListener('dragstart', function(e) {
-                    e.dataTransfer.setData('text/plain', this.querySelector('.persona-name').textContent);
-                    this.classList.add('dragging');
-                });
-                
-                card.addEventListener('dragend', function() {
-                    this.classList.remove('dragging');
-                });
-                
-                // Add button click
-                const addButton = card.querySelector('.add-persona-button');
-                addButton.addEventListener('click', function() {
-                    const personaName = card.querySelector('.persona-name').textContent;
-                    const personaAvatar = card.querySelector('.avatar-image').src;
-                    addPersonaToChat(personaName, personaAvatar);
-                });
-            });
-            
-            // Drop target events
-            dropTarget.addEventListener('dragover', function(e) {
-                e.preventDefault();
-                this.classList.add('drop-active');
-            });
-            
-            dropTarget.addEventListener('dragleave', function() {
-                this.classList.remove('drop-active');
-            });
-            
-            dropTarget.addEventListener('drop', function(e) {
-                e.preventDefault();
-                this.classList.remove('drop-active');
-                
-                const personaName = e.dataTransfer.getData('text/plain');
-                const personaCard = Array.from(personaCards).find(card => 
-                    card.querySelector('.persona-name').textContent === personaName
-                );
-                
-                if (personaCard) {
-                    const personaAvatar = personaCard.querySelector('.avatar-image').src;
-                    addPersonaToChat(personaName, personaAvatar);
-                }
-            });
-            
-            // Function to add persona to chat
-            function addPersonaToChat(personaName, personaAvatar) {
-                // Check if persona is already in chat
-                const existingChips = Array.from(participantsChips.children);
-                const alreadyExists = existingChips.some(chip => 
-                    chip.querySelector('.chip-name').textContent === personaName
-                );
-                
-                if (alreadyExists) {
-                    alert(`${personaName} is already in the chat`);
-                    return;
-                }
-                
-                // Create new chip
-                const newChip = document.createElement('div');
-                newChip.className = 'participant-chip';
-                newChip.innerHTML = `
-                    <img src="${personaAvatar}" alt="${personaName}" class="chip-avatar">
-                    <span class="chip-name">${personaName}</span>
-                    <button type="button" class="chip-remove" aria-label="Remove ${personaName}">×</button>
-                `;
-                
-                // Add chip to participants
-                participantsChips.appendChild(newChip);
-                
-                // Add system message
-                const systemMessage = document.createElement('div');
-                systemMessage.className = 'message system';
-                systemMessage.innerHTML = `
-                    <div class="system-message">
-                        ${personaName} has joined the chat.
-                    </div>
-                `;
-                
-                // Add system message to chat
-                const messagesScrollArea = document.querySelector('.messages-scroll-area');
-                messagesScrollArea.appendChild(systemMessage);
-                
-                // Scroll to bottom
-                const messagesContainer = document.querySelector('.messages-container');
-                messagesContainer.scrollTop = messagesContainer.scrollHeight;
-                
-                // Add remove functionality to new chip
-                const removeButton = newChip.querySelector('.chip-remove');
-                removeButton.addEventListener('click', function() {
-                    // Remove chip
-                    newChip.remove();
-                    
-                    // Add system message for removal
-                    const removeMessage = document.createElement('div');
-                    removeMessage.className = 'message system';
-                    removeMessage.innerHTML = `
-                        <div class="system-message">
-                            ${personaName} has left the chat.
-                        </div>
-                    `;
-                    
-                    // Add system message to chat
-                    messagesScrollArea.appendChild(removeMessage);
-                    
-                    // Scroll to bottom
-                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
-                });
-            }
-            
-            // Add remove functionality to existing chips
-            const removeButtons = document.querySelectorAll('.chip-remove');
-            removeButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const chip = this.closest('.participant-chip');
-                    const personaName = chip.querySelector('.chip-name').textContent;
-                    
-                    // Remove chip
-                    chip.remove();
-                    
-                    // Add system message for removal
-                    const removeMessage = document.createElement('div');
-                    removeMessage.className = 'message system';
-                    removeMessage.innerHTML = `
-                        <div class="system-message">
-                            ${personaName} has left the chat.
-                        </div>
-                    `;
-                    
-                    // Add system message to chat
-                    const messagesScrollArea = document.querySelector('.messages-scroll-area');
-                    messagesScrollArea.appendChild(removeMessage);
-                    
-                    // Scroll to bottom
-                    const messagesContainer = document.querySelector('.messages-container');
-                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
-                });
-            });
-        });
-
-        // Background Effects
-        document.addEventListener('DOMContentLoaded', function() {
-            // Neural Network Grid Nodes and Connections
-            createNeuralNetwork();
-            
-            // Particles
-            createParticles();
-            
-            // Waves
-            createWaves();
-            
-            // Window resize handler
-            window.addEventListener('resize', function() {
-                // Clear existing elements
-                document.getElementById('neural-nodes').innerHTML = '';
-                document.getElementById('particles').innerHTML = '';
-                
-                // Recreate elements
-                createNeuralNetwork();
-                createParticles();
-            });
-            
-            // Create neural network nodes and connections
-            function createNeuralNetwork() {
-                const nodesContainer = document.getElementById('neural-nodes');
-                const width = window.innerWidth;
-                const height = window.innerHeight;
-                
-                // Create nodes
-                const nodes = [];
-                const nodeCount = Math.floor(width * height / 25000); // Adjust density based on screen size
-                
-                for (let i = 0; i < nodeCount; i++) {
-                    const node = document.createElement('div');
-                    node.className = 'neural-node';
-                    
-                    // Random position
-                    const x = Math.random() * width;
-                    const y = Math.random() * height;
-                    
-                    node.style.left = `${x}px`;
-                    node.style.top = `${y}px`;
-                    
-                    // Pulse animation with random delay
-                    node.style.animation = `pulse 3s infinite ${Math.random() * 3}s`;
-                    
-                    nodesContainer.appendChild(node);
-                    nodes.push({ element: node, x, y });
-                }
-                
-                // Create connections between nearby nodes
-                nodes.forEach((node, i) => {
-                    // Connect to a few nearby nodes
-                    for (let j = 0; j < nodes.length; j++) {
-                        if (i !== j) {
-                            const otherNode = nodes[j];
-                            const dx = otherNode.x - node.x;
-                            const dy = otherNode.y - node.y;
-                            const distance = Math.sqrt(dx * dx + dy * dy);
-                            
-                            // Only connect if within a certain distance
-                            if (distance < 150) {
-                                const connection = document.createElement('div');
-                                connection.className = 'neural-connection';
-                                
-                                // Position and rotate the connection
-                                connection.style.left = `${node.x}px`;
-                                connection.style.top = `${node.y}px`;
-                                connection.style.width = `${distance}px`;
-                                connection.style.transform = `rotate(${Math.atan2(dy, dx)}rad)`;
-                                
-                                // Fade based on distance
-                                connection.style.opacity = 0.5 - distance / 300;
-                                
-                                nodesContainer.appendChild(connection);
-                            }
-                        }
-                    }
-                });
-            }
-            
-            // Create floating particles
-            function createParticles() {
-                const particlesContainer = document.getElementById('particles');
-                const width = window.innerWidth;
-                const height = window.innerHeight;
-                
-                // Create particles
-                const particleCount = Math.floor(width * height / 10000);
-                
-                for (let i = 0; i < particleCount; i++) {
-                    const particle = document.createElement('div');
-                    particle.className = 'particle';
-                    
-                    // Random position
-                    const x = Math.random() * width;
-                    const y = Math.random() * height;
-                    
-                    particle.style.left = `${x}px`;
-                    particle.style.top = `${y}px`;
-                    
-                    // Random drift direction and duration
-                    const xDrift = (Math.random() - 0.5) * 200;
-                    const yDrift = (Math.random() - 0.5) * 200;
-                    const driftDuration = 3 + Math.random() * 7;
-                    
-                    particle.style.setProperty('--x-drift', `${xDrift}px`);
-                    particle.style.setProperty('--y-drift', `${yDrift}px`);
-                    particle.style.setProperty('--drift-duration', `${driftDuration}s`);
-                    
-                    // Random size
-                    const size = 1 + Math.random() * 2;
-                    particle.style.width = `${size}px`;
-                    particle.style.height = `${size}px`;
-                    
-                    // Random opacity
-                    particle.style.opacity = 0.1 + Math.random() * 0.2;
-                    
-                    particlesContainer.appendChild(particle);
-                }
-            }
-            
-            // Create wave elements
-            function createWaves() {
-                const wavesContainer = document.getElementById('waves-container');
-                
-                // Create three wave elements
-                for (let i = 1; i <= 3; i++) {
-                    const wave = document.createElement('div');
-                    wave.className = `wave wave-${i}`;
-                    wavesContainer.appendChild(wave);
-                }
-            }
+            }, 1000);
         });
     </script>
 </body>

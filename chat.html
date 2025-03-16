@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="themes/kotor.css">
     <link rel="stylesheet" href="themes/jedi.css">
     <link rel="stylesheet" href="themes/professional.css">
+    <link rel="stylesheet" href="themes/modern.css">
     <!-- Page-specific styles -->
     <link rel="stylesheet" href="styles/chat-page.css">
     <!-- Token Optimizer styles -->
@@ -52,6 +53,7 @@
                     <div class="theme-option" data-theme="kotor">KOTOR</div>
                     <div class="theme-option" data-theme="jedi">Jedi: Survivor</div>
                     <div class="theme-option" data-theme="professional">Professional</div>
+                    <div class="theme-option" data-theme="modern">Modern</div>
                 </div>
             </div>
         </div>
@@ -602,40 +604,6 @@ for epoch in range(num_epochs):
                         
                         <div class="persona-token-impact">+15 tokens</div>
                     </div>
-                    
-                    <div class="persona-card premium" draggable="true" data-persona-id="support-bot">
-                        <div class="persona-select">
-                            <input type="checkbox" id="select-support-bot" class="persona-checkbox" aria-label="Select Support Bot">
-                            <label for="select-support-bot" class="persona-checkbox-label"></label>
-                        </div>
-                        <div class="persona-avatar">
-                            <img src="avatars/support.svg" alt="Support Bot" class="avatar-image">
-                            <div class="persona-status away" title="Away"></div>
-                            <div class="premium-badge" title="Premium Persona">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                            </div>
-                        </div>
-                        
-                        <div class="persona-info">
-                            <div class="persona-name">Support Bot</div>
-                            <div class="persona-role">Engineer</div>
-                            <div class="persona-response-time">
-                                <span class="response-label">Response:</span>
-                                <span class="response-value slow">Slow</span>
-                            </div>
-                        </div>
-                        
-                        <div class="persona-actions">
-                            <button class="add-persona-button" aria-label="Add Support Bot to chat">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
-                            </button>
-                            <button class="info-persona-button" aria-label="View Support Bot info">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
-                            </button>
-                        </div>
-                        
-                        <div class="persona-token-impact">+35 tokens</div>
-                    </div>
                 </div>
                 
                 <!-- Drop Zone for Drag and Drop -->
@@ -656,6 +624,39 @@ for epoch in range(num_epochs):
                     </div>
                     <div class="premium-personas-content" id="premium-personas-container">
                         <!-- Premium personas will be loaded here -->
+                        <div class="persona-card premium" draggable="true" data-persona-id="support-bot">
+                            <div class="persona-select">
+                                <input type="checkbox" id="select-support-bot" class="persona-checkbox" aria-label="Select Support Bot">
+                                <label for="select-support-bot" class="persona-checkbox-label"></label>
+                            </div>
+                            <div class="persona-avatar">
+                                <img src="avatars/support.svg" alt="Support Bot" class="avatar-image">
+                                <div class="persona-status away" title="Away"></div>
+                                <div class="premium-badge" title="Premium Persona">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                </div>
+                            </div>
+                            
+                            <div class="persona-info">
+                                <div class="persona-name">Support Bot</div>
+                                <div class="persona-role">Engineer</div>
+                                <div class="persona-response-time">
+                                    <span class="response-label">Response:</span>
+                                    <span class="response-value slow">Slow</span>
+                                </div>
+                            </div>
+                            
+                            <div class="persona-actions">
+                                <button class="add-persona-button" aria-label="Add Support Bot to chat">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                </button>
+                                <button class="info-persona-button" aria-label="View Support Bot info">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                                </button>
+                            </div>
+                            
+                            <div class="persona-token-impact">+35 tokens</div>
+                        </div>
                     </div>
                 </div>
                 

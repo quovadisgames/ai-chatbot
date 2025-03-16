@@ -1,0 +1,914 @@
+/* Modern Professional Theme */
+:root {
+    /* Base Colors */
+    --modern-bg-primary: #f8f9fa;
+    --modern-bg-secondary: #ffffff;
+    --modern-bg-tertiary: #f1f3f5;
+    --modern-bg-quaternary: #e9ecef;
+    --modern-bg-hover: #f1f3f5;
+    --modern-bg-active: #e9ecef;
+    --modern-dark: #212529;
+    
+    /* Text Colors */
+    --modern-text-primary: #212529;
+    --modern-text-secondary: #495057;
+    --modern-text-tertiary: #6c757d;
+    --modern-text-inverted: #ffffff;
+    
+    /* Accent Colors */
+    --modern-accent: #3b82f6;
+    --modern-accent-hover: #2563eb;
+    --modern-accent-rgb: 59, 130, 246;
+    --modern-glow: rgba(59, 130, 246, 0.25);
+    
+    /* Status Colors */
+    --modern-success: #10b981;
+    --modern-warning: #f59e0b;
+    --modern-error: #ef4444;
+    --modern-info: #3b82f6;
+    
+    /* Border Colors */
+    --modern-border: #dee2e6;
+    --modern-border-light: #e9ecef;
+    --modern-border-dark: #ced4da;
+    
+    /* Shadow */
+    --modern-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --modern-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.1);
+    --modern-shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.05), 0 4px 6px rgba(0, 0, 0, 0.05);
+    
+    /* Typography */
+    --modern-font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    --modern-font-mono: 'SF Mono', SFMono-Regular, ui-monospace, 'DejaVu Sans Mono', Menlo, Consolas, monospace;
+    
+    /* Transitions */
+    --modern-transition-fast: 150ms ease;
+    --modern-transition-normal: 250ms ease;
+    --modern-transition-slow: 350ms ease;
+    
+    /* Radius */
+    --modern-radius-sm: 4px;
+    --modern-radius-md: 6px;
+    --modern-radius-lg: 8px;
+    --modern-radius-xl: 12px;
+    --modern-radius-full: 9999px;
+}
+
+/* Theme Application */
+.modern-theme {
+    /* Apply theme variables */
+    --current-bg: var(--modern-bg-primary);
+    --current-bg-secondary: var(--modern-bg-secondary);
+    --current-bg-tertiary: var(--modern-bg-tertiary);
+    --current-bg-quaternary: var(--modern-bg-quaternary);
+    --current-bg-hover: var(--modern-bg-hover);
+    --current-bg-active: var(--modern-bg-active);
+    --current-dark: var(--modern-dark);
+    
+    --current-text-primary: var(--modern-text-primary);
+    --current-text-secondary: var(--modern-text-secondary);
+    --current-text-tertiary: var(--modern-text-tertiary);
+    --current-text-inverted: var(--modern-text-inverted);
+    
+    --current-accent: var(--modern-accent);
+    --current-accent-hover: var(--modern-accent-hover);
+    --current-accent-rgb: var(--modern-accent-rgb);
+    --current-glow: var(--modern-glow);
+    
+    --current-border: var(--modern-border);
+    --current-border-light: var(--modern-border-light);
+    --current-border-dark: var(--modern-border-dark);
+    
+    --current-font: var(--modern-font);
+    --current-font-mono: var(--modern-font-mono);
+    
+    /* Status Colors */
+    --color-success: var(--modern-success);
+    --color-warning: var(--modern-warning);
+    --color-error: var(--modern-error);
+    --color-info: var(--modern-info);
+    --color-premium: #f59e0b;
+    
+    /* Accent Colors */
+    --accent-green: var(--modern-success);
+    --accent-yellow: var(--modern-warning);
+    --accent-red: var(--modern-error);
+    --accent-blue: var(--modern-info);
+    
+    /* Background */
+    background-color: var(--current-bg);
+    color: var(--current-text-primary);
+    font-family: var(--current-font);
+}
+
+/* Background Elements - Simplified for Professional Look */
+.modern-theme .neural-grid,
+.modern-theme #neural-nodes,
+.modern-theme .particles,
+.modern-theme .waves-container {
+    opacity: 0.3;
+}
+
+.modern-theme .neural-grid {
+    background-image: linear-gradient(to right, rgba(220, 220, 220, 0.1) 1px, transparent 1px),
+                      linear-gradient(to bottom, rgba(220, 220, 220, 0.1) 1px, transparent 1px);
+    background-size: 20px 20px;
+}
+
+/* Navigation Bar */
+.modern-theme .nav-container {
+    background-color: var(--modern-bg-secondary);
+    border-bottom: 1px solid var(--modern-border);
+    box-shadow: var(--modern-shadow-sm);
+}
+
+.modern-theme .back-link,
+.modern-theme .personas-link {
+    color: var(--modern-text-secondary);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 14px;
+    padding: 8px 12px;
+    border-radius: var(--modern-radius-md);
+    transition: background-color var(--modern-transition-fast);
+}
+
+.modern-theme .back-link:hover,
+.modern-theme .personas-link:hover {
+    background-color: var(--modern-bg-hover);
+    color: var(--modern-text-primary);
+}
+
+/* Theme Switcher */
+.modern-theme .theme-switcher-button {
+    background-color: var(--modern-bg-tertiary);
+    border: 1px solid var(--modern-border);
+    border-radius: var(--modern-radius-md);
+    color: var(--modern-text-secondary);
+    font-size: 14px;
+    padding: 6px 12px;
+    transition: all var(--modern-transition-fast);
+}
+
+.modern-theme .theme-switcher-button:hover {
+    background-color: var(--modern-bg-hover);
+    border-color: var(--modern-border-dark);
+}
+
+.modern-theme .theme-switcher-dropdown {
+    background-color: var(--modern-bg-secondary);
+    border: 1px solid var(--modern-border);
+    border-radius: var(--modern-radius-md);
+    box-shadow: var(--modern-shadow-md);
+    overflow: hidden;
+}
+
+.modern-theme .theme-option {
+    padding: 10px 16px;
+    color: var(--modern-text-secondary);
+    transition: background-color var(--modern-transition-fast);
+}
+
+.modern-theme .theme-option:hover {
+    background-color: var(--modern-bg-hover);
+    color: var(--modern-text-primary);
+}
+
+/* Resource Bar */
+.modern-theme .resource-bar {
+    background-color: var(--modern-bg-secondary);
+    border-bottom: 1px solid var(--modern-border);
+    box-shadow: var(--modern-shadow-sm);
+    padding: 12px 20px;
+}
+
+.modern-theme .resource-icon {
+    background-color: var(--modern-bg-tertiary);
+    color: var(--modern-accent);
+    border-radius: var(--modern-radius-md);
+    width: 36px;
+    height: 36px;
+}
+
+.modern-theme .resource-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--modern-text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.modern-theme .resource-value {
+    font-weight: 600;
+    color: var(--modern-text-primary);
+}
+
+.modern-theme .store-button {
+    background-color: var(--modern-accent);
+    color: white;
+    border-radius: var(--modern-radius-md);
+    font-weight: 500;
+    padding: 8px 16px;
+    transition: all var(--modern-transition-fast);
+}
+
+.modern-theme .store-button:hover {
+    background-color: var(--modern-accent-hover);
+    transform: translateY(-1px);
+    box-shadow: var(--modern-shadow-sm);
+}
+
+/* Chat Layout */
+.modern-theme .chat-layout {
+    background-color: var(--modern-bg-primary);
+}
+
+/* Sidebar Styles */
+.modern-theme .sidebar {
+    background-color: var(--modern-bg-secondary);
+    border-right: 1px solid var(--modern-border);
+    box-shadow: var(--modern-shadow-sm);
+}
+
+.modern-theme .sidebar-header {
+    border-bottom: 1px solid var(--modern-border);
+    padding: 16px;
+}
+
+.modern-theme .sidebar-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--modern-text-primary);
+}
+
+.modern-theme .sidebar-toggle {
+    color: var(--modern-text-tertiary);
+    background-color: transparent;
+    border-radius: var(--modern-radius-md);
+    padding: 6px;
+    transition: all var(--modern-transition-fast);
+}
+
+.modern-theme .sidebar-toggle:hover {
+    background-color: var(--modern-bg-hover);
+    color: var(--modern-text-primary);
+}
+
+.modern-theme .sidebar-search {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--modern-border);
+}
+
+.modern-theme .search-input {
+    background-color: var(--modern-bg-tertiary);
+    border: 1px solid var(--modern-border);
+    border-radius: var(--modern-radius-md);
+    padding: 8px 12px;
+    font-size: 14px;
+    transition: all var(--modern-transition-fast);
+}
+
+.modern-theme .search-input:focus {
+    border-color: var(--modern-accent);
+    box-shadow: 0 0 0 2px var(--modern-glow);
+    outline: none;
+}
+
+.modern-theme .search-options {
+    background-color: var(--modern-bg-tertiary);
+    border-bottom: 1px solid var(--modern-border);
+    padding: 8px 16px;
+}
+
+.modern-theme .search-option {
+    margin-bottom: 6px;
+}
+
+.modern-theme .search-option label {
+    font-size: 14px;
+    color: var(--modern-text-secondary);
+}
+
+/* Chat History List */
+.modern-theme .chat-history-item {
+    background-color: var(--modern-bg-secondary);
+    border: 1px solid var(--modern-border);
+    border-radius: var(--modern-radius-md);
+    margin-bottom: 8px;
+    transition: all var(--modern-transition-fast);
+}
+
+.modern-theme .chat-history-item:hover {
+    border-color: var(--modern-border-dark);
+    box-shadow: var(--modern-shadow-sm);
+}
+
+.modern-theme .chat-history-item.active {
+    border-left: 3px solid var(--modern-accent);
+    background-color: var(--modern-bg-tertiary);
+}
+
+.modern-theme .chat-history-title {
+    font-weight: 600;
+    color: var(--modern-text-primary);
+}
+
+.modern-theme .chat-history-date {
+    font-size: 12px;
+    color: var(--modern-text-tertiary);
+}
+
+.modern-theme .chat-history-preview {
+    color: var(--modern-text-secondary);
+}
+
+.modern-theme .rename-conversation-button,
+.modern-theme .delete-conversation-button {
+    color: var(--modern-text-tertiary);
+    background-color: transparent;
+    border-radius: var(--modern-radius-sm);
+    transition: all var(--modern-transition-fast);
+}
+
+.modern-theme .rename-conversation-button:hover {
+    background-color: var(--modern-bg-hover);
+    color: var(--modern-accent);
+}
+
+.modern-theme .delete-conversation-button:hover {
+    background-color: var(--modern-bg-hover);
+    color: var(--modern-error);
+}
+
+/* Personas List */
+.modern-theme .persona-card {
+    background-color: var(--modern-bg-secondary);
+    border: 1px solid var(--modern-border);
+    border-radius: var(--modern-radius-md);
+    margin-bottom: 8px;
+    transition: all var(--modern-transition-fast);
+}
+
+.modern-theme .persona-card:hover {
+    border-color: var(--modern-border-dark);
+    box-shadow: var(--modern-shadow-sm);
+}
+
+.modern-theme .persona-card.active {
+    border-left: 3px solid var(--modern-accent);
+    background-color: var(--modern-bg-tertiary);
+}
+
+.modern-theme .persona-avatar {
+    border: 2px solid var(--modern-border);
+    background-color: var(--modern-bg-tertiary);
+}
+
+.modern-theme .persona-name {
+    font-weight: 600;
+    color: var(--modern-text-primary);
+}
+
+.modern-theme .persona-role {
+    font-size: 12px;
+    color: var(--modern-text-tertiary);
+    background-color: var(--modern-bg-tertiary);
+    padding: 2px 8px;
+    border-radius: var(--modern-radius-full);
+    display: inline-block;
+}
+
+.modern-theme .add-persona-button {
+    background-color: var(--modern-bg-tertiary);
+    border: 1px solid var(--modern-border);
+    color: var(--modern-accent);
+    border-radius: var(--modern-radius-sm);
+    transition: all var(--modern-transition-fast);
+}
+
+.modern-theme .add-persona-button:hover {
+    background-color: var(--modern-accent);
+    color: white;
+}
+
+/* New Chat Button */
+.modern-theme .new-chat-button,
+.modern-theme .create-persona-button {
+    background-color: var(--modern-accent);
+    color: white;
+    border-radius: var(--modern-radius-md);
+    font-weight: 500;
+    transition: all var(--modern-transition-fast);
+}
+
+.modern-theme .new-chat-button:hover,
+.modern-theme .create-persona-button:hover {
+    background-color: var(--modern-accent-hover);
+    box-shadow: var(--modern-shadow-sm);
+}
+
+/* Chat Container */
+.modern-theme .chat-container {
+    background-color: var(--modern-bg-primary);
+}
+
+.modern-theme .chat-header {
+    background-color: var(--modern-bg-secondary);
+    border-bottom: 1px solid var(--modern-border);
+    padding: 16px 20px;
+}
+
+.modern-theme .chat-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--modern-text-primary);
+}
+
+.modern-theme .chat-subtitle {
+    color: var(--modern-text-secondary);
+}
+
+.modern-theme .participants-dropdown {
+    background-color: var(--modern-bg-secondary);
+    border: 1px solid var(--modern-border);
+    border-radius: var(--modern-radius-md);
+    box-shadow: var(--modern-shadow-md);
+}
+
+.modern-theme .participant-item {
+    border-bottom: 1px solid var(--modern-border-light);
+    transition: background-color var(--modern-transition-fast);
+}
+
+.modern-theme .participant-item:hover {
+    background-color: var(--modern-bg-tertiary);
+}
+
+.modern-theme .participant-name {
+    font-weight: 600;
+    color: var(--modern-text-primary);
+}
+
+.modern-theme .participant-status.online::before {
+    background-color: var(--modern-success);
+}
+
+.modern-theme .participant-status.busy::before {
+    background-color: var(--modern-error);
+}
+
+.modern-theme .participant-status.away::before {
+    background-color: var(--modern-warning);
+}
+
+.modern-theme .participant-role {
+    background-color: var(--modern-bg-tertiary);
+    color: var(--modern-text-secondary);
+    border-radius: var(--modern-radius-full);
+}
+
+.modern-theme .participants-actions {
+    background-color: var(--modern-bg-tertiary);
+    border-top: 1px solid var(--modern-border);
+}
+
+.modern-theme .add-participant-action,
+.modern-theme .manage-participants-action {
+    background-color: var(--modern-bg-secondary);
+    border: 1px solid var(--modern-border);
+    border-radius: var(--modern-radius-md);
+    color: var(--modern-text-secondary);
+    transition: all var(--modern-transition-fast);
+}
+
+.modern-theme .add-participant-action:hover,
+.modern-theme .manage-participants-action:hover {
+    border-color: var(--modern-accent);
+    color: var(--modern-accent);
+}
+
+/* Chat Actions Ribbon */
+.modern-theme .chat-actions-ribbon {
+    background-color: var(--modern-bg-secondary);
+    border-bottom: 1px solid var(--modern-border);
+    padding: 8px 16px;
+}
+
+.modern-theme .token-display {
+    border-right: 1px solid var(--modern-border-light);
+}
+
+.modern-theme .token-bar-container {
+    background-color: var(--modern-bg-tertiary);
+    border-radius: var(--modern-radius-full);
+    height: 6px;
+}
+
+.modern-theme .token-bar-fill {
+    background-color: var(--modern-accent);
+    border-radius: var(--modern-radius-full);
+}
+
+.modern-theme .chat-action-button {
+    background-color: transparent;
+    color: var(--modern-text-secondary);
+    border-radius: var(--modern-radius-md);
+    padding: 6px 12px;
+    transition: all var(--modern-transition-fast);
+}
+
+.modern-theme .chat-action-button:hover {
+    background-color: var(--modern-bg-tertiary);
+    color: var(--modern-text-primary);
+}
+
+.modern-theme .chat-action-button.optimize-button {
+    color: var(--modern-accent);
+}
+
+.modern-theme .chat-action-button.optimize-button:hover {
+    background-color: rgba(var(--modern-accent-rgb), 0.1);
+}
+
+/* Chat Messages */
+.modern-theme .chat-messages {
+    background-color: var(--modern-bg-primary);
+    padding: 20px;
+}
+
+.modern-theme .message {
+    margin-bottom: 20px;
+}
+
+.modern-theme .system-message {
+    background-color: var(--modern-bg-tertiary);
+    border: 1px solid var(--modern-border);
+    border-radius: var(--modern-radius-md);
+    color: var(--modern-text-secondary);
+    font-style: italic;
+    padding: 12px 16px;
+    text-align: center;
+    max-width: 80%;
+    margin: 0 auto;
+}
+
+.modern-theme .message-avatar {
+    border: 2px solid var(--modern-border);
+}
+
+.modern-theme .user-avatar {
+    background-color: var(--modern-accent);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    width: 100%;
+    height: 100%;
+}
+
+.modern-theme .message-content {
+    background-color: var(--modern-bg-secondary);
+    border: 1px solid var(--modern-border);
+    border-radius: var(--modern-radius-lg);
+    box-shadow: var(--modern-shadow-sm);
+    padding: 16px;
+}
+
+.modern-theme .message.user .message-content {
+    background-color: var(--modern-accent);
+    color: white;
+    border: none;
+}
+
+.modern-theme .message.user .message-sender,
+.modern-theme .message.user .message-time,
+.modern-theme .message.user .message-role-badge {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.modern-theme .message-sender {
+    font-weight: 600;
+    color: var(--modern-text-primary);
+}
+
+.modern-theme .message-role-badge {
+    background-color: var(--modern-bg-tertiary);
+    color: var(--modern-text-secondary);
+    border-radius: var(--modern-radius-full);
+    font-size: 11px;
+    padding: 2px 8px;
+}
+
+.modern-theme .message-time {
+    color: var(--modern-text-tertiary);
+}
+
+.modern-theme .message-actions {
+    opacity: 0;
+    transition: opacity var(--modern-transition-fast);
+}
+
+.modern-theme .message:hover .message-actions {
+    opacity: 1;
+}
+
+.modern-theme .message-action-button {
+    background-color: transparent;
+    color: var(--modern-text-tertiary);
+    border-radius: var(--modern-radius-sm);
+    transition: all var(--modern-transition-fast);
+}
+
+.modern-theme .message-action-button:hover {
+    background-color: var(--modern-bg-tertiary);
+    color: var(--modern-accent);
+}
+
+.modern-theme .message.user .message-action-button {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.modern-theme .message.user .message-action-button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+/* Code Blocks */
+.modern-theme .code-block-container {
+    background-color: var(--modern-dark);
+    border-radius: var(--modern-radius-md);
+    overflow: hidden;
+    margin: 12px 0;
+}
+
+.modern-theme .code-block-header {
+    background-color: rgba(0, 0, 0, 0.3);
+    padding: 8px 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modern-theme .code-language {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+.modern-theme .code-action-button {
+    background-color: transparent;
+    color: rgba(255, 255, 255, 0.5);
+    border-radius: var(--modern-radius-sm);
+    padding: 4px;
+    transition: all var(--modern-transition-fast);
+}
+
+.modern-theme .code-action-button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.modern-theme .code-block {
+    padding: 12px;
+    margin: 0;
+    font-family: var(--modern-font-mono);
+    font-size: 14px;
+    line-height: 1.5;
+    overflow-x: auto;
+}
+
+/* Typing Indicator */
+.modern-theme .typing-indicator {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 12px;
+}
+
+.modern-theme .typing-indicator span {
+    width: 8px;
+    height: 8px;
+    background-color: var(--modern-accent);
+    border-radius: 50%;
+    display: inline-block;
+    animation: typing-animation 1.4s infinite ease-in-out both;
+}
+
+.modern-theme .typing-indicator span:nth-child(1) {
+    animation-delay: -0.32s;
+}
+
+.modern-theme .typing-indicator span:nth-child(2) {
+    animation-delay: -0.16s;
+}
+
+@keyframes typing-animation {
+    0%, 80%, 100% { transform: scale(0); }
+    40% { transform: scale(1); }
+}
+
+/* Chat Input */
+.modern-theme .chat-input-container {
+    background-color: var(--modern-bg-secondary);
+    border-top: 1px solid var(--modern-border);
+    padding: 16px 20px;
+}
+
+.modern-theme .chat-input-label {
+    color: var(--modern-text-secondary);
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+
+.modern-theme .chat-input-wrapper {
+    background-color: var(--modern-bg-tertiary);
+    border: 1px solid var(--modern-border);
+    border-radius: var(--modern-radius-md);
+    transition: all var(--modern-transition-fast);
+}
+
+.modern-theme .chat-input-wrapper:focus-within {
+    border-color: var(--modern-accent);
+    box-shadow: 0 0 0 2px var(--modern-glow);
+}
+
+.modern-theme .chat-input {
+    background: none;
+    border: none;
+    color: var(--modern-text-primary);
+    font-family: var(--modern-font);
+    font-size: 15px;
+    padding: 12px;
+    resize: none;
+}
+
+.modern-theme .chat-input:focus {
+    outline: none;
+}
+
+.modern-theme .chat-input::placeholder {
+    color: var(--modern-text-tertiary);
+}
+
+.modern-theme .send-button {
+    background-color: var(--modern-accent);
+    color: white;
+    border-radius: var(--modern-radius-md);
+    font-weight: 500;
+    transition: all var(--modern-transition-fast);
+}
+
+.modern-theme .send-button:hover:not(:disabled) {
+    background-color: var(--modern-accent-hover);
+    transform: translateY(-1px);
+    box-shadow: var(--modern-shadow-sm);
+}
+
+.modern-theme .send-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.modern-theme .stop-button {
+    background-color: var(--modern-bg-tertiary);
+    border: 1px solid var(--modern-border);
+    color: var(--modern-text-secondary);
+    border-radius: var(--modern-radius-md);
+    font-weight: 500;
+    transition: all var(--modern-transition-fast);
+}
+
+.modern-theme .stop-button:hover {
+    background-color: var(--modern-bg-hover);
+    color: var(--modern-text-primary);
+}
+
+/* Participant Chips */
+.modern-theme .participant-chip {
+    background-color: var(--modern-bg-tertiary);
+    border: 1px solid var(--modern-border);
+    border-radius: var(--modern-radius-full);
+    padding: 4px 10px 4px 4px;
+    transition: all var(--modern-transition-fast);
+}
+
+.modern-theme .participant-chip:hover {
+    border-color: var(--modern-border-dark);
+}
+
+.modern-theme .chip-avatar {
+    border: 1px solid var(--modern-border);
+}
+
+.modern-theme .chip-name {
+    color: var(--modern-text-primary);
+    font-weight: 500;
+}
+
+.modern-theme .chip-remove {
+    color: var(--modern-text-tertiary);
+    transition: color var(--modern-transition-fast);
+}
+
+.modern-theme .chip-remove:hover {
+    color: var(--modern-error);
+}
+
+/* Notifications */
+.modern-theme .notification {
+    background-color: var(--modern-bg-secondary);
+    border-left: 4px solid var(--modern-accent);
+    border-radius: var(--modern-radius-md);
+    box-shadow: var(--modern-shadow-md);
+    color: var(--modern-text-primary);
+    padding: 12px 16px;
+}
+
+.modern-theme .notification.error {
+    border-left-color: var(--modern-error);
+}
+
+.modern-theme .notification.warning {
+    border-left-color: var(--modern-warning);
+}
+
+.modern-theme .notification.success {
+    border-left-color: var(--modern-success);
+}
+
+/* Code Modal */
+.modern-theme .code-modal-container {
+    background-color: var(--modern-bg-secondary);
+    border-radius: var(--modern-radius-lg);
+    box-shadow: var(--modern-shadow-lg);
+    border: 1px solid var(--modern-border);
+}
+
+.modern-theme .code-modal-header {
+    background-color: var(--modern-bg-tertiary);
+    border-bottom: 1px solid var(--modern-border);
+    padding: 16px;
+}
+
+.modern-theme .code-modal-language {
+    background-color: rgba(var(--modern-accent-rgb), 0.1);
+    color: var(--modern-accent);
+    border-radius: var(--modern-radius-sm);
+    padding: 4px 8px;
+    font-weight: 600;
+}
+
+.modern-theme .code-modal-filename {
+    color: var(--modern-text-secondary);
+    font-family: var(--modern-font-mono);
+}
+
+.modern-theme .code-modal-close {
+    color: var(--modern-text-tertiary);
+    background-color: transparent;
+    border-radius: var(--modern-radius-sm);
+    transition: all var(--modern-transition-fast);
+}
+
+.modern-theme .code-modal-close:hover {
+    background-color: var(--modern-bg-hover);
+    color: var(--modern-text-primary);
+}
+
+.modern-theme .code-modal-content {
+    background-color: var(--modern-dark);
+    color: white;
+    font-family: var(--modern-font-mono);
+}
+
+.modern-theme .code-modal-footer {
+    background-color: var(--modern-bg-tertiary);
+    border-top: 1px solid var(--modern-border);
+    padding: 12px 16px;
+}
+
+.modern-theme .code-modal-button {
+    background-color: var(--modern-bg-secondary);
+    border: 1px solid var(--modern-border);
+    color: var(--modern-text-secondary);
+    border-radius: var(--modern-radius-md);
+    transition: all var(--modern-transition-fast);
+}
+
+.modern-theme .code-modal-button:hover {
+    border-color: var(--modern-border-dark);
+    color: var(--modern-text-primary);
+}
+
+.modern-theme .code-modal-button.primary {
+    background-color: var(--modern-accent);
+    border-color: var(--modern-accent);
+    color: white;
+}
+
+.modern-theme .code-modal-button.primary:hover {
+    background-color: var(--modern-accent-hover);
+    border-color: var(--modern-accent-hover);
+} 

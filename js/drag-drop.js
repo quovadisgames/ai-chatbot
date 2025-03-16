@@ -4,9 +4,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const personaCards = document.querySelectorAll('.persona-card');
     const activePersonas = document.getElementById('active-personas');
     const participantsCount = document.querySelector('.participants-count');
+    const premiumPersonasHeader = document.querySelector('.premium-personas-header');
+    const premiumPersonasSection = document.querySelector('.premium-personas-section');
     
     // Initialize
     initPersonaSelection();
+    initPremiumPersonasToggle();
     
     // Persona Selection Initialization
     function initPersonaSelection() {
@@ -20,6 +23,21 @@ document.addEventListener('DOMContentLoaded', function() {
         personaCards.forEach(card => {
             card.addEventListener('click', handlePersonaClick);
         });
+    }
+    
+    // Initialize Premium Personas Toggle
+    function initPremiumPersonasToggle() {
+        if (premiumPersonasHeader) {
+            premiumPersonasHeader.addEventListener('click', function() {
+                premiumPersonasSection.classList.toggle('expanded');
+                const toggleIcon = this.querySelector('.premium-personas-toggle svg');
+                if (toggleIcon) {
+                    toggleIcon.style.transform = premiumPersonasSection.classList.contains('expanded') 
+                        ? 'rotate(180deg)' 
+                        : 'rotate(0deg)';
+                }
+            });
+        }
     }
     
     // Event Handlers

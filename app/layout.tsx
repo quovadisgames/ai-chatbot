@@ -1,11 +1,9 @@
 import type { Metadata } from 'next';
 import { Toaster } from 'sonner';
-
 import { ThemeProvider } from '@/components/theme-provider';
 import { Exo_2 } from 'next/font/google';
-
+import { ThemeSwitcher } from '@/components/theme-switcher';
 import './globals.css';
-import '@/styles/kotor-theme.css';
 
 // Initialize the Exo 2 font
 const exo2 = Exo_2({
@@ -17,15 +15,14 @@ const exo2 = Exo_2({
 export const metadata: Metadata = {
   metadataBase: new URL('https://chat.vercel.ai'),
   title: 'PDT AI - Galactic Intelligence Terminal',
-  description: 'Advanced AI assistant with KOTOR-inspired interface.',
+  description: 'Advanced AI assistant with multiple theme options.',
 };
 
 export const viewport = {
   maximumScale: 1, // Disable auto-zoom on mobile Safari
 };
 
-const LIGHT_THEME_COLOR = '#1A2526'; // KOTOR theme background
-const DARK_THEME_COLOR = '#0F1419'; // KOTOR theme dark background
+// Theme color script for mobile browsers
 const THEME_COLOR_SCRIPT = `\
 (function() {
   var html = document.documentElement;
@@ -35,11 +32,27 @@ const THEME_COLOR_SCRIPT = `\
     meta.setAttribute('name', 'theme-color');
     document.head.appendChild(meta);
   }
-  function updateThemeColor() {
+  function updateThemeColor(theme) {
+    var colors = {
+      kotor: { light: '#1A2526', dark: '#0F1419' },
+      swjs: { light: '#141619', dark: '#1E2023' },
+      professional: { light: '#FFFFFF', dark: '#1A1A1A' }
+    };
     var isDark = html.classList.contains('dark');
-    meta.setAttribute('content', isDark ? '${DARK_THEME_COLOR}' : '${LIGHT_THEME_COLOR}');
+    var currentTheme = theme || 'professional';
+    meta.setAttribute('content', isDark ? colors[currentTheme].dark : colors[currentTheme].light);
   }
-  var observer = new MutationObserver(updateThemeColor);
+  // Watch for theme changes
+  var observer = new MutationObserver(function(mutations) {
+    mutations.forEach(function(mutation) {
+      if (mutation.attributeName === 'class') {
+        var themeClass = Array.from(html.classList)
+          .find(className => className.endsWith('-theme'));
+        var theme = themeClass ? themeClass.replace('-theme', '') : null;
+        updateThemeColor(theme);
+      }
+    });
+  });
   observer.observe(html, { attributes: true, attributeFilter: ['class'] });
   updateThemeColor();
 })();`;
@@ -66,7 +79,7 @@ export default async function RootLayout({
           }}
         />
       </head>
-      <body className="antialiased kotor-theme">
+      <body className="antialiased">
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
@@ -74,6 +87,9 @@ export default async function RootLayout({
           disableTransitionOnChange
         >
           <Toaster position="top-center" />
+          <div className="fixed top-4 right-4 z-50">
+            <ThemeSwitcher />
+          </div>
           {children}
         </ThemeProvider>
       </body>

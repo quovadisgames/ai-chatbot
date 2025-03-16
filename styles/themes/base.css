@@ -1,0 +1,74 @@
+/* Base Theme Variables */
+:root {
+  /* Common theme variables */
+  --font-primary: 'geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'geist-mono', monospace;
+  
+  /* Animation durations */
+  --transition-fast: 0.15s;
+  --transition-normal: 0.3s;
+  --transition-slow: 0.5s;
+  
+  /* Spacing */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  
+  /* Border radius */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 1rem;
+  
+  /* Z-index layers */
+  --z-dropdown: 1000;
+  --z-modal: 2000;
+  --z-tooltip: 3000;
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Base theme class - shared styles */
+.theme-base {
+  /* Layout */
+  --max-width: 1200px;
+  --header-height: 60px;
+  --sidebar-width: 280px;
+  --chat-max-width: 800px;
+  
+  /* Common component sizes */
+  --input-height: 40px;
+  --button-height: 40px;
+  --avatar-size: 40px;
+  --icon-size: 24px;
+  
+  /* Message bubbles */
+  --message-padding: var(--spacing-md);
+  --message-margin: var(--spacing-sm);
+  --message-border-radius: var(--radius-md);
+  
+  /* Animations */
+  --fade-in: fade-in var(--transition-normal) ease-in-out;
+  --slide-in: slide-in var(--transition-normal) ease-out;
+  --scale-in: scale-in var(--transition-fast) ease-out;
+}
+
+/* Animation keyframes */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slide-in {
+  from { transform: translateY(10px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes scale-in {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+} 

@@ -1,0 +1,137 @@
+/* Base animations */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slide-in-bottom {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* KOTOR Theme Animations */
+@keyframes glow-pulse {
+  0% { box-shadow: 0 0 5px rgba(0, 191, 255, 0.2); }
+  50% { box-shadow: 0 0 15px rgba(0, 191, 255, 0.4); }
+  100% { box-shadow: 0 0 5px rgba(0, 191, 255, 0.2); }
+}
+
+@keyframes scan-line {
+  0% {
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      rgba(0, 191, 255, 0.2) 50%,
+      transparent 100%
+    );
+    background-size: 100% 50px;
+    background-position: 0 -50px;
+  }
+  100% {
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      rgba(0, 191, 255, 0.2) 50%,
+      transparent 100%
+    );
+    background-size: 100% 50px;
+    background-position: 0 100%;
+  }
+}
+
+/* SWJS Theme Animations */
+@keyframes saber-flash {
+  0% { box-shadow: 0 0 5px rgba(255, 136, 0, 0.2); }
+  50% { box-shadow: 0 0 20px rgba(255, 136, 0, 0.5); }
+  100% { box-shadow: 0 0 5px rgba(255, 136, 0, 0.2); }
+}
+
+@keyframes lightsaber-pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 10px rgba(255, 136, 0, 0.3);
+  }
+  50% {
+    transform: scale(1.1);
+    box-shadow: 0 0 20px rgba(255, 136, 0, 0.5);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 10px rgba(255, 136, 0, 0.3);
+  }
+}
+
+/* Professional Theme Animations */
+@keyframes smooth-fade {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Animation Classes */
+.animate-fade-in {
+  animation: fade-in 0.3s ease-out;
+}
+
+.animate-slide-in-bottom {
+  animation: slide-in-bottom 0.3s ease-out;
+}
+
+.animate-fade-in-right {
+  animation: fade-in-right 0.3s ease-out;
+}
+
+.animate-glow-pulse {
+  animation: glow-pulse 2s infinite;
+}
+
+.animate-scan-line {
+  animation: scan-line 2s linear infinite;
+}
+
+.animate-saber-flash {
+  animation: saber-flash 2s infinite;
+}
+
+.animate-lightsaber-pulse {
+  animation: lightsaber-pulse 1.5s infinite;
+}
+
+.animate-smooth-fade {
+  animation: smooth-fade 0.3s ease-out;
+}
+
+.animate-bounce {
+  animation: bounce 1s infinite;
+} 

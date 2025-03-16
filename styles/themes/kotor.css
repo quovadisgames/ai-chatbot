@@ -1,0 +1,122 @@
+/* KOTOR Theme Variables */
+.kotor-theme {
+  /* Theme-specific colors */
+  --theme-bg-primary: rgba(26, 37, 38, 0.95);
+  --theme-bg-secondary: rgba(15, 20, 25, 0.9);
+  --theme-bg-tertiary: rgba(10, 15, 20, 0.95);
+  
+  /* Accent colors */
+  --theme-accent: rgb(0, 191, 255);
+  --theme-accent-rgb: 0, 191, 255;
+  --theme-accent-dark: rgba(0, 150, 200, 1);
+  --theme-accent-light: rgba(0, 210, 255, 1);
+  
+  /* Text colors */
+  --theme-text-primary: rgba(255, 255, 255, 0.9);
+  --theme-text-secondary: rgba(255, 255, 255, 0.7);
+  --theme-text-tertiary: rgba(255, 255, 255, 0.5);
+  
+  /* Border colors */
+  --theme-border-primary: rgba(0, 191, 255, 0.3);
+  --theme-border-secondary: rgba(255, 255, 255, 0.1);
+  
+  /* Glow effects */
+  --theme-glow: 0 0 10px rgba(0, 191, 255, 0.3);
+  --theme-glow-strong: 0 0 20px rgba(0, 191, 255, 0.5);
+  
+  /* Force/Mana system colors */
+  --force-light: rgba(0, 191, 255, 0.9);
+  --force-dark: rgba(0, 100, 150, 0.9);
+  --force-neutral: rgba(150, 150, 150, 0.9);
+}
+
+/* Background Effects */
+.kotor-theme .neural-grid {
+  background-image: 
+    linear-gradient(to right, rgba(0, 191, 255, 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 191, 255, 0.07) 1px, transparent 1px);
+  background-size: 50px 50px;
+  opacity: 0.5;
+}
+
+.kotor-theme .neural-node {
+  background-color: rgba(0, 191, 255, 0.5);
+  box-shadow: 0 0 8px rgba(0, 191, 255, 0.5);
+}
+
+/* Message Styling */
+.kotor-theme .message {
+  background: var(--theme-bg-secondary);
+  border: 1px solid var(--theme-border-secondary);
+  border-radius: var(--message-border-radius);
+  animation: var(--fade-in);
+}
+
+.kotor-theme .message.assistant {
+  border-left: 2px solid var(--theme-accent);
+}
+
+.kotor-theme .message.user {
+  background: var(--theme-bg-tertiary);
+}
+
+/* Force/Mana Display */
+.kotor-theme .force-meter {
+  background: var(--theme-bg-tertiary);
+  border: 1px solid var(--theme-border-primary);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.kotor-theme .force-fill {
+  background: linear-gradient(
+    90deg,
+    var(--force-dark) 0%,
+    var(--force-light) 100%
+  );
+  transition: width var(--transition-normal) ease-in-out;
+}
+
+/* Interactive Elements */
+.kotor-theme .button {
+  background: var(--theme-bg-secondary);
+  border: 1px solid var(--theme-border-primary);
+  color: var(--theme-text-primary);
+  transition: all var(--transition-fast);
+}
+
+.kotor-theme .button:hover {
+  background: var(--theme-accent);
+  border-color: var(--theme-accent-light);
+  box-shadow: var(--theme-glow);
+}
+
+.kotor-theme .input {
+  background: var(--theme-bg-tertiary);
+  border: 1px solid var(--theme-border-secondary);
+  color: var(--theme-text-primary);
+}
+
+.kotor-theme .input:focus {
+  border-color: var(--theme-accent);
+  box-shadow: var(--theme-glow);
+}
+
+/* Scrollbar Styling */
+.kotor-theme ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.kotor-theme ::-webkit-scrollbar-track {
+  background: var(--theme-bg-tertiary);
+}
+
+.kotor-theme ::-webkit-scrollbar-thumb {
+  background: var(--theme-accent);
+  border-radius: var(--radius-sm);
+}
+
+.kotor-theme ::-webkit-scrollbar-thumb:hover {
+  background: var(--theme-accent-light);
+} 

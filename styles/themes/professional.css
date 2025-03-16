@@ -1,0 +1,127 @@
+/* Professional Theme Variables */
+.professional-theme {
+  /* Theme-specific colors */
+  --theme-bg-primary: rgba(255, 255, 255, 0.95);
+  --theme-bg-secondary: rgba(248, 249, 250, 0.9);
+  --theme-bg-tertiary: rgba(240, 242, 245, 0.95);
+  
+  /* Accent colors */
+  --theme-accent: rgb(59, 130, 246);
+  --theme-accent-rgb: 59, 130, 246;
+  --theme-accent-dark: rgba(37, 99, 235, 1);
+  --theme-accent-light: rgba(96, 165, 250, 1);
+  
+  /* Text colors */
+  --theme-text-primary: rgba(17, 24, 39, 0.95);
+  --theme-text-secondary: rgba(55, 65, 81, 0.8);
+  --theme-text-tertiary: rgba(107, 114, 128, 0.7);
+  
+  /* Border colors */
+  --theme-border-primary: rgba(59, 130, 246, 0.3);
+  --theme-border-secondary: rgba(209, 213, 219, 0.5);
+  
+  /* Shadow effects */
+  --theme-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --theme-shadow-strong: 0 4px 6px rgba(0, 0, 0, 0.1);
+  
+  /* Token system colors */
+  --token-primary: rgba(59, 130, 246, 0.9);
+  --token-secondary: rgba(37, 99, 235, 0.9);
+  --token-neutral: rgba(107, 114, 128, 0.9);
+}
+
+/* Background Effects */
+.professional-theme .neural-grid {
+  background-image: 
+    linear-gradient(to right, rgba(59, 130, 246, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(59, 130, 246, 0.05) 1px, transparent 1px);
+  background-size: 30px 30px;
+  opacity: 0.3;
+}
+
+.professional-theme .neural-node {
+  background-color: rgba(59, 130, 246, 0.3);
+  box-shadow: 0 0 4px rgba(59, 130, 246, 0.3);
+}
+
+/* Message Styling */
+.professional-theme .message {
+  background: var(--theme-bg-secondary);
+  border: 1px solid var(--theme-border-secondary);
+  border-radius: var(--message-border-radius);
+  box-shadow: var(--theme-shadow);
+  animation: var(--fade-in);
+}
+
+.professional-theme .message.assistant {
+  border-left: 2px solid var(--theme-accent);
+}
+
+.professional-theme .message.user {
+  background: var(--theme-bg-tertiary);
+}
+
+/* Token Display */
+.professional-theme .token-meter {
+  background: var(--theme-bg-tertiary);
+  border: 1px solid var(--theme-border-secondary);
+  border-radius: var(--radius-md);
+  box-shadow: var(--theme-shadow);
+  overflow: hidden;
+}
+
+.professional-theme .token-fill {
+  background: linear-gradient(
+    90deg,
+    var(--token-secondary) 0%,
+    var(--token-primary) 100%
+  );
+  transition: width var(--transition-normal) ease-in-out;
+}
+
+/* Interactive Elements */
+.professional-theme .button {
+  background: var(--theme-bg-secondary);
+  border: 1px solid var(--theme-border-secondary);
+  color: var(--theme-text-primary);
+  transition: all var(--transition-fast);
+  box-shadow: var(--theme-shadow);
+}
+
+.professional-theme .button:hover {
+  background: var(--theme-accent);
+  border-color: var(--theme-accent-light);
+  color: white;
+  box-shadow: var(--theme-shadow-strong);
+}
+
+.professional-theme .input {
+  background: var(--theme-bg-tertiary);
+  border: 1px solid var(--theme-border-secondary);
+  color: var(--theme-text-primary);
+  box-shadow: var(--theme-shadow);
+}
+
+.professional-theme .input:focus {
+  border-color: var(--theme-accent);
+  box-shadow: var(--theme-shadow-strong);
+}
+
+/* Scrollbar Styling */
+.professional-theme ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.professional-theme ::-webkit-scrollbar-track {
+  background: var(--theme-bg-tertiary);
+}
+
+.professional-theme ::-webkit-scrollbar-thumb {
+  background: var(--theme-accent);
+  border-radius: var(--radius-sm);
+}
+
+.professional-theme ::-webkit-scrollbar-thumb:hover {
+  background: var(--theme-accent-light);
+} 

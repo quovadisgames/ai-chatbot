@@ -3,6 +3,7 @@ import OpenAI from 'openai';
 import { auth } from '@/auth';
 import { saveMessages } from '@/lib/db/queries';
 import { type Message } from '@/lib/db/schema';
+import { ChatMessage, TypedChatMessage } from '@/lib/types';
 
 export const runtime = 'edge';
 export const preferredRegion = 'iad1';
@@ -22,7 +23,7 @@ export async function POST(req: Request) {
   const userMessage = messages[messages.length - 1];
 
   // Format messages to ensure they have the correct types for OpenAI
-  const formattedMessages = messages.map(msg => {
+  const formattedMessages = messages.map((msg: ChatMessage) => {
     // Ensure the role is one of the valid types
     if (['system', 'user', 'assistant'].includes(msg.role)) {
       return {

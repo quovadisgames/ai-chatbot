@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import OpenAI from 'openai';
+import { ChatMessage } from '@/lib/types';
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY!
@@ -7,13 +8,13 @@ const openai = new OpenAI({
 
 // Instead of trying to define a complex type, we'll convert the messages to the expected format
 export async function getRequestSuggestions(
-  messages: Array<{ role: string; content: string }>
+  messages: Array<ChatMessage>
 ) {
   try {
     // Create a properly formatted array of messages for the OpenAI API
     const formattedMessages = [
       {
-        role: 'system' as const,
+        role: 'system',
         content: `You are a helpful assistant that suggests follow-up questions or requests based on the conversation history.
         Analyze the conversation and suggest 3 follow-up questions or requests that would be helpful for the user.
         Return a JSON array of strings with your suggestions.
@@ -22,29 +23,24 @@ export async function getRequestSuggestions(
     ];
     
     // Add each message with proper type casting based on role
-    messages.forEach(msg => {
+    messages.forEach((msg: ChatMessage) => {
       if (msg.role === 'system') {
         formattedMessages.push({
-          role: 'system' as const,
+          role: 'system',
           content: msg.content
         });
       } else if (msg.role === 'user') {
         formattedMessages.push({
-          role: 'user' as const,
+          role: 'user',
           content: msg.content
         });
       } else if (msg.role === 'assistant') {
         formattedMessages.push({
-          role: 'assistant' as const,
+          role: 'assistant',
           content: msg.content
         });
-      } else if (msg.role === 'function') {
-        // Skip function messages as they require a name property
-        // or handle them properly if needed
-      } else if (msg.role === 'tool') {
-        // Skip tool messages as they require additional properties
-        // or handle them properly if needed
       }
+      // Skip function and tool messages as they require additional properties
       // Ignore other roles
     });
 

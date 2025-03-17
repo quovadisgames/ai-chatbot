@@ -1,10 +1,5 @@
 import { z } from 'zod';
-import OpenAI from 'openai';
 import { ChatMessage } from '@/lib/types';
-
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY!
-});
 
 // Instead of trying to define a complex type, we'll convert the messages to the expected format
 export async function getRequestSuggestions(
@@ -24,34 +19,44 @@ export async function getRequestSuggestions(
     
     // Add each message with proper type casting based on role
     messages.forEach((msg: ChatMessage) => {
-      if (msg.role === 'system') {
+      if (msg.role === 'system' || msg.role === 'user' || msg.role === 'assistant') {
         formattedMessages.push({
-          role: 'system',
-          content: msg.content
-        });
-      } else if (msg.role === 'user') {
-        formattedMessages.push({
-          role: 'user',
-          content: msg.content
-        });
-      } else if (msg.role === 'assistant') {
-        formattedMessages.push({
-          role: 'assistant',
+          role: msg.role,
           content: msg.content
         });
       }
-      // Skip function and tool messages as they require additional properties
-      // Ignore other roles
+      // Skip other roles that might cause type issues
     });
 
-    const response = await openai.chat.completions.create({
-      model: 'gpt-4o-mini',
-      messages: formattedMessages,
-      temperature: 0.7,
-      response_format: { type: 'json_object' }
+    // Use direct OpenAI API instead of SDK to avoid type compatibility issues
+    const apiKey = process.env.OPENAI_API_KEY;
+    if (!apiKey) {
+      throw new Error('OPENAI_API_KEY is not defined');
+    }
+
+    // Create a fetch request to OpenAI API
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model: 'gpt-4o-mini',
+        messages: formattedMessages,
+        temperature: 0.7,
+        response_format: { type: 'json_object' }
+      }),
     });
 
-    const content = response.choices[0]?.message?.content;
+    if (!response.ok) {
+      const error = await response.text();
+      throw new Error(`OpenAI API error: ${error}`);
+    }
+
+    const result = await response.json();
+    const content = result.choices[0]?.message?.content;
+    
     if (!content) return [];
 
     try {

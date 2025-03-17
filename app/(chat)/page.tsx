@@ -9,11 +9,12 @@ import { DEFAULT_CHAT_MODEL } from '@/lib/ai/models';
 import { generateUUID } from '@/lib/utils';
 import { DataStreamHandler } from '@/components/data-stream-handler';
 import { usePersona } from '@/hooks/use-persona';
+import type { Persona } from '@/hooks/use-persona';
 
 export default function Page() {
   const chatId = generateUUID();
   const [selectedChatModel, setSelectedChatModel] = useState(DEFAULT_CHAT_MODEL);
-  const { persona } = usePersona();
+  const { persona, setPersona } = usePersona();
   
   // Load chat model from cookie on client side
   useEffect(() => {
@@ -27,9 +28,25 @@ export default function Page() {
     }
   }, []);
 
+  // Handle persona creation
+  const handlePersonaSubmit = (personaData: {
+    name: string;
+    description: string;
+    model: string;
+    visibility: 'public' | 'private';
+  }) => {
+    const newPersona: Persona = {
+      character: personaData.name,
+      role: 'assistant',
+      responseTime: 'Medium',
+      description: personaData.description,
+    };
+    setPersona(newPersona);
+  };
+
   // Show persona creator if no persona is selected
   if (!persona) {
-    return <PersonaCreator />;
+    return <PersonaCreator onSubmit={handlePersonaSubmit} />;
   }
 
   return (

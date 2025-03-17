@@ -23,6 +23,7 @@ import {
   type Document,
 } from './schema';
 import { ArtifactKind } from '@/components/artifact';
+import { db } from '@/lib/db';
 
 // Enable mock database for development
 const USE_MOCK_DB = true;
@@ -246,49 +247,23 @@ export async function getChatsByUserId({ id }: { id: string }) {
 }
 
 export async function getChatById({ id }: { id: string }): Promise<ExtendedChat | null> {
-  if (USE_MOCK_DB) {
-    console.log(`[MOCK] Getting chat by ID: ${id}`);
-    const mockChat = MOCK_CHATS.find(chat => chat.id === id);
-    return mockChat ? { ...mockChat, userId: mockChat.userId || MOCK_USER.id } : null;
+  const [result] = await db.select().from(chat)
+    .where(eq(chat.id, id))
+    .leftJoin(message, eq(message.chatId, chat.id));
+
+  if (!result) {
+    return null;
   }
 
-  try {
-    if (!db) {
-      console.warn('Database not initialized, using mock data');
-      const mockChat = MOCK_CHATS.find(chat => chat.id === id);
-      return mockChat ? { ...mockChat, userId: mockChat.userId || MOCK_USER.id } : null;
-    }
-    
-    const result = await db.select().from(chat).where(eq(chat.id, id)).limit(1);
-    const chatResult = result[0];
-    
-    if (!chatResult) {
-      return null;
-    }
-    
-    // Ensure userId is always defined
-    return {
-      ...chatResult,
-      userId: chatResult.userId || ''
-    };
-  } catch (error) {
-    console.error('Error in getChatById:', error);
-    throw error;
-  }
+  return {
+    ...result.chat,
+    messages: result.message ? [result.message] : [],
+    visibility: result.chat.visibility || 'private'
+  };
 }
 
-export async function saveMessages({ messages }: { messages: Array<Message> }): Promise<any> {
-  if (USE_MOCK_DB) {
-    console.log('Using mock mode for saveMessages');
-    return { success: true };
-  }
-  try {
-    if (!db) throw new Error("Database not initialized");
-    return await db.insert(message).values(messages);
-  } catch (error) {
-    console.error('Failed to save messages in database:', error);
-    throw error;
-  }
+export async function saveMessages({ messages }: { messages: Message[] }) {
+  return await db.insert(message).values(messages);
 }
 
 export async function getMessagesByChatId({ chatId }: { chatId: string }): Promise<Message[]> {

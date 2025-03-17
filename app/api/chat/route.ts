@@ -1,19 +1,15 @@
 import { OpenAIStream, StreamingTextResponse } from 'ai';
 import OpenAI from 'openai';
 import { auth } from '@/auth';
+import { saveMessages } from '@/lib/db/queries';
 import { type Message } from '@/lib/db/schema';
 
 export const runtime = 'edge';
+export const preferredRegion = 'iad1';
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY!
 });
-
-// Mock saveMessages function for Edge Runtime
-async function saveMessages({ messages }: { messages: Message[] }) {
-  console.log('Mock saving messages:', messages);
-  return { success: true };
-}
 
 export async function POST(req: Request) {
   const { messages, id: chatId, model = 'gpt-4', visibility = 'private' } = await req.json();
@@ -34,29 +30,27 @@ export async function POST(req: Request) {
 
   const stream = OpenAIStream(response, {
     async onCompletion(completion) {
-      const messagesToSave: Message[] = [
-        {
-          id: userMessage.id,
-          chatId,
-          content: userMessage.content,
-          role: userMessage.role as 'user' | 'assistant' | 'system',
-          createdAt: new Date()
-        },
-        {
-          id: crypto.randomUUID(),
-          chatId,
-          content: completion,
-          role: 'assistant',
-          createdAt: new Date()
-        }
-      ];
-
-      const messageSaveStart = Date.now();
       try {
+        const messagesToSave: Message[] = [
+          {
+            id: userMessage.id,
+            chatId,
+            content: userMessage.content,
+            role: userMessage.role as 'user' | 'assistant' | 'system',
+            createdAt: new Date()
+          },
+          {
+            id: crypto.randomUUID(),
+            chatId,
+            content: completion,
+            role: 'assistant',
+            createdAt: new Date()
+          }
+        ];
+
         await saveMessages({ messages: messagesToSave });
-        console.log(`💾 Message saved in ${Date.now() - messageSaveStart}ms`);
       } catch (error) {
-        console.error('❌ Error saving message:', error);
+        console.error('Error saving messages:', error);
       }
     }
   });

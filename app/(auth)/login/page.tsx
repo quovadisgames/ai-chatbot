@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import { AuthForm } from '@/components/auth-form';
@@ -42,38 +42,69 @@ function CustomSubmitButton({
   );
 }
 
-export default function Page() {
+// Component that uses useSearchParams
+function LoginForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccessful, setIsSuccessful] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const searchParams = useSearchParams();
-  const emailParam = searchParams?.get('email');
-  const email = emailParam || undefined; // Convert null to undefined
+  const callbackUrl = searchParams?.get('callbackUrl') || '/';
 
   const handleSubmit = async (formData: FormData) => {
     setIsLoading(true);
-    setIsSuccessful(false);
+    setError(null);
 
     try {
-      const res = await signIn('credentials', {
+      const email = formData.get('email') as string;
+      const password = formData.get('password') as string;
+
+      const result = await signIn('credentials', {
         redirect: false,
-        email: formData.get('email'),
-        password: formData.get('password'),
-        callbackUrl: '/',
+        email,
+        password,
+        callbackUrl,
       });
 
-      if (!res?.error) {
-        setIsSuccessful(true);
-        window.location.href = '/';
-      } else {
-        console.error('Login failed:', res.error);
+      if (!result?.ok) {
+        setError('Invalid credentials');
+        return;
       }
+
+      setIsSuccessful(true);
+      window.location.href = callbackUrl;
     } catch (error) {
-      console.error('Login error:', error);
+      setError('An error occurred. Please try again.');
     } finally {
       setIsLoading(false);
     }
   };
 
+  return (
+    <AuthForm
+      handleSubmit={handleSubmit}
+      error={error}
+      submitButton={
+        <CustomSubmitButton
+          isLoading={isLoading}
+          isSuccessful={isSuccessful}
+        >
+          {isLoading ? 'Authenticating...' : 'Login'}
+        </CustomSubmitButton>
+      }
+    >
+      <div className="flex justify-end">
+        <Link
+          href="/register"
+          className="text-sm text-muted-foreground hover:text-primary"
+        >
+          Don't have an account? Register
+        </Link>
+      </div>
+    </AuthForm>
+  );
+}
+
+export default function Page() {
   return (
     <div className={`${exo2.variable} kotor-theme`}>
       <div className="terminal-background flex h-dvh w-screen items-center justify-center">
@@ -90,21 +121,9 @@ export default function Page() {
             </p>
           </div>
           
-          <AuthForm action={handleSubmit} defaultEmail={email}>
-            <CustomSubmitButton isSuccessful={isSuccessful} isLoading={isLoading}>
-              {isLoading ? 'Authenticating...' : 'Authenticate'}
-            </CustomSubmitButton>
-            <p className="text-center text-sm text-blue-300 mt-4">
-              {"No access credentials? "}
-              <Link
-                href="/register"
-                className="font-semibold text-blue-400 hover:text-blue-300 text-glow-sm hover:underline transition-colors"
-              >
-                Request Authorization
-              </Link>
-              {' now.'}
-            </p>
-          </AuthForm>
+          <Suspense fallback={<div>Loading...</div>}>
+            <LoginForm />
+          </Suspense>
           
           <div className="terminal-footer py-2 px-4 text-xs text-blue-400 flex justify-between">
             <div className="flex items-center">

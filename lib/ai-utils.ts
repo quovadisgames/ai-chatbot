@@ -102,7 +102,7 @@ export async function trackAIUsage(userId: string, prompt: string): Promise<AIRe
   const stream = new ReadableStream({
     async start(controller) {
       const encoder = new TextEncoder();
-      const reader = (response.body as ReadableStream<Uint8Array>)?.getReader();
+      const reader = (response.body as unknown as ReadableStream<Uint8Array>)?.getReader();
       
       if (!reader) {
         controller.close();

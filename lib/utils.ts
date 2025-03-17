@@ -92,6 +92,11 @@ function addToolMessageToChat({
 export function convertToUIMessages(
   messages: Array<DBMessage>,
 ): Array<Message> {
+  if (!Array.isArray(messages)) {
+    console.warn('convertToUIMessages: messages is not an array', messages);
+    return [];
+  }
+  
   return messages.reduce((chatMessages: Array<Message>, message) => {
     const messageAny = message as any;
     if (messageAny.role === 'tool') {

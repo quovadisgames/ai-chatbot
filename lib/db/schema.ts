@@ -129,6 +129,7 @@ export const tokenUsage = pgTable('TokenUsage', {
 export type TokenUsage = InferSelectModel<typeof tokenUsage>;
 
 export type ExtendedChat = Chat & {
-  messages: Message[];
+  messages?: Message[];
   visibility: 'public' | 'private';
+  model?: string;
 };

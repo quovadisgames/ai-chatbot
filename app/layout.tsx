@@ -4,6 +4,7 @@ import { ThemeProvider } from '@/components/theme-provider';
 import { Exo_2 } from 'next/font/google';
 import { ThemeSwitcher } from '@/components/theme-switcher';
 import './globals.css';
+import Script from 'next/script';
 
 // Initialize the Exo 2 font
 const exo2 = Exo_2({
@@ -77,6 +78,10 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: THEME_COLOR_SCRIPT,
           }}
+        />
+        <Script 
+          src="https://cdn.jsdelivr.net/pyodide/v0.23.4/full/pyodide.js"
+          strategy="beforeInteractive"
         />
       </head>
       <body className="antialiased">

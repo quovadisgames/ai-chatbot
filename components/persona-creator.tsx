@@ -7,6 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { SimpleTokenDisplay } from '@/components/simple-token-display';
 import { usePersona } from '@/hooks/use-persona';
+import { useTheme } from '@/hooks/use-theme';
 
 // Define the roles for the AI companion
 const ROLES = [
@@ -72,58 +73,103 @@ const RESPONSE_TIMES = [
   }
 ];
 
-export function PersonaCreator() {
+interface LLM {
+  id: string;
+  name: string;
+  provider: string;
+  model: string;
+  description: string;
+  maxTokens: number;
+  temperature: number;
+}
+
+const AVAILABLE_LLMS: LLM[] = [
+  {
+    id: 'gpt-4',
+    name: 'GPT-4',
+    provider: 'OpenAI',
+    model: 'gpt-4',
+    description: 'Most capable model, best for complex tasks',
+    maxTokens: 8192,
+    temperature: 0.7
+  },
+  {
+    id: 'gpt-3.5-turbo',
+    name: 'GPT-3.5 Turbo',
+    provider: 'OpenAI',
+    model: 'gpt-3.5-turbo',
+    description: 'Fast and efficient for most tasks',
+    maxTokens: 4096,
+    temperature: 0.7
+  },
+  {
+    id: 'claude-2',
+    name: 'Claude 2',
+    provider: 'Anthropic',
+    model: 'claude-2',
+    description: 'Advanced reasoning and analysis',
+    maxTokens: 100000,
+    temperature: 0.7
+  },
+  {
+    id: 'claude-instant',
+    name: 'Claude Instant',
+    provider: 'Anthropic',
+    model: 'claude-instant',
+    description: 'Fast responses for simple tasks',
+    maxTokens: 100000,
+    temperature: 0.7
+  }
+];
+
+interface PersonaCreatorProps {
+  onSave: (persona: any) => void;
+  onCancel: () => void;
+}
+
+export default function PersonaCreator({ onSave, onCancel }: PersonaCreatorProps) {
   const router = useRouter();
   const { setPersona } = usePersona();
-  const [activeTab, setActiveTab] = useState('name');
+  const { theme } = useTheme();
+  const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
-    character: '',
-    role: '',
-    responseTime: ''
+    name: '',
+    description: '',
+    llm: AVAILABLE_LLMS[0], // Default to GPT-4
+    personality: '',
+    knowledge: '',
+    style: '',
+    behavior: '',
+    context: ''
   });
   
-  // Handle form input changes
-  const handleChange = (field: string, value: string) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [field]: value
+      [name]: value
     }));
   };
-  
-  // Handle tab navigation
-  const handleTabChange = (value: string) => {
-    // Validate current tab before proceeding
-    if (activeTab === 'name' && !formData.character) {
-      toast.error('Please name your character before proceeding');
-      return;
+
+  const handleLLMChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedLLM = AVAILABLE_LLMS.find(llm => llm.id === e.target.value);
+    if (selectedLLM) {
+      setFormData(prev => ({
+        ...prev,
+        llm: selectedLLM
+      }));
     }
-    
-    if (activeTab === 'role' && !formData.role) {
-      toast.error('Please select a role for your character');
-      return;
-    }
-    
-    setActiveTab(value);
   };
-  
-  // Handle form submission
-  const handleSubmit = () => {
-    if (!formData.responseTime) {
-      toast.error('Please select a response time');
-      return;
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (step < 3) {
+      setStep(step + 1);
+    } else {
+      onSave(formData);
     }
-    
-    // Create the persona
-    setPersona({
-      character: formData.character,
-      role: formData.role,
-      responseTime: formData.responseTime as 'Fast' | 'Medium' | 'Slow'
-    });
-    
-    toast.success(`${formData.character} is ready for adventure!`);
-    router.push('/');
   };
-  
+
   // Get selected role data
   const selectedRole = ROLES.find(role => role.id === formData.role);
   
@@ -133,183 +179,156 @@ export function PersonaCreator() {
   // Calculate total mana cost
   const totalMana = (selectedRole?.mana || 0) + (selectedResponseTime?.mana || 0);
   
-  return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-background to-muted p-4">
-      <div className="w-full max-w-md bg-card border rounded-lg shadow-lg p-6 space-y-6">
-        <div className="text-center space-y-2">
-          <h1 className="text-2xl font-bold">Create Your AI Companion</h1>
-          <p className="text-muted-foreground">Customize your magical assistant</p>
-        </div>
-        
-        <Tabs value={activeTab} onValueChange={handleTabChange}>
-          <TabsList className="grid grid-cols-3 w-full">
-            <TabsTrigger value="name">Name</TabsTrigger>
-            <TabsTrigger value="role">Role</TabsTrigger>
-            <TabsTrigger value="speed">Speed</TabsTrigger>
-          </TabsList>
-          
-          {/* Character Name Tab */}
-          <TabsContent value="name" className="space-y-4">
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Character Name</label>
+  const renderStep = () => {
+    switch (step) {
+      case 1:
+        return (
+          <div className="space-y-4">
+            <h2 className="text-xl font-bold mb-4">Basic Information</h2>
+            <div>
+              <label className="block text-sm font-medium mb-1">Name</label>
               <input
                 type="text"
-                value={formData.character}
-                onChange={(e) => handleChange('character', e.target.value)}
-                placeholder="Enter a name for your companion"
-                className="w-full p-2 border rounded-md"
-                maxLength={20}
+                name="name"
+                value={formData.name}
+                onChange={handleInputChange}
+                className="w-full p-2 border rounded"
+                required
               />
-              <p className="text-xs text-muted-foreground">
-                Choose a name that reflects your companion's personality
-              </p>
             </div>
-            
-            <button
-              onClick={() => handleTabChange('role')}
-              disabled={!formData.character}
-              className="w-full py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 disabled:opacity-50"
-            >
-              Continue
-            </button>
-          </TabsContent>
-          
-          {/* Role Selection Tab */}
-          <TabsContent value="role" className="space-y-4">
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Select a Role</label>
-              <RadioGroup
-                value={formData.role}
-                onValueChange={(value) => handleChange('role', value)}
-                className="space-y-2"
+            <div>
+              <label className="block text-sm font-medium mb-1">Description</label>
+              <textarea
+                name="description"
+                value={formData.description}
+                onChange={handleInputChange}
+                className="w-full p-2 border rounded"
+                rows={3}
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-1">Language Model</label>
+              <select
+                name="llm"
+                value={formData.llm.id}
+                onChange={handleLLMChange}
+                className="w-full p-2 border rounded"
               >
-                {ROLES.map((role) => (
-                  <div
-                    key={role.id}
-                    className={`flex items-start space-x-3 p-3 border rounded-md cursor-pointer hover:bg-accent ${
-                      formData.role === role.id ? 'border-primary bg-accent' : ''
-                    }`}
-                    onClick={() => handleChange('role', role.id)}
-                  >
-                    <RadioGroupItem value={role.id} id={role.id} className="mt-1" />
-                    <div className="space-y-1">
-                      <div className="flex items-center space-x-2">
-                        <span className="text-xl">{role.icon}</span>
-                        <label htmlFor={role.id} className="font-medium cursor-pointer">
-                          {role.name}
-                        </label>
-                      </div>
-                      <p className="text-xs text-muted-foreground">{role.description}</p>
-                      <div className="text-xs text-blue-500">Mana Cost: {role.mana}</div>
-                    </div>
-                  </div>
+                {AVAILABLE_LLMS.map(llm => (
+                  <option key={llm.id} value={llm.id}>
+                    {llm.name} ({llm.provider})
+                  </option>
                 ))}
-              </RadioGroup>
-            </div>
-            
-            <div className="flex space-x-2">
-              <button
-                onClick={() => setActiveTab('name')}
-                className="flex-1 py-2 bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/90"
-              >
-                Back
-              </button>
-              <button
-                onClick={() => handleTabChange('speed')}
-                disabled={!formData.role}
-                className="flex-1 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 disabled:opacity-50"
-              >
-                Continue
-              </button>
-            </div>
-          </TabsContent>
-          
-          {/* Response Time Tab */}
-          <TabsContent value="speed" className="space-y-4">
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Select Response Speed</label>
-              <RadioGroup
-                value={formData.responseTime}
-                onValueChange={(value) => handleChange('responseTime', value)}
-                className="space-y-2"
-              >
-                {RESPONSE_TIMES.map((time) => (
-                  <div
-                    key={time.id}
-                    className={`flex items-start space-x-3 p-3 border rounded-md cursor-pointer hover:bg-accent ${
-                      formData.responseTime === time.id ? 'border-primary bg-accent' : ''
-                    }`}
-                    onClick={() => handleChange('responseTime', time.id)}
-                  >
-                    <RadioGroupItem value={time.id} id={time.id} className="mt-1" />
-                    <div className="space-y-1">
-                      <label htmlFor={time.id} className="font-medium cursor-pointer">
-                        {time.name}
-                      </label>
-                      <p className="text-xs text-muted-foreground">{time.description}</p>
-                      <div className="text-xs">Token Limit: {time.tokenLimit}</div>
-                      <div className="text-xs text-blue-500">Mana Cost: {time.mana}</div>
-                    </div>
-                  </div>
-                ))}
-              </RadioGroup>
-            </div>
-            
-            <div className="flex space-x-2">
-              <button
-                onClick={() => setActiveTab('role')}
-                className="flex-1 py-2 bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/90"
-              >
-                Back
-              </button>
-              <button
-                onClick={handleSubmit}
-                disabled={!formData.responseTime}
-                className="flex-1 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 disabled:opacity-50"
-              >
-                Create Companion
-              </button>
-            </div>
-          </TabsContent>
-        </Tabs>
-        
-        {/* Summary Panel */}
-        {(formData.character || formData.role || formData.responseTime) && (
-          <div className="mt-6 p-4 border rounded-md bg-muted/50">
-            <h3 className="font-medium mb-2">Character Summary</h3>
-            <div className="space-y-2 text-sm">
-              {formData.character && (
-                <div className="flex justify-between">
-                  <span>Name:</span>
-                  <span className="font-medium">{formData.character}</span>
-                </div>
-              )}
-              {formData.role && (
-                <div className="flex justify-between">
-                  <span>Role:</span>
-                  <span className="font-medium">
-                    {selectedRole?.icon} {selectedRole?.name}
-                  </span>
-                </div>
-              )}
-              {formData.responseTime && (
-                <div className="flex justify-between">
-                  <span>Response Speed:</span>
-                  <span className="font-medium">{formData.responseTime}</span>
-                </div>
-              )}
-              {(selectedRole || selectedResponseTime) && (
-                <div className="pt-2 border-t">
-                  <SimpleTokenDisplay 
-                    current={totalMana} 
-                    limit={1000} 
-                    label="Mana Cost" 
-                  />
-                </div>
-              )}
+              </select>
+              <p className="text-sm text-gray-500 mt-1">{formData.llm.description}</p>
             </div>
           </div>
-        )}
+        );
+      case 2:
+        return (
+          <div className="space-y-4">
+            <h2 className="text-xl font-bold mb-4">Personality & Knowledge</h2>
+            <div>
+              <label className="block text-sm font-medium mb-1">Personality Traits</label>
+              <textarea
+                name="personality"
+                value={formData.personality}
+                onChange={handleInputChange}
+                className="w-full p-2 border rounded"
+                rows={3}
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-1">Knowledge Base</label>
+              <textarea
+                name="knowledge"
+                value={formData.knowledge}
+                onChange={handleInputChange}
+                className="w-full p-2 border rounded"
+                rows={3}
+                required
+              />
+            </div>
+          </div>
+        );
+      case 3:
+        return (
+          <div className="space-y-4">
+            <h2 className="text-xl font-bold mb-4">Behavior & Context</h2>
+            <div>
+              <label className="block text-sm font-medium mb-1">Communication Style</label>
+              <textarea
+                name="style"
+                value={formData.style}
+                onChange={handleInputChange}
+                className="w-full p-2 border rounded"
+                rows={3}
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-1">Behavioral Rules</label>
+              <textarea
+                name="behavior"
+                value={formData.behavior}
+                onChange={handleInputChange}
+                className="w-full p-2 border rounded"
+                rows={3}
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-1">Context & Background</label>
+              <textarea
+                name="context"
+                value={formData.context}
+                onChange={handleInputChange}
+                className="w-full p-2 border rounded"
+                rows={3}
+                required
+              />
+            </div>
+          </div>
+        );
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+      <div className={`bg-${theme}-bg p-6 rounded-lg shadow-xl max-w-2xl w-full mx-4`}>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {renderStep()}
+          <div className="flex justify-between">
+            <button
+              type="button"
+              onClick={onCancel}
+              className="px-4 py-2 text-gray-600 hover:text-gray-800"
+            >
+              Cancel
+            </button>
+            <div className="space-x-2">
+              {step > 1 && (
+                <button
+                  type="button"
+                  onClick={() => setStep(step - 1)}
+                  className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+                >
+                  Back
+                </button>
+              )}
+              <button
+                type="submit"
+                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+              >
+                {step === 3 ? 'Create Persona' : 'Next'}
+              </button>
+            </div>
+          </div>
+        </form>
       </div>
     </div>
   );

@@ -81,7 +81,7 @@ function LoginForm() {
 
   return (
     <AuthForm
-      handleSubmit={handleSubmit}
+      action={handleSubmit}
       error={error}
       submitButton={
         <CustomSubmitButton

@@ -246,13 +246,28 @@ export function SidebarHistory({ user }: { user: User | undefined }) {
     );
   }
 
-  const groupChatsByDate = (chats: Chat[]): GroupedChats => {
+  const groupChatsByDate = (chats: Chat[] | null | undefined): GroupedChats => {
+    if (!chats || !Array.isArray(chats)) {
+      console.warn('groupChatsByDate: chats is not an array', chats);
+      return {
+        today: [],
+        yesterday: [],
+        lastWeek: [],
+        lastMonth: [],
+        older: [],
+      };
+    }
+    
     const now = new Date();
     const oneWeekAgo = subWeeks(now, 1);
     const oneMonthAgo = subMonths(now, 1);
 
     return chats.reduce(
       (groups, chat) => {
+        if (!chat || typeof chat !== 'object' || !chat.createdAt) {
+          return groups;
+        }
+        
         const chatDate = new Date(chat.createdAt);
 
         if (isToday(chatDate)) {

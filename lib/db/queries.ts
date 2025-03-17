@@ -225,9 +225,9 @@ export async function getChatsByUserId({ id }: { id: string }) {
     }
     return await db.select().from(chat).where(eq(chat.userId, id));
   } catch (error: unknown) {
-    console.error('Failed to get chats by user id from database');
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-    return new Response(`Error: ${errorMessage}`, { status: 500 });
+    console.error('Failed to get chats by user id from database', error);
+    // Return an empty array instead of a Response object
+    return [];
   }
 }
 

@@ -90,14 +90,19 @@ function addToolMessageToChat({
 }
 
 export function convertToUIMessages(
-  messages: Array<DBMessage>,
+  messages: Array<DBMessage> | null | undefined,
 ): Array<Message> {
-  if (!Array.isArray(messages)) {
+  if (!messages || !Array.isArray(messages)) {
     console.warn('convertToUIMessages: messages is not an array', messages);
     return [];
   }
   
   return messages.reduce((chatMessages: Array<Message>, message) => {
+    if (!message || typeof message !== 'object') {
+      console.warn('convertToUIMessages: invalid message', message);
+      return chatMessages;
+    }
+    
     const messageAny = message as any;
     if (messageAny.role === 'tool') {
       return addToolMessageToChat({
@@ -114,23 +119,25 @@ export function convertToUIMessages(
       textContent = message.content;
     } else if (Array.isArray(message.content)) {
       for (const content of message.content as any[]) {
+        if (!content || typeof content !== 'object') continue;
+        
         if (content.type === 'text') {
-          textContent += content.text;
+          textContent += content.text || '';
         } else if (content.type === 'tool-call') {
           toolInvocations.push({
             state: 'call',
-            toolCallId: content.toolCallId,
-            toolName: content.toolName,
-            args: content.args,
+            toolCallId: content.toolCallId || '',
+            toolName: content.toolName || '',
+            args: content.args || {},
           });
         } else if (content.type === 'reasoning') {
-          reasoning = content.reasoning;
+          reasoning = content.reasoning || '';
         }
       }
     }
 
     chatMessages.push({
-      id: message.id,
+      id: message.id || generateId(),
       role: message.role as Message['role'],
       content: textContent,
       reasoning,
@@ -148,17 +155,28 @@ export function sanitizeResponseMessages({
   messages,
   reasoning,
 }: {
-  messages: Array<ResponseMessage>;
+  messages: Array<ResponseMessage> | null | undefined;
   reasoning: string | undefined;
 }) {
+  if (!messages || !Array.isArray(messages)) {
+    console.warn('sanitizeResponseMessages: messages is not an array', messages);
+    return [];
+  }
+  
   const toolResultIds: Array<string> = [];
 
   for (const message of messages) {
+    if (!message || typeof message !== 'object') {
+      continue;
+    }
+    
     const messageAny = message as any;
     if (messageAny.role === 'tool') {
-      for (const content of messageAny.content) {
+      for (const content of messageAny.content || []) {
+        if (!content || typeof content !== 'object') continue;
+        
         if (content.type === 'tool-result') {
-          toolResultIds.push(content.toolCallId);
+          toolResultIds.push(content.toolCallId || '');
         }
       }
     }

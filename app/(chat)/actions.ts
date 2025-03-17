@@ -30,7 +30,7 @@ export async function generateTitleFromUserMessage({ message }: { message: any }
     model: 'gpt-4o',
     messages: [
       {
-        role: 'system',
+        role: 'system' as const,
         content: `
         - you will generate a short title based on the first message a user begins a conversation with
         - ensure it is not more than 80 characters long
@@ -38,7 +38,7 @@ export async function generateTitleFromUserMessage({ message }: { message: any }
         - do not use quotes or colons`
       },
       {
-        role: 'user',
+        role: 'user' as const,
         content: JSON.stringify(message)
       }
     ],

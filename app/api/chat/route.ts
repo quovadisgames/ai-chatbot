@@ -21,9 +21,25 @@ export async function POST(req: Request) {
 
   const userMessage = messages[messages.length - 1];
 
+  // Format messages to ensure they have the correct types for OpenAI
+  const formattedMessages = messages.map(msg => {
+    // Ensure the role is one of the valid types
+    if (['system', 'user', 'assistant'].includes(msg.role)) {
+      return {
+        role: msg.role as 'system' | 'user' | 'assistant',
+        content: msg.content
+      };
+    }
+    // Default to user role for any other role
+    return {
+      role: 'user' as const,
+      content: msg.content
+    };
+  });
+
   const response = await openai.chat.completions.create({
     model,
-    messages,
+    messages: formattedMessages,
     temperature: 0.7,
     stream: true
   });

@@ -4,6 +4,7 @@ import { saveChat, saveMessages, getChatById, deleteChatById } from '@/lib/db/qu
 import { trackAIUsage } from '@/lib/ai-utils';
 import { getMostRecentUserMessage } from '@/lib/utils';
 import { generateTitleFromUserMessage } from '../../actions';
+import { type Message } from '@/lib/db/schema';
 
 // Mock authentication for development
 const USE_MOCK_AUTH = true;
@@ -81,7 +82,14 @@ export async function POST(req: NextRequest) {
     console.log('💾 Saving user message to database...');
     const messageSaveStart = Date.now();
     try {
-      await saveMessages({ messages: [{ ...userMessage, createdAt: new Date(), chatId: id }] });
+      const messageToSave: Message = {
+        id: userMessage.id,
+        chatId: id,
+        content: userMessage.content,
+        role: userMessage.role === 'data' ? 'user' : (userMessage.role as 'user' | 'assistant' | 'system'),
+        createdAt: new Date()
+      };
+      await saveMessages({ messages: [messageToSave] });
       console.log(`💾 Message saved in ${Date.now() - messageSaveStart}ms`);
     } catch (error) {
       console.error('❌ Error saving message:', error);

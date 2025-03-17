@@ -1,4 +1,5 @@
-import { OpenAIStream, StreamingTextResponse } from 'ai';
+import { StreamingTextResponse } from 'ai';
+import { OpenAIStream } from 'ai/streams';
 import OpenAI from 'openai';
 import { auth } from '@/auth';
 import { saveMessages } from '@/lib/db/queries';
@@ -12,7 +13,7 @@ const openai = new OpenAI({
 });
 
 export async function POST(req: Request) {
-  const { messages, id: chatId, model = 'gpt-4', visibility = 'private' } = await req.json();
+  const { messages, id, model = 'gpt-4', visibility = 'private' } = await req.json();
   const session = await auth();
 
   if (!session?.user) {
@@ -34,14 +35,14 @@ export async function POST(req: Request) {
         const messagesToSave: Message[] = [
           {
             id: userMessage.id,
-            chatId,
+            chatId: id,
             content: userMessage.content,
-            role: userMessage.role as 'user' | 'assistant' | 'system',
+            role: userMessage.role === 'data' ? 'user' : userMessage.role,
             createdAt: new Date()
           },
           {
             id: crypto.randomUUID(),
-            chatId,
+            chatId: id,
             content: completion,
             role: 'assistant',
             createdAt: new Date()
@@ -57,7 +58,7 @@ export async function POST(req: Request) {
 
   return new StreamingTextResponse(stream, {
     headers: {
-      'x-chat-id': chatId,
+      'x-chat-id': id,
       'x-chat-visibility': visibility
     }
   });

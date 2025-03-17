@@ -18,7 +18,16 @@ async function main() {
   console.log('Running token usage migration...');
   
   // Create token_usage table if it doesn't exist
-  await db.create(tokenUsage).ifNotExists();
+  await sql`
+    CREATE TABLE IF NOT EXISTS token_usage (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      prompt_tokens INTEGER NOT NULL,
+      completion_tokens INTEGER NOT NULL,
+      total_tokens INTEGER NOT NULL,
+      created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    );
+  `;
   
   console.log('Token usage migration complete!');
   process.exit(0);

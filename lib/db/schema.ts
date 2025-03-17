@@ -20,35 +20,36 @@ export const user = pgTable('User', {
 
 export type User = InferSelectModel<typeof user>;
 
-export const chats = pgTable('chats', {
+export const chat = pgTable('chat', {
   id: uuid('id').primaryKey().defaultRandom(),
   userId: text('user_id').notNull(),
   title: text('title'),
+  visibility: varchar('visibility', { enum: ['public', 'private'] }).notNull().default('private'),
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
 });
 
-export type Chat = InferSelectModel<typeof chats>;
+export type Chat = InferSelectModel<typeof chat>;
 
-export const messages = pgTable('messages', {
+export const message = pgTable('message', {
   id: uuid('id').primaryKey().defaultRandom(),
-  chatId: uuid('chat_id').references(() => chats.id).notNull(),
+  chatId: uuid('chat_id').references(() => chat.id).notNull(),
   content: text('content').notNull(),
-  role: text('role').notNull(),
+  role: varchar('role', { enum: ['user', 'assistant', 'system'] }).notNull(),
   createdAt: timestamp('created_at').defaultNow().notNull(),
 });
 
-export type Message = InferSelectModel<typeof messages>;
+export type Message = InferSelectModel<typeof message>;
 
 export const vote = pgTable(
   'Vote',
   {
     chatId: uuid('chatId')
       .notNull()
-      .references(() => chats.id),
+      .references(() => chat.id),
     messageId: uuid('messageId')
       .notNull()
-      .references(() => messages.id),
+      .references(() => message.id),
     isUpvoted: boolean('isUpvoted').notNull(),
   },
   (table) => {
@@ -115,9 +116,9 @@ export const tokenUsage = pgTable('TokenUsage', {
     .notNull()
     .references(() => user.id),
   chatId: uuid('chatId')
-    .references(() => chats.id),
+    .references(() => chat.id),
   messageId: uuid('messageId')
-    .references(() => messages.id),
+    .references(() => message.id),
   model: varchar('model', { length: 64 }).notNull(),
   promptTokens: integer('promptTokens').notNull(),
   completionTokens: integer('completionTokens').notNull(),
@@ -126,3 +127,8 @@ export const tokenUsage = pgTable('TokenUsage', {
 });
 
 export type TokenUsage = InferSelectModel<typeof tokenUsage>;
+
+export type ExtendedChat = Chat & {
+  messages: Message[];
+  visibility: 'public' | 'private';
+};

@@ -1,5 +1,4 @@
-import { StreamingTextResponse } from 'ai';
-import { OpenAIStream } from 'ai/streams';
+import { OpenAIStream, StreamingTextResponse } from 'ai';
 import OpenAI from 'openai';
 import { auth } from '@/auth';
 import { saveMessages } from '@/lib/db/queries';
@@ -37,7 +36,7 @@ export async function POST(req: Request) {
             id: userMessage.id,
             chatId: id,
             content: userMessage.content,
-            role: userMessage.role === 'data' ? 'user' : userMessage.role,
+            role: userMessage.role === 'data' ? 'user' : (userMessage.role as 'user' | 'assistant' | 'system'),
             createdAt: new Date()
           },
           {

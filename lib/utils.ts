@@ -93,9 +93,10 @@ export function convertToUIMessages(
   messages: Array<DBMessage>,
 ): Array<Message> {
   return messages.reduce((chatMessages: Array<Message>, message) => {
-    if (message.role === 'tool') {
+    const messageAny = message as any;
+    if (messageAny.role === 'tool') {
       return addToolMessageToChat({
-        toolMessage: message as CoreToolMessage,
+        toolMessage: messageAny as unknown as CoreToolMessage,
         messages: chatMessages,
       });
     }
@@ -107,7 +108,7 @@ export function convertToUIMessages(
     if (typeof message.content === 'string') {
       textContent = message.content;
     } else if (Array.isArray(message.content)) {
-      for (const content of message.content) {
+      for (const content of message.content as any[]) {
         if (content.type === 'text') {
           textContent += content.text;
         } else if (content.type === 'tool-call') {
@@ -148,8 +149,9 @@ export function sanitizeResponseMessages({
   const toolResultIds: Array<string> = [];
 
   for (const message of messages) {
-    if (message.role === 'tool') {
-      for (const content of message.content) {
+    const messageAny = message as any;
+    if (messageAny.role === 'tool') {
+      for (const content of messageAny.content) {
         if (content.type === 'tool-result') {
           toolResultIds.push(content.toolCallId);
         }

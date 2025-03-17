@@ -5,8 +5,16 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY!
 });
 
+// Define a type that matches OpenAI's expected message format
+type ChatMessage = {
+  role: 'system' | 'user' | 'assistant' | 'function' | 'tool';
+  content: string;
+  name?: string;
+  tool_call_id?: string;
+};
+
 export async function getRequestSuggestions(
-  messages: Array<{ role: string; content: string }>
+  messages: Array<ChatMessage>
 ) {
   try {
     const response = await openai.chat.completions.create({

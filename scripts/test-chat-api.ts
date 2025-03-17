@@ -61,7 +61,7 @@ async function testChatAPI() {
       console.log('📊 Received event stream. Processing events:');
       
       // Process the stream
-      const reader = response.body?.getReader();
+      const reader = (response.body as ReadableStream<Uint8Array>)?.getReader();
       if (!reader) {
         console.error('❌ Failed to get reader from response body');
         return;

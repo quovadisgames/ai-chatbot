@@ -26,7 +26,7 @@ import { ArtifactKind } from '@/components/artifact';
 import { db } from '@/lib/db';
 
 // Enable mock database for development
-const USE_MOCK_DB = true;
+const USE_MOCK_DB = process.env.NODE_ENV === 'development';
 
 // Mock data for development
 const MOCK_USER: User = {
@@ -41,6 +41,7 @@ const MOCK_CHATS: Chat[] = [
     title: "Mock Chat 1",
     userId: MOCK_USER.id,
     createdAt: new Date(),
+    updatedAt: new Date(),
     visibility: "private",
   },
   {
@@ -48,6 +49,7 @@ const MOCK_CHATS: Chat[] = [
     title: "Mock Chat 2",
     userId: MOCK_USER.id,
     createdAt: new Date(Date.now() - 86400000), // 1 day ago
+    updatedAt: new Date(Date.now() - 86400000),
     visibility: "private",
   }
 ];
@@ -137,21 +139,6 @@ const MOCK_SUGGESTIONS: Suggestion[] = [
   }
 ];
 
-// biome-ignore lint: Forbidden non-null assertion.
-let client: postgres.Sql<{}> | null = null;
-let db: PostgresJsDatabase | null = null;
-
-try {
-  // Only connect to the database if not using mock data
-  if (!USE_MOCK_DB) {
-    // biome-ignore lint: Forbidden non-null assertion.
-    client = postgres(process.env.POSTGRES_URL!);
-    db = drizzle(client);
-  }
-} catch (error) {
-  console.error('Failed to connect to database, using mock data');
-}
-
 export async function getUser({ email }: { email: string }): Promise<User[]> {
   if (USE_MOCK_DB) {
     console.log('Using mock user data for email:', email);
@@ -190,6 +177,7 @@ export async function saveChat({ id, userId, title }: { id: string; userId: stri
       userId,
       title,
       createdAt: new Date(),
+      updatedAt: new Date(),
       visibility: "private", // Default value
     };
     const existingIndex = MOCK_CHATS.findIndex(c => c.id === id);
@@ -247,6 +235,15 @@ export async function getChatsByUserId({ id }: { id: string }) {
 }
 
 export async function getChatById({ id }: { id: string }): Promise<ExtendedChat | null> {
+  if (USE_MOCK_DB) {
+    const mockChat = MOCK_CHATS.find(c => c.id === id);
+    if (!mockChat) return null;
+    return {
+      ...mockChat,
+      messages: MOCK_MESSAGES.filter(m => m.chatId === id)
+    };
+  }
+
   const [result] = await db.select().from(chat)
     .where(eq(chat.id, id))
     .leftJoin(message, eq(message.chatId, chat.id));
@@ -257,12 +254,15 @@ export async function getChatById({ id }: { id: string }): Promise<ExtendedChat 
 
   return {
     ...result.chat,
-    messages: result.message ? [result.message] : [],
-    visibility: result.chat.visibility || 'private'
+    messages: result.message ? [result.message] : []
   };
 }
 
 export async function saveMessages({ messages }: { messages: Message[] }) {
+  if (USE_MOCK_DB) {
+    messages.forEach(msg => MOCK_MESSAGES.push(msg));
+    return { success: true };
+  }
   return await db.insert(message).values(messages);
 }
 
@@ -748,4 +748,5 @@ export async function getTokenUsageSummaryByUserId({ userId }: { userId: string 
 export type { User, Message };
 export interface ExtendedChat extends Chat {
   userId: string;
+  messages?: Message[];
 }

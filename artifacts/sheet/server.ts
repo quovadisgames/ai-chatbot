@@ -59,10 +59,13 @@ export const sheetDocumentHandler = createDocumentHandler<'sheet'>({
   },
   onUpdateDocument: async ({ document, description, dataStream }) => {
     let draftContent = '';
-    let currentData;
+    let currentData: any[] = [];
     
     try {
-      currentData = JSON.parse(document.content);
+      // Fix type error by checking if document.content exists and is a string
+      if (document.content && typeof document.content === 'string') {
+        currentData = JSON.parse(document.content);
+      }
     } catch (e) {
       currentData = [];
     }

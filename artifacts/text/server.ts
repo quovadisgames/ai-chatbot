@@ -42,6 +42,9 @@ export const textDocumentHandler = createDocumentHandler<'text'>({
   },
   onUpdateDocument: async ({ document, description, dataStream }) => {
     let draftContent = '';
+    const documentContent = document.content && typeof document.content === 'string' 
+      ? document.content 
+      : '';
 
     // Use direct OpenAI API call
     const stream = await openai.chat.completions.create({
@@ -49,7 +52,7 @@ export const textDocumentHandler = createDocumentHandler<'text'>({
       messages: [
         {
           role: 'system',
-          content: updateDocumentPrompt(document.content, 'text')
+          content: updateDocumentPrompt(documentContent, 'text')
         },
         {
           role: 'user',

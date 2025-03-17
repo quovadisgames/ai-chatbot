@@ -29,13 +29,17 @@ export const codeDocumentHandler = createDocumentHandler<'code'>({
       response_format: { type: 'json_object' }
     });
 
+    let jsonContent = '';
+
     for await (const chunk of stream) {
       const content = chunk.choices[0]?.delta?.content || '';
       if (content) {
+        jsonContent += content;
+        
         try {
           // Try to parse JSON as it comes in
           // This is a simplified approach - in production you'd need to handle partial JSON
-          const jsonObj = JSON.parse(content);
+          const jsonObj = JSON.parse(jsonContent);
           if (jsonObj.code) {
             dataStream.writeData({
               type: 'code-delta',
@@ -60,7 +64,9 @@ export const codeDocumentHandler = createDocumentHandler<'code'>({
       messages: [
         {
           role: 'system',
-          content: updateDocumentPrompt(document.content, 'code')
+          content: document.content && typeof document.content === 'string' 
+            ? updateDocumentPrompt(document.content, 'code')
+            : updateDocumentPrompt('', 'code')
         },
         {
           role: 'user',
@@ -71,12 +77,16 @@ export const codeDocumentHandler = createDocumentHandler<'code'>({
       response_format: { type: 'json_object' }
     });
 
+    let jsonContent = '';
+    
     for await (const chunk of stream) {
       const content = chunk.choices[0]?.delta?.content || '';
       if (content) {
+        jsonContent += content;
+        
         try {
           // Try to parse JSON as it comes in
-          const jsonObj = JSON.parse(content);
+          const jsonObj = JSON.parse(jsonContent);
           if (jsonObj.code) {
             dataStream.writeData({
               type: 'code-delta',

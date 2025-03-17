@@ -20,41 +20,35 @@ export const user = pgTable('User', {
 
 export type User = InferSelectModel<typeof user>;
 
-export const chat = pgTable('Chat', {
-  id: uuid('id').primaryKey().notNull().defaultRandom(),
-  createdAt: timestamp('createdAt').notNull(),
-  title: text('title').notNull(),
-  userId: uuid('userId')
-    .notNull()
-    .references(() => user.id),
-  visibility: varchar('visibility', { enum: ['public', 'private'] })
-    .notNull()
-    .default('private'),
+export const chats = pgTable('chats', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  userId: text('user_id').notNull(),
+  title: text('title'),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at').defaultNow().notNull(),
 });
 
-export type Chat = InferSelectModel<typeof chat>;
+export type Chat = InferSelectModel<typeof chats>;
 
-export const message = pgTable('Message', {
-  id: uuid('id').primaryKey().notNull().defaultRandom(),
-  chatId: uuid('chatId')
-    .notNull()
-    .references(() => chat.id),
-  role: varchar('role').notNull(),
-  content: json('content').notNull(),
-  createdAt: timestamp('createdAt').notNull(),
+export const messages = pgTable('messages', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  chatId: uuid('chat_id').references(() => chats.id).notNull(),
+  content: text('content').notNull(),
+  role: text('role').notNull(),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
 });
 
-export type Message = InferSelectModel<typeof message>;
+export type Message = InferSelectModel<typeof messages>;
 
 export const vote = pgTable(
   'Vote',
   {
     chatId: uuid('chatId')
       .notNull()
-      .references(() => chat.id),
+      .references(() => chats.id),
     messageId: uuid('messageId')
       .notNull()
-      .references(() => message.id),
+      .references(() => messages.id),
     isUpvoted: boolean('isUpvoted').notNull(),
   },
   (table) => {
@@ -121,9 +115,9 @@ export const tokenUsage = pgTable('TokenUsage', {
     .notNull()
     .references(() => user.id),
   chatId: uuid('chatId')
-    .references(() => chat.id),
+    .references(() => chats.id),
   messageId: uuid('messageId')
-    .references(() => message.id),
+    .references(() => messages.id),
   model: varchar('model', { length: 64 }).notNull(),
   promptTokens: integer('promptTokens').notNull(),
   completionTokens: integer('completionTokens').notNull(),

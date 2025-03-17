@@ -1,44 +1,27 @@
-import { drizzle } from 'drizzle-orm/postgres-js';
-import { migrate } from 'drizzle-orm/postgres-js/migrator';
-import postgres from 'postgres';
-import { env } from '@/lib/env';
-import { join } from 'path';
+import { drizzle } from 'drizzle-orm/vercel-postgres';
+import { migrate } from 'drizzle-orm/vercel-postgres/migrator';
+import { sql } from '@vercel/postgres';
 
-const main = async () => {
-  try {
-    if (process.env.USE_MOCK_DB === 'true') {
-      console.log('Using mock database, skipping migrations');
-      return;
-    }
+// This script should only be run in development
+if (process.env.NODE_ENV === 'production') {
+  throw new Error('This script should not be run in production');
+}
 
-    if (!env.POSTGRES_URL) {
-      console.log('No database URL provided, skipping migrations');
-      return;
-    }
+if (!process.env.POSTGRES_URL) {
+  throw new Error('POSTGRES_URL is not defined');
+}
 
-    console.log('⏳ Running migrations...');
+const db = drizzle(sql);
 
-    const sql = postgres(env.POSTGRES_URL, { max: 1 });
-    const db = drizzle(sql);
+async function main() {
+  console.log('Running migrations...');
+  await migrate(db, { migrationsFolder: './drizzle' });
+  console.log('Migrations complete!');
+  process.exit(0);
+}
 
-    try {
-      const migrationsFolder = join(process.cwd(), 'drizzle');
-      await migrate(db, { migrationsFolder });
-      console.log('✅ Migrations completed');
-    } catch (error: any) {
-      if (error.code === 'ENOENT' || (error.message && error.message.includes("Can't find meta/_journal.json"))) {
-        console.log('No migrations found or migrations folder missing, skipping...');
-        return;
-      }
-      throw error;
-    }
-
-    await sql.end();
-  } catch (error) {
-    console.error('❌ Migration failed', error);
-    // Don't exit with error code since we want the build to continue
-    console.log('Continuing with build despite migration failure');
-  }
-};
-
-main();
+main().catch((err) => {
+  console.error('Migration failed!');
+  console.error(err);
+  process.exit(1);
+});

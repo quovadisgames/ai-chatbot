@@ -1,6 +1,6 @@
 import { NextRequest } from 'next/server';
 import { auth } from '@/app/(auth)/auth';
-import { saveChat, saveMessages, getChatById, deleteChatById } from '@/lib/db/queries';
+import { saveChat, saveMessages, getChatById, deleteChatById, ExtendedChat } from '@/lib/db/queries';
 import { trackAIUsage } from '@/lib/ai-utils';
 import { getMostRecentUserMessage } from '@/lib/utils';
 import { generateTitleFromUserMessage } from '../../actions';
@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
     
     // Check if chat exists
     console.log(`🔍 Checking if chat exists: chatId=${id}`);
-    let existingChat = null;
+    let existingChat: ExtendedChat | null = null;
     try {
       existingChat = await getChatById({ id });
       console.log(`🔍 Chat lookup result: ${existingChat ? 'Found' : 'Not found'}`);

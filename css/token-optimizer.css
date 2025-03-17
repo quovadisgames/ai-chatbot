@@ -1,0 +1,277 @@
+/* Token Optimizer Styles */
+
+/* Optimization Toggle Button */
+.optimization-toggle {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 10px;
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.optimization-toggle:hover {
+  background-color: rgba(var(--current-accent-rgb), 0.1);
+  border-color: var(--current-accent);
+}
+
+.optimization-toggle .icon {
+  font-size: 14px;
+}
+
+/* Optimization Container */
+.optimization-container {
+  width: 100%;
+  background-color: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+  padding: 15px;
+  max-height: 300px;
+  overflow-y: auto;
+  display: none;
+  animation: slideDown 0.3s ease;
+}
+
+/* Token Savings Dashboard */
+.token-savings-dashboard {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.dashboard-header {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.dashboard-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.dashboard-subtitle {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+/* Savings Cards */
+.savings-card {
+  background-color: var(--bg-tertiary);
+  border-radius: 8px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.savings-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.savings-card-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.savings-card-value {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--current-accent);
+  transition: color 0.3s ease;
+}
+
+.savings-card-value.positive {
+  color: var(--accent-green);
+}
+
+.savings-card-value.negative {
+  color: var(--accent-red);
+}
+
+.savings-card-description {
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+
+/* Usage Stats */
+.usage-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.usage-stat {
+  flex: 1;
+  min-width: 150px;
+  background-color: var(--bg-tertiary);
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.usage-stat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.usage-stat-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.usage-stat-value {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.usage-stat-bar {
+  height: 6px;
+  background-color: var(--bg-quaternary);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.usage-stat-bar-fill {
+  height: 100%;
+  background-color: var(--current-accent);
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.usage-stat-description {
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+
+/* Optimization Suggestions */
+.optimization-suggestions {
+  background-color: var(--bg-tertiary);
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.suggestions-header {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-bottom: 10px;
+}
+
+.suggestion-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.suggestion-item:last-child {
+  border-bottom: none;
+}
+
+.suggestion-icon {
+  font-size: 14px;
+  color: var(--current-accent);
+}
+
+.suggestion-content {
+  flex: 1;
+}
+
+.suggestion-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.suggestion-description {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.suggestion-savings {
+  font-size: 12px;
+  color: var(--accent-green);
+  margin-top: 4px;
+}
+
+/* Token Efficiency in Rules Modal */
+.token-efficiency-display {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 15px;
+  padding: 10px;
+  background-color: var(--bg-tertiary);
+  border-radius: 4px;
+}
+
+.efficiency-label {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.efficiency-value {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--current-accent);
+}
+
+.efficiency-bar {
+  flex: 1;
+  height: 6px;
+  background-color: var(--bg-quaternary);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.efficiency-bar-fill {
+  height: 100%;
+  background-color: var(--current-accent);
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+/* Animations */
+@keyframes slideDown {
+  from { max-height: 0; opacity: 0; }
+  to { max-height: 300px; opacity: 1; }
+}
+
+@keyframes valueChange {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .token-savings-dashboard {
+    grid-template-columns: 1fr;
+  }
+  
+  .usage-stats {
+    flex-direction: column;
+  }
+  
+  .usage-stat {
+    width: 100%;
+  }
+} 

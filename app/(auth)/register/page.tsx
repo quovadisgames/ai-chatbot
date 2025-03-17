@@ -6,7 +6,29 @@ import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
 import { AuthForm } from '@/components/auth-form';
-import { CustomSubmitButton } from '@/components/custom-submit-button';
+
+// Custom submit button with sci-fi styling
+function CustomSubmitButton({
+  children,
+  isLoading,
+  isSuccessful,
+}: {
+  children: React.ReactNode;
+  isLoading: boolean;
+  isSuccessful: boolean;
+}) {
+  return (
+    <button
+      className={`holographic-button w-full relative overflow-hidden ${
+        isSuccessful ? 'bg-green-500' : ''
+      }`}
+      disabled={isLoading}
+    >
+      <span className="response-number">→</span>
+      {children}
+    </button>
+  );
+}
 
 import { register, type RegisterActionState } from '../actions';
 
@@ -49,29 +71,43 @@ export default function Page() {
   };
 
   return (
-    <div className="flex h-dvh w-screen items-start pt-12 md:pt-0 md:items-center justify-center bg-background">
-      <div className="w-full max-w-md overflow-hidden rounded-2xl gap-12 flex flex-col">
+    <div className="terminal-background flex h-dvh w-screen items-center justify-center">
+      <div className="holoscreen-container w-full max-w-md overflow-hidden rounded-lg flex flex-col gap-8">
+        <div className="terminal-header py-4 px-6 text-center">
+          <h3 className="text-xl font-semibold text-white text-glow">NEW USER REGISTRATION</h3>
+          <div className="scanline"></div>
+        </div>
+        
         <div className="flex flex-col items-center justify-center gap-2 px-4 text-center sm:px-16">
-          <h3 className="text-xl font-semibold dark:text-zinc-50">Sign Up</h3>
-          <p className="text-sm text-gray-500 dark:text-zinc-400">
-            Create an account with your email and password
+          <h3 className="text-xl font-semibold text-white text-glow">Create Access Credentials</h3>
+          <p className="text-sm text-blue-300">
+            Register your identity in the galactic database
           </p>
         </div>
+        
         <AuthForm action={handleSubmit} defaultEmail={email}>
           <CustomSubmitButton isSuccessful={isSuccessful} isLoading={isLoading}>
-            {isLoading ? 'Signing up...' : 'Sign Up'}
+            {isLoading ? 'Processing...' : 'Register Identity'}
           </CustomSubmitButton>
-          <p className="text-center text-sm text-gray-600 mt-4 dark:text-zinc-400">
-            {'Already have an account? '}
+          <p className="text-center text-sm text-blue-300 mt-4">
+            {'Already registered? '}
             <Link
               href="/login"
-              className="font-semibold text-gray-800 hover:underline dark:text-zinc-200"
+              className="font-semibold text-blue-400 hover:text-blue-300 text-glow-sm hover:underline transition-colors"
             >
-              Sign in
+              Access Terminal
             </Link>
-            {' instead.'}
+            {' now.'}
           </p>
         </AuthForm>
+        
+        <div className="terminal-footer py-2 px-4 text-xs text-blue-400 flex justify-between">
+          <div className="flex items-center">
+            <div className="status-dot"></div>
+            <span>Secure Registration</span>
+          </div>
+          <div>Protocol: STANDARD</div>
+        </div>
       </div>
     </div>
   );

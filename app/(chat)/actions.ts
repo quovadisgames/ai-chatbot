@@ -1,7 +1,7 @@
 'use server';
 
-import { generateText, Message } from 'ai';
 import { cookies } from 'next/headers';
+import OpenAI from 'openai';
 
 import {
   deleteMessagesByChatIdAfterTimestamp,
@@ -9,7 +9,10 @@ import {
   updateChatVisiblityById,
 } from '@/lib/db/queries';
 import { VisibilityType } from '@/components/visibility-selector';
-import { myProvider } from '@/lib/ai/models';
+
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY!
+});
 
 export async function saveChatModelAsCookie(model: string) {
   const cookieStore = await cookies();
@@ -23,17 +26,26 @@ export async function generateTitleFromUserMessage({ message }: { message: any }
     return `Chat: ${message.content.slice(0, 20)}...`; // Fast mock title
   }
   
-  const { text: title } = await generateText({
-    model: myProvider.languageModel('title-model'),
-    system: `\n
-    - you will generate a short title based on the first message a user begins a conversation with
-    - ensure it is not more than 80 characters long
-    - the title should be a summary of the user's message
-    - do not use quotes or colons`,
-    prompt: JSON.stringify(message),
+  const response = await openai.chat.completions.create({
+    model: 'gpt-4o',
+    messages: [
+      {
+        role: 'system',
+        content: `
+        - you will generate a short title based on the first message a user begins a conversation with
+        - ensure it is not more than 80 characters long
+        - the title should be a summary of the user's message
+        - do not use quotes or colons`
+      },
+      {
+        role: 'user',
+        content: JSON.stringify(message)
+      }
+    ],
+    temperature: 0.7,
   });
 
-  return title;
+  return response.choices[0]?.message?.content || 'New Chat';
 }
 
 export async function deleteTrailingMessages({ id }: { id: string }) {

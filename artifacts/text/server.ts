@@ -1,32 +1,39 @@
-import { smoothStream, streamText } from 'ai';
-import { myProvider } from '@/lib/ai/models';
+import OpenAI from 'openai';
 import { createDocumentHandler } from '@/lib/artifacts/server';
 import { updateDocumentPrompt } from '@/lib/ai/prompts';
+
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY!
+});
 
 export const textDocumentHandler = createDocumentHandler<'text'>({
   kind: 'text',
   onCreateDocument: async ({ title, dataStream }) => {
     let draftContent = '';
 
-    const { fullStream } = streamText({
-      model: myProvider.languageModel('artifact-model'),
-      system:
-        'Write about the given topic. Markdown is supported. Use headings wherever appropriate.',
-      experimental_transform: smoothStream({ chunking: 'word' }),
-      prompt: title,
+    // Use direct OpenAI API call
+    const stream = await openai.chat.completions.create({
+      model: 'gpt-4o-mini',
+      messages: [
+        {
+          role: 'system',
+          content: 'Write about the given topic. Markdown is supported. Use headings wherever appropriate.'
+        },
+        {
+          role: 'user',
+          content: title
+        }
+      ],
+      stream: true
     });
 
-    for await (const delta of fullStream) {
-      const { type } = delta;
-
-      if (type === 'text-delta') {
-        const { textDelta } = delta;
-
-        draftContent += textDelta;
-
+    for await (const chunk of stream) {
+      const content = chunk.choices[0]?.delta?.content || '';
+      if (content) {
+        draftContent += content;
         dataStream.writeData({
           type: 'text-delta',
-          content: textDelta,
+          content: content,
         });
       }
     }
@@ -35,32 +42,33 @@ export const textDocumentHandler = createDocumentHandler<'text'>({
   },
   onUpdateDocument: async ({ document, description, dataStream }) => {
     let draftContent = '';
+    const documentContent = document.content && typeof document.content === 'string' 
+      ? document.content 
+      : '';
 
-    const { fullStream } = streamText({
-      model: myProvider.languageModel('artifact-model'),
-      system: updateDocumentPrompt(document.content, 'text'),
-      experimental_transform: smoothStream({ chunking: 'word' }),
-      prompt: description,
-      experimental_providerMetadata: {
-        openai: {
-          prediction: {
-            type: 'content',
-            content: document.content,
-          },
+    // Use direct OpenAI API call
+    const stream = await openai.chat.completions.create({
+      model: 'gpt-4o-mini',
+      messages: [
+        {
+          role: 'system',
+          content: updateDocumentPrompt(documentContent, 'text')
         },
-      },
+        {
+          role: 'user',
+          content: description
+        }
+      ],
+      stream: true
     });
 
-    for await (const delta of fullStream) {
-      const { type } = delta;
-
-      if (type === 'text-delta') {
-        const { textDelta } = delta;
-
-        draftContent += textDelta;
+    for await (const chunk of stream) {
+      const content = chunk.choices[0]?.delta?.content || '';
+      if (content) {
+        draftContent += content;
         dataStream.writeData({
           type: 'text-delta',
-          content: textDelta,
+          content: content,
         });
       }
     }

@@ -1,3 +1,4 @@
+/// <reference path="../../lib/types/pyodide.d.ts" />
 import { Artifact } from '@/components/create-artifact';
 import { CodeEditor } from '@/components/code-editor';
 import {
@@ -133,8 +134,13 @@ export const codeArtifact = new Artifact<'code', Metadata>({
         }));
 
         try {
-          // @ts-expect-error - loadPyodide is not defined
-          const currentPyodideInstance = await globalThis.loadPyodide({
+          // Use type assertion to avoid TypeScript error
+          const loadPyodideFunc = (globalThis as any).loadPyodide;
+          if (!loadPyodideFunc) {
+            throw new Error('Pyodide is not loaded');
+          }
+          
+          const currentPyodideInstance = await loadPyodideFunc({
             indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.23.4/full/',
           });
 

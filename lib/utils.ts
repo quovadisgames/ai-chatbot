@@ -11,6 +11,10 @@ import { twMerge } from 'tailwind-merge';
 
 import type { Message as DBMessage, Document } from '@/lib/db/schema';
 
+/**
+ * Combines multiple class names using clsx and tailwind-merge
+ * This allows for conditional classes and prevents duplicate utility classes
+ */
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
@@ -89,9 +93,10 @@ export function convertToUIMessages(
   messages: Array<DBMessage>,
 ): Array<Message> {
   return messages.reduce((chatMessages: Array<Message>, message) => {
-    if (message.role === 'tool') {
+    const messageAny = message as any;
+    if (messageAny.role === 'tool') {
       return addToolMessageToChat({
-        toolMessage: message as CoreToolMessage,
+        toolMessage: messageAny as unknown as CoreToolMessage,
         messages: chatMessages,
       });
     }
@@ -103,7 +108,7 @@ export function convertToUIMessages(
     if (typeof message.content === 'string') {
       textContent = message.content;
     } else if (Array.isArray(message.content)) {
-      for (const content of message.content) {
+      for (const content of message.content as any[]) {
         if (content.type === 'text') {
           textContent += content.text;
         } else if (content.type === 'tool-call') {
@@ -144,8 +149,9 @@ export function sanitizeResponseMessages({
   const toolResultIds: Array<string> = [];
 
   for (const message of messages) {
-    if (message.role === 'tool') {
-      for (const content of message.content) {
+    const messageAny = message as any;
+    if (messageAny.role === 'tool') {
+      for (const content of messageAny.content) {
         if (content.type === 'tool-result') {
           toolResultIds.push(content.toolCallId);
         }
@@ -228,4 +234,53 @@ export function getDocumentTimestampByIndex(
   if (index > documents.length) return new Date();
 
   return documents[index].createdAt;
+}
+
+/**
+ * Formats a date to a readable string
+ */
+export function formatDate(date: Date): string {
+  return new Intl.DateTimeFormat("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  }).format(date)
+}
+
+/**
+ * Truncates a string to a specified length and adds an ellipsis
+ */
+export function truncate(str: string, length: number): string {
+  if (!str || str.length <= length) return str
+  return `${str.slice(0, length)}...`
+}
+
+/**
+ * Generates a random ID
+ */
+export function generateId(): string {
+  return Math.random().toString(36).substring(2, 10)
+}
+
+/**
+ * Debounces a function
+ */
+export function debounce<T extends (...args: any[]) => any>(
+  func: T,
+  wait: number
+): (...args: Parameters<T>) => void {
+  let timeout: ReturnType<typeof setTimeout> | null = null
+  
+  return function(...args: Parameters<T>) {
+    const later = () => {
+      timeout = null
+      func(...args)
+    }
+    
+    if (timeout !== null) {
+      clearTimeout(timeout)
+    }
+    
+    timeout = setTimeout(later, wait)
+  }
 }

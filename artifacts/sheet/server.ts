@@ -1,74 +1,111 @@
-import { myProvider } from '@/lib/ai/models';
-import { sheetPrompt, updateDocumentPrompt } from '@/lib/ai/prompts';
-import { createDocumentHandler } from '@/lib/artifacts/server';
-import { streamObject } from 'ai';
 import { z } from 'zod';
+import OpenAI from 'openai';
+import { createDocumentHandler } from '@/lib/artifacts/server';
+import { updateDocumentPrompt } from '@/lib/ai/prompts';
+
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY!
+});
 
 export const sheetDocumentHandler = createDocumentHandler<'sheet'>({
   kind: 'sheet',
   onCreateDocument: async ({ title, dataStream }) => {
     let draftContent = '';
 
-    const { fullStream } = streamObject({
-      model: myProvider.languageModel('artifact-model'),
-      system: sheetPrompt,
-      prompt: title,
-      schema: z.object({
-        csv: z.string().describe('CSV data'),
-      }),
+    // Use direct OpenAI API call
+    const stream = await openai.chat.completions.create({
+      model: 'gpt-4o-mini',
+      messages: [
+        {
+          role: 'system',
+          content: `Create a spreadsheet about the given topic. 
+          Return a JSON object with a "data" property that is a 2D array representing the spreadsheet.
+          The first row should be the headers.
+          Make sure the data is well-structured and relevant to the topic.`
+        },
+        {
+          role: 'user',
+          content: title
+        }
+      ],
+      stream: true,
+      response_format: { type: 'json_object' }
     });
 
-    for await (const delta of fullStream) {
-      const { type } = delta;
-
-      if (type === 'object') {
-        const { object } = delta;
-        const { csv } = object;
-
-        if (csv) {
-          dataStream.writeData({
-            type: 'sheet-delta',
-            content: csv,
-          });
-
-          draftContent = csv;
+    let jsonContent = '';
+    
+    for await (const chunk of stream) {
+      const content = chunk.choices[0]?.delta?.content || '';
+      if (content) {
+        jsonContent += content;
+        
+        try {
+          // Try to parse JSON as it comes in
+          const jsonObj = JSON.parse(jsonContent);
+          if (jsonObj.data) {
+            dataStream.writeData({
+              type: 'sheet-delta',
+              content: jsonObj.data,
+            });
+            draftContent = JSON.stringify(jsonObj.data);
+          }
+        } catch (e) {
+          // Ignore parsing errors for partial JSON
         }
       }
     }
-
-    dataStream.writeData({
-      type: 'sheet-delta',
-      content: draftContent,
-    });
 
     return draftContent;
   },
   onUpdateDocument: async ({ document, description, dataStream }) => {
     let draftContent = '';
+    let currentData: any[] = [];
+    
+    try {
+      // Fix type error by checking if document.content exists and is a string
+      if (document.content && typeof document.content === 'string') {
+        currentData = JSON.parse(document.content);
+      }
+    } catch (e) {
+      currentData = [];
+    }
 
-    const { fullStream } = streamObject({
-      model: myProvider.languageModel('artifact-model'),
-      system: updateDocumentPrompt(document.content, 'sheet'),
-      prompt: description,
-      schema: z.object({
-        csv: z.string(),
-      }),
+    // Use direct OpenAI API call
+    const stream = await openai.chat.completions.create({
+      model: 'gpt-4o-mini',
+      messages: [
+        {
+          role: 'system',
+          content: updateDocumentPrompt(JSON.stringify(currentData), 'sheet')
+        },
+        {
+          role: 'user',
+          content: description
+        }
+      ],
+      stream: true,
+      response_format: { type: 'json_object' }
     });
 
-    for await (const delta of fullStream) {
-      const { type } = delta;
-
-      if (type === 'object') {
-        const { object } = delta;
-        const { csv } = object;
-
-        if (csv) {
-          dataStream.writeData({
-            type: 'sheet-delta',
-            content: csv,
-          });
-
-          draftContent = csv;
+    let jsonContent = '';
+    
+    for await (const chunk of stream) {
+      const content = chunk.choices[0]?.delta?.content || '';
+      if (content) {
+        jsonContent += content;
+        
+        try {
+          // Try to parse JSON as it comes in
+          const jsonObj = JSON.parse(jsonContent);
+          if (jsonObj.data) {
+            dataStream.writeData({
+              type: 'sheet-delta',
+              content: jsonObj.data,
+            });
+            draftContent = JSON.stringify(jsonObj.data);
+          }
+        } catch (e) {
+          // Ignore parsing errors for partial JSON
         }
       }
     }

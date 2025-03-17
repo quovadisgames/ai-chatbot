@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDT AI - Main Menu</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700&family=Inter:wght@300;400;500;600;700&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Main stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+    <!-- Theme stylesheets -->
+    <link rel="stylesheet" href="themes/kotor.css">
+    <link rel="stylesheet" href="themes/jedi.css">
+    <link rel="stylesheet" href="themes/professional.css">
+    <!-- Page-specific styles -->
+    <link rel="stylesheet" href="styles/main-menu.css">
+    <style>
+        /* Fix for vertical scrolling */
+        html, body {
+            overflow-x: hidden;
+        }
+        
+        .main-container {
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+        
+        .neural-grid, 
+        #neural-nodes, 
+        .particles, 
+        .waves-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="jedi-theme">
+    <div class="main-container">
+        <div class="neural-grid"></div>
+        <div id="neural-nodes"></div>
+        <div class="particles" id="particles"></div>
+        <div class="waves-container" id="waves-container"></div>
+        
+        <div class="theme-switcher">
+            <button class="theme-switcher-button">
+                <span class="current-theme">Jedi: Survivor</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
+            <div class="theme-switcher-dropdown">
+                <div class="theme-option" data-theme="kotor">KOTOR</div>
+                <div class="theme-option" data-theme="jedi">Jedi: Survivor</div>
+                <div class="theme-option" data-theme="professional">Professional</div>
+            </div>
+        </div>
+        
+        <div class="menu-container">
+            <div class="menu-header">
+                <h1 class="menu-title">PDT AI Assistant</h1>
+                <p class="menu-subtitle">Your intelligent companion for productivity and creativity</p>
+            </div>
+            
+            <div class="menu-grid">
+                <a href="chat.html" class="menu-item">
+                    <div class="menu-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                    </div>
+                    <h3 class="menu-item-title">Chat</h3>
+                    <p class="menu-item-description">Start a conversation with your AI assistant</p>
+                </a>
+                
+                <a href="persona-creation.html" class="menu-item">
+                    <div class="menu-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    </div>
+                    <h3 class="menu-item-title">Create Persona</h3>
+                    <p class="menu-item-description">Design a custom AI assistant</p>
+                </a>
+                
+                <a href="settings.html" class="menu-item">
+                    <div class="menu-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+                    </div>
+                    <h3 class="menu-item-title">Settings</h3>
+                    <p class="menu-item-description">Configure your AI assistant</p>
+                </a>
+                
+                <a href="help.html" class="menu-item">
+                    <div class="menu-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                    </div>
+                    <h3 class="menu-item-title">Help</h3>
+                    <p class="menu-item-description">Get support and documentation</p>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Theme switching functionality
+        document.querySelectorAll('.theme-option').forEach(option => {
+            option.addEventListener('click', () => {
+                const theme = option.dataset.theme;
+                document.body.className = `${theme}-theme`;
+                localStorage.setItem('theme', theme);
+                document.querySelector('.current-theme').textContent = 
+                    theme === 'kotor' ? 'KOTOR' : 
+                    theme === 'jedi' ? 'Jedi: Survivor' : 
+                    'Professional';
+            });
+        });
+
+        // Load saved theme
+        const savedTheme = localStorage.getItem('theme') || 'jedi';
+        document.body.className = `${savedTheme}-theme`;
+        document.querySelector('.current-theme').textContent = 
+            savedTheme === 'kotor' ? 'KOTOR' : 
+            savedTheme === 'jedi' ? 'Jedi: Survivor' : 
+            'Professional';
+
+        // Neural grid animation
+        const neuralGrid = document.querySelector('.neural-grid');
+        const gridSize = 20;
+        const cellSize = 30;
+        
+        for (let i = 0; i < gridSize; i++) {
+            for (let j = 0; j < gridSize; j++) {
+                const cell = document.createElement('div');
+                cell.className = 'grid-cell';
+                cell.style.left = `${i * cellSize}px`;
+                cell.style.top = `${j * cellSize}px`;
+                neuralGrid.appendChild(cell);
+            }
+        }
+
+        // Particle animation
+        const particlesContainer = document.getElementById('particles');
+        const particleCount = 50;
+        
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = `${Math.random() * 100}%`;
+            particle.style.top = `${Math.random() * 100}%`;
+            particle.style.animationDuration = `${2 + Math.random() * 3}s`;
+            particle.style.animationDelay = `${Math.random() * 2}s`;
+            particlesContainer.appendChild(particle);
+        }
+
+        // Wave animation
+        const wavesContainer = document.getElementById('waves-container');
+        const waveCount = 3;
+        
+        for (let i = 0; i < waveCount; i++) {
+            const wave = document.createElement('div');
+            wave.className = 'wave';
+            wave.style.animationDelay = `${i * 0.5}s`;
+            wavesContainer.appendChild(wave);
+        }
+    </script>
+</body>
+</html> 

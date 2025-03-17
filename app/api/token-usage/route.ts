@@ -1,7 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { auth } from '@/auth';
+import { auth } from '@/app/(auth)/auth';
 import { getUserTokenUsage, getChatTokenUsage } from '@/lib/ai/token-tracking';
 import { getTokenUsageSummaryByUserId, getTokenUsageByChatId } from '@/lib/db/queries';
+
+// Force dynamic rendering for this route
+export const dynamic = 'force-dynamic';
 
 export async function GET(request: NextRequest) {
   try {

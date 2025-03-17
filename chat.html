@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDT AI - Chat Interface</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700&family=Inter:wght@300;400;500;600;700&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Main stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+    <!-- Theme stylesheets -->
+    <link rel="stylesheet" href="themes/kotor.css">
+    <link rel="stylesheet" href="themes/jedi.css">
+    <link rel="stylesheet" href="themes/professional.css">
+    <link rel="stylesheet" href="themes/modern.css">
+    <!-- Page-specific styles -->
+    <link rel="stylesheet" href="styles/chat-page.css">
+    <!-- Token Optimizer styles -->
+    <link rel="stylesheet" href="css/token-optimizer.css">
+    <!-- Credits and Premium Features styles -->
+    <link rel="stylesheet" href="css/credits.css">
+    <link rel="stylesheet" href="css/premium-personas.css">
+</head>
+<body class="kotor-theme">
+    <div class="main-container">
+        <!-- Background Elements -->
+        <div class="neural-grid"></div>
+        <div id="neural-nodes"></div>
+        <div class="particles" id="particles"></div>
+        <div class="waves-container" id="waves-container"></div>
+        
+        <!-- Navigation Bar -->
+        <div class="nav-container">
+            <!-- Navigation Links -->
+            <a href="index.html" class="back-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+                Back to Home
+            </a>
+            
+            <a href="participants.html" class="personas-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                View Personas
+            </a>
+            
+            <!-- Theme Switcher -->
+            <div class="theme-switcher">
+                <button class="theme-switcher-button">
+                    <span class="current-theme">Jedi: Survivor</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div class="theme-switcher-dropdown">
+                    <div class="theme-option" data-theme="kotor">KOTOR</div>
+                    <div class="theme-option" data-theme="jedi">Jedi: Survivor</div>
+                    <div class="theme-option" data-theme="professional">Professional</div>
+                    <div class="theme-option" data-theme="modern">Modern</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Resource Bar -->
+        <div class="resource-bar">
+            <div class="resource-container">
+                <div class="resource-item">
+                    <div class="resource-icon credits-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"></path><path d="M12 18V6"></path></svg>
+                    </div>
+                    <div class="resource-details">
+                        <span class="resource-label">Credits</span>
+                        <span class="resource-value" id="credits-value">1,250</span>
+                    </div>
+                </div>
+                
+                <div class="resource-item">
+                    <div class="resource-icon tokens-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                    </div>
+                    <div class="resource-details">
+                        <span class="resource-label">Tokens</span>
+                        <span class="resource-value" id="tokens-value">350/500</span>
+                    </div>
+                </div>
+                
+                <div class="resource-item">
+                    <div class="resource-icon premium-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.4H22l-6 4.6 2.3 7-6.3-4.6L5.7 21l2.3-7-6-4.6h7.6L12 2z"/></svg>
+                    </div>
+                    <div class="resource-details">
+                        <span class="resource-label">Premium</span>
+                        <span class="resource-value premium-status" id="premium-status">Pro</span>
+                    </div>
+                </div>
+            </div>
+            
+            <a href="store.html" class="store-button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+                Store
+            </a>
+        </div>
+        
+        <!-- Main Chat Layout -->
+        <div class="chat-layout">
+            <!-- Left Sidebar - Chat History -->
+            <div class="sidebar history-sidebar">
+                <div class="sidebar-header">
+                    <h2 class="sidebar-title">Chat History</h2>
+                    <button class="sidebar-toggle" aria-label="Toggle history sidebar">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+                    </button>
+                </div>
+                
+                <div class="sidebar-search">
+                    <input type="text" class="search-input" id="conversation-search" placeholder="Search chats...">
+                    <button class="clear-search-button" id="clear-search-button" aria-label="Clear search">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </button>
+                </div>
+                
+                <div class="search-options" id="search-options">
+                    <div class="search-option">
+                        <input type="checkbox" id="search-case-sensitive" />
+                        <label for="search-case-sensitive">Case sensitive</label>
+                    </div>
+                    <div class="search-option">
+                        <input type="checkbox" id="search-whole-word" />
+                        <label for="search-whole-word">Match whole words</label>
+                    </div>
+                    <div class="search-option">
+                        <input type="checkbox" id="search-include-system" />
+                        <label for="search-include-system">Include system messages</label>
+                    </div>
+                </div>
+                
+                <div class="chat-history-list" id="conversation-list">
+                    <!-- Conversation items will be dynamically generated by the ConversationManager -->
+                    <div class="chat-history-item" data-conversation-id="example-1">
+                        <div class="chat-history-title">Mission: Query #1</div>
+                        <div class="chat-history-date">2025-03-11</div>
+                        <div class="chat-history-preview">Neural network optimization parameters...</div>
+                        <div class="chat-history-actions">
+                            <button class="rename-conversation-button" aria-label="Rename conversation">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>
+                            </button>
+                            <button class="delete-conversation-button" aria-label="Delete conversation">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="sidebar-footer">
+                    <button class="new-chat-button" id="sidebar-new-chat-button">
+                        <span class="icon">+</span> New Chat
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Main Chat Container -->
+            <div class="chat-container">
+                <!-- Persistent Sidebar Toggle Buttons -->
+                <button class="persistent-toggle history-toggle" aria-label="Toggle history sidebar">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                </button>
+                <button class="persistent-toggle personas-toggle" aria-label="Toggle personas sidebar">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+                </button>
+                
+                <!-- Chat Header -->
+                <div class="chat-header">
+                    <div class="chat-info">
+                        <h1 class="chat-title" id="active-conversation-title">Mission: Query #1</h1>
+                        <div class="chat-subtitle" id="conversation-participants">
+                            <span class="participants-count">2 participants</span>
+                            <button class="participants-dropdown-toggle" aria-label="View participants">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                            </button>
+                            <div class="participants-dropdown">
+                                <div class="participants-list">
+                                    <div class="participant-item">
+                                        <img src="avatars/jedi-master.svg" alt="Jedi Master Zex" class="participant-avatar">
+                                        <div class="participant-info">
+                                            <span class="participant-name">Jedi Master Zex</span>
+                                            <span class="participant-status online">Online</span>
+                                        </div>
+                                        <div class="participant-role">Mentor</div>
+                                    </div>
+                                    <div class="participant-item">
+                                        <img src="avatars/agent.svg" alt="Agent PD-7" class="participant-avatar">
+                                        <div class="participant-info">
+                                            <span class="participant-name">Agent PD-7</span>
+                                            <span class="participant-status busy">Busy</span>
+                                        </div>
+                                        <div class="participant-role">Scout</div>
+                                    </div>
+                                </div>
+                                <div class="participants-actions">
+                                    <button class="add-participant-action">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>
+                                        Add Participant
+                                    </button>
+                                    <button class="manage-participants-action">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                                        Manage
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="chat-actions-ribbon">
+                        <!-- Token Display -->
+                        <div class="token-display" id="token-display">
+                            <div class="token-label">Tokens</div>
+                            <div class="token-bar-container">
+                                <div class="token-bar-fill" style="width: 20%"></div>
+                            </div>
+                            <div class="token-count" id="token-count">50 / 250</div>
+                        </div>
+                        
+                        <!-- Optimize Button (Only one instance, in the header) -->
+                        <button class="chat-action-button optimize-button" aria-label="Optimize chat">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+                            <span>Optimize</span>
+                        </button>
+                        
+                        <!-- Clear Chat Button -->
+                        <button class="chat-action-button clear-chat-button" id="clear-chat-button" aria-label="Clear Chat">
+                            <i class="icon">🗑️</i>
+                            <span>Clear</span>
+                        </button>
+                        
+                        <!-- Search Button -->
+                        <div class="chat-search">
+                            <button class="chat-search-toggle" id="chat-search-toggle" aria-label="Search in chat">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                            </button>
+                            <div class="chat-search-container" id="chat-search-container" style="display: none;">
+                                <input type="text" class="chat-search-input" id="chat-search-input" placeholder="Search in chat...">
+                                <div class="chat-search-controls">
+                                    <button class="chat-search-prev" id="chat-search-prev" disabled aria-label="Previous match">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
+                                    </button>
+                                    <button class="chat-search-next" id="chat-search-next" disabled aria-label="Next match">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                    </button>
+                                    <button class="chat-search-close" id="chat-search-close" aria-label="Close search">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                                    </button>
+                                </div>
+                                <div class="chat-search-results" id="chat-search-results"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Rules Button -->
+                        <button class="chat-action-button rules-button" aria-label="Chat Rules">
+                            <i class="icon">⚙️</i>
+                            <span>Rules</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Chat Messages -->
+                <div class="chat-messages" id="chat-messages">
+                    <div class="messages-scroll-area">
+                        <!-- System Message -->
+                        <div class="message system">
+                            <div class="system-message">
+                                Mission initialized. PDT AI is ready to assist with your query.
+                            </div>
+                        </div>
+                        
+                        <!-- User Message -->
+                        <div class="message user">
+                            <div class="message-avatar">
+                                <div class="user-avatar">U</div>
+                            </div>
+                            <div class="message-content">
+                                <div class="message-header">
+                                    <div class="message-sender-info">
+                                        <span class="message-sender">You</span>
+                                        <span class="message-role-badge">User</span>
+                                    </div>
+                                    <span class="message-time" title="March 15, 2025 at 09:16">09:16</span>
+                                </div>
+                                <div class="message-text">
+                                    I need to optimize the neural network parameters for our latest model. The current configuration is using too much memory and the training time is excessive. Can you suggest some optimizations?
+                                </div>
+                                <div class="message-actions">
+                                    <button class="message-action-button" aria-label="Edit message">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>
+                                    </button>
+                                    <button class="message-action-button" aria-label="Delete message">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- AI Message -->
+                        <div class="message assistant">
+                            <div class="message-avatar">
+                                <div class="ai-avatar">
+                                    <img src="avatars/jedi-master.svg" alt="Jedi Master Zex" class="avatar-image">
+                                </div>
+                            </div>
+                            <div class="message-content">
+                                <div class="message-header">
+                                    <div class="message-sender-info">
+                                        <span class="message-sender">Jedi Master Zex</span>
+                                        <span class="message-role-badge">Mentor</span>
+                                    </div>
+                                    <span class="message-time" title="March 15, 2025 at 09:17">09:17</span>
+                                </div>
+                                <div class="message-text">
+                                    <p>Based on your description, there are several optimization strategies we can implement:</p>
+                                    <ol>
+                                        <li>
+                                            <strong>Reduce batch size</strong>: This will decrease memory usage but may increase training time. Finding the optimal batch size is crucial.
+                                        </li>
+                                        <li>
+                                            <strong>Mixed precision training</strong>: Using FP16 instead of FP32 can significantly reduce memory usage and speed up training on compatible hardware.
+                                        </li>
+                                        <li>
+                                            <strong>Model pruning</strong>: Remove unnecessary connections in your neural network without significant accuracy loss.
+                                        </li>
+                                        <li>
+                                            <strong>Knowledge distillation</strong>: Train a smaller "student" model to mimic a larger "teacher" model.
+                                        </li>
+                                    </ol>
+                                    <p>Would you like me to elaborate on any of these approaches?</p>
+                                </div>
+                                <div class="message-actions">
+                                    <button class="message-action-button" aria-label="Copy message">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                                    </button>
+                                    <button class="message-action-button" aria-label="Regenerate response">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg>
+                                    </button>
+                                    <button class="message-action-button" aria-label="Rate response">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- User Message with Thread -->
+                        <div class="message user">
+                            <div class="message-avatar">
+                                <div class="user-avatar">U</div>
+                            </div>
+                            <div class="message-content">
+                                <div class="message-header">
+                                    <div class="message-sender-info">
+                                        <span class="message-sender">You</span>
+                                        <span class="message-role-badge">User</span>
+                                    </div>
+                                    <span class="message-time" title="March 15, 2025 at 09:19">09:19</span>
+                                </div>
+                                <div class="message-text">
+                                    I'd like to know more about mixed precision training. How much memory savings can we expect, and are there any drawbacks?
+                                </div>
+                                <div class="message-actions">
+                                    <button class="message-action-button" aria-label="Edit message">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>
+                                    </button>
+                                    <button class="message-action-button" aria-label="Delete message">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- AI Message with Code -->
+                        <div class="message assistant">
+                            <div class="message-avatar">
+                                <div class="ai-avatar">
+                                    <img src="avatars/jedi-master.svg" alt="Jedi Master Zex" class="avatar-image">
+                                </div>
+                            </div>
+                            <div class="message-content">
+                                <div class="message-header">
+                                    <div class="message-sender-info">
+                                        <span class="message-sender">Jedi Master Zex</span>
+                                        <span class="message-role-badge">Mentor</span>
+                                    </div>
+                                    <span class="message-time" title="March 15, 2025 at 09:21">09:21</span>
+                                </div>
+                                <div class="message-text">
+                                    <p>Mixed precision training can reduce memory usage by up to 50% while potentially increasing training speed by 2-3x on hardware with tensor cores (like NVIDIA's Volta, Turing, and Ampere architectures).</p>
+                                    
+                                    <p><strong>Benefits:</strong></p>
+                                    <ul>
+                                        <li>Reduced memory usage (almost half)</li>
+                                        <li>Faster computation and training times</li>
+                                        <li>Allows for larger batch sizes or model sizes</li>
+                                    </ul>
+                                    
+                                    <p><strong>Drawbacks:</strong></p>
+                                    <ul>
+                                        <li>Potential for numerical instability (mitigated with loss scaling)</li>
+                                        <li>Not all operations support FP16</li>
+                                        <li>Requires compatible hardware for speed benefits</li>
+                                    </ul>
+                                    
+                                    <p>Here's a simple implementation example using PyTorch's automatic mixed precision:</p>
+                                    
+                                    <div class="code-block-container">
+                                        <div class="code-block-header">
+                                            <span class="code-language">python</span>
+                                            <div class="code-actions">
+                                                <button class="code-action-button" aria-label="Copy code">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                                                </button>
+                                                <button class="code-action-button" aria-label="Expand code">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <pre><code class="language-python"># Import the necessary libraries
+from torch.cuda.amp import autocast, GradScaler
+
+# Initialize the model, optimizer, data loader
+model = YourModel().cuda()
+optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
+train_loader = DataLoader(dataset, batch_size=32)
+
+# Initialize the gradient scaler
+scaler = GradScaler()
+
+# Training loop
+for epoch in range(num_epochs):
+    for inputs, targets in train_loader:
+        inputs, targets = inputs.cuda(), targets.cuda()
+        
+        # Forward pass with autocast
+        with autocast():
+            outputs = model(inputs)
+            loss = loss_fn(outputs, targets)
+        
+        # Backward pass with gradient scaling
+        optimizer.zero_grad()
+        scaler.scale(loss).backward()
+        scaler.step(optimizer)
+        scaler.update()</code></pre>
+                                    </div>
+                                    
+                                    <p>This implementation automatically handles the conversion between FP32 and FP16 where appropriate, and the gradient scaler helps prevent underflow in the gradients.</p>
+                                </div>
+                                <div class="message-actions">
+                                    <button class="message-action-button" aria-label="Copy message">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                                    </button>
+                                    <button class="message-action-button" aria-label="Regenerate response">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg>
+                                    </button>
+                                    <button class="message-action-button" aria-label="Rate response">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Loading Message (when AI is typing) -->
+                        <div class="message assistant loading" style="display: none;">
+                            <div class="message-avatar">
+                                <div class="ai-avatar">
+                                    <img src="avatars/jedi-master.svg" alt="Jedi Master Zex" class="avatar-image">
+                                </div>
+                            </div>
+                            <div class="message-content">
+                                <div class="message-header">
+                                    <span class="message-sender">Jedi Master Zex</span>
+                                    <span class="message-time">09:22</span>
+                                </div>
+                                <div class="typing-indicator">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Chat Input -->
+                <div class="chat-input-container">
+                    <div class="chat-input-label">Type your message below</div>
+                    <form class="chat-form" id="chat-form">
+                        <div class="participants-chips" id="active-personas">
+                            <!-- Active personas will be added here dynamically -->
+                        </div>
+                        <div class="chat-input-wrapper">
+                            <textarea id="message-input" class="chat-input" placeholder="Type your message here and press send..." rows="1"></textarea>
+                            <button id="send-button" class="send-button" type="submit" disabled>
+                                <span class="icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                                </span>
+                                <span>Send</span>
+                            </button>
+                        </div>
+                        <button type="button" class="stop-button" id="stop-button" style="display: none;">Stop</button>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Right Sidebar - Personas -->
+            <div class="sidebar personas-sidebar">
+                <div class="sidebar-header">
+                    <h2 class="sidebar-title">Personas</h2>
+                    <button class="sidebar-toggle" aria-label="Toggle personas sidebar">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                    </button>
+                </div>
+                
+                <div class="sidebar-search">
+                    <input type="text" class="search-input" placeholder="Search personas...">
+                    <button class="clear-search-button" aria-label="Clear search">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </button>
+                </div>
+                
+                <div class="personas-toolbar">
+                    <div class="personas-view-options">
+                        <button class="view-option active" data-view="grid">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                        </button>
+                        <button class="view-option" data-view="list">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+                        </button>
+                    </div>
+                    <div class="personas-actions">
+                        <button class="personas-action-button" id="select-all-personas" aria-label="Select all personas">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+                        </button>
+                        <button class="personas-action-button" id="add-selected-personas" aria-label="Add selected personas">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                        </button>
+                        <div class="token-impact">
+                            <span class="token-impact-label">Token Impact:</span>
+                            <span class="token-impact-value">0/250</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="personas-list" id="personas-list">
+                    <div class="persona-card" draggable="true" data-persona-id="jedi-master">
+                        <div class="persona-select">
+                            <input type="checkbox" id="select-jedi-master" class="persona-checkbox" aria-label="Select Jedi Master Zex">
+                            <label for="select-jedi-master" class="persona-checkbox-label"></label>
+                        </div>
+                        <div class="persona-avatar">
+                            <img src="avatars/jedi-master.svg" alt="Jedi Master Zex" class="avatar-image">
+                            <div class="persona-status online" title="Online"></div>
+                        </div>
+                        
+                        <div class="persona-info">
+                            <div class="persona-name">Jedi Master Zex</div>
+                            <div class="persona-role">Mentor</div>
+                            <div class="persona-response-time">
+                                <span class="response-label">Response:</span>
+                                <span class="response-value medium">Medium</span>
+                            </div>
+                        </div>
+                        
+                        <div class="persona-actions">
+                            <button class="add-persona-button" aria-label="Add Jedi Master Zex to chat">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                            </button>
+                            <button class="info-persona-button" aria-label="View Jedi Master Zex info">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                            </button>
+                        </div>
+                        
+                        <div class="persona-token-impact">+25 tokens</div>
+                    </div>
+                    
+                    <div class="persona-card" draggable="true" data-persona-id="agent-pd7">
+                        <div class="persona-select">
+                            <input type="checkbox" id="select-agent-pd7" class="persona-checkbox" aria-label="Select Agent PD-7">
+                            <label for="select-agent-pd7" class="persona-checkbox-label"></label>
+                        </div>
+                        <div class="persona-avatar">
+                            <img src="avatars/agent.svg" alt="Agent PD-7" class="avatar-image">
+                            <div class="persona-status busy" title="Busy"></div>
+                        </div>
+                        
+                        <div class="persona-info">
+                            <div class="persona-name">Agent PD-7</div>
+                            <div class="persona-role">Scout</div>
+                            <div class="persona-response-time">
+                                <span class="response-label">Response:</span>
+                                <span class="response-value fast">Fast</span>
+                            </div>
+                        </div>
+                        
+                        <div class="persona-actions">
+                            <button class="add-persona-button" aria-label="Add Agent PD-7 to chat">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                            </button>
+                            <button class="info-persona-button" aria-label="View Agent PD-7 info">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                            </button>
+                        </div>
+                        
+                        <div class="persona-token-impact">+15 tokens</div>
+                    </div>
+                </div>
+                
+                <!-- Drop Zone for Drag and Drop -->
+                <div id="persona-drop-zone" class="persona-drop-zone" style="display: none;">
+                    <div class="drop-zone-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+                    </div>
+                    <div class="drop-zone-text">Drop persona here to add to chat</div>
+                </div>
+                
+                <!-- Premium Personas Section -->
+                <div class="premium-personas-section">
+                    <div class="premium-personas-header">
+                        <h3 class="premium-personas-title">Premium Personas</h3>
+                        <button class="premium-personas-toggle" aria-label="Toggle premium personas">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                        </button>
+                    </div>
+                    <div class="premium-personas-content" id="premium-personas-container">
+                        <!-- Premium personas will be loaded here -->
+                        <div class="persona-card premium" draggable="true" data-persona-id="support-bot">
+                            <div class="persona-select">
+                                <input type="checkbox" id="select-support-bot" class="persona-checkbox" aria-label="Select Support Bot">
+                                <label for="select-support-bot" class="persona-checkbox-label"></label>
+                            </div>
+                            <div class="persona-avatar">
+                                <img src="avatars/support.svg" alt="Support Bot" class="avatar-image">
+                                <div class="persona-status away" title="Away"></div>
+                                <div class="premium-badge" title="Premium Persona">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                </div>
+                            </div>
+                            
+                            <div class="persona-info">
+                                <div class="persona-name">Support Bot</div>
+                                <div class="persona-role">Engineer</div>
+                                <div class="persona-response-time">
+                                    <span class="response-label">Response:</span>
+                                    <span class="response-value slow">Slow</span>
+                                </div>
+                            </div>
+                            
+                            <div class="persona-actions">
+                                <button class="add-persona-button" aria-label="Add Support Bot to chat">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                </button>
+                                <button class="info-persona-button" aria-label="View Support Bot info">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                                </button>
+                            </div>
+                            
+                            <div class="persona-token-impact">+35 tokens</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="sidebar-footer">
+                    <button class="create-persona-button">
+                        <span class="icon">+</span> Create Persona
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rename Dialog Template (hidden by default) -->
+    <div class="rename-dialog" id="rename-dialog" style="display: none;">
+        <div class="rename-dialog-content">
+            <div class="rename-dialog-header">
+                <h3>Rename Conversation</h3>
+                <button class="rename-dialog-close" id="rename-dialog-close">×</button>
+            </div>
+            <input type="text" class="rename-dialog-input" id="rename-dialog-input" placeholder="Enter a new name">
+            <input type="hidden" id="rename-conversation-id">
+            <div class="rename-dialog-actions">
+                <button class="rename-dialog-cancel" id="rename-dialog-cancel">Cancel</button>
+                <button class="rename-dialog-save" id="rename-dialog-save">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Code Modal Template (hidden by default) -->
+    <div class="code-modal" id="code-modal">
+        <div class="code-modal-content">
+            <div class="code-modal-header">
+                <div class="code-modal-title">
+                    <span class="code-modal-language">python</span>
+                    <span class="code-modal-filename">example.py</span>
+                </div>
+                <button class="code-modal-close" id="code-modal-close" aria-label="Close code view">×</button>
+            </div>
+            <div class="code-modal-body">
+                <pre><code id="code-modal-code" class="language-python"></code></pre>
+            </div>
+            <div class="code-modal-footer">
+                <div class="code-modal-info">
+                    <span class="code-modal-lines">0 lines</span>
+                </div>
+                <div class="code-modal-actions">
+                    <button class="code-modal-button" id="code-modal-copy" aria-label="Copy code">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                        Copy
+                    </button>
+                    <button class="code-modal-button primary" id="code-modal-run" aria-label="Run code">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                        Run
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/theme-switcher.js"></script>
+    <script src="js/chat-input.js"></script>
+    <script src="js/drag-drop.js"></script>
+    <script src="js/notifications.js"></script>
+    <script>
+        // Initialize theme
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set initial theme
+            const savedTheme = localStorage.getItem('theme') || 'kotor';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            
+            // Example notification on page load
+            setTimeout(() => {
+                if (window.Notifications) {
+                    window.Notifications.info('Welcome to PDT AI Chat Interface');
+                }
+            }, 1000);
+        });
+    </script>
+</body>
+</html> 

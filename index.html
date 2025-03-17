@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDT AI - Unlock AI Potential with Three Themes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700&family=Inter:wght@300;400;500;600;700&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Main stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+    <!-- Theme stylesheets -->
+    <link rel="stylesheet" href="themes/kotor.css">
+    <link rel="stylesheet" href="themes/jedi.css">
+    <link rel="stylesheet" href="themes/professional.css">
+    <!-- Landing page specific styles -->
+    <link rel="stylesheet" href="styles/landing-page.css">
+</head>
+<body class="jedi-theme">
+    <div class="main-container">
+        <div class="neural-grid"></div>
+        <div id="neural-nodes"></div>
+        <div class="particles" id="particles"></div>
+        <div class="waves-container" id="waves-container"></div>
+        
+        <div class="logo">PDT AI</div>
+        
+        <!-- Theme Switcher -->
+        <div class="theme-switcher">
+            <div class="theme-button">
+                <button class="theme-switcher-button">
+                    <span class="current-theme">Theme</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+            </div>
+            <div class="theme-switcher-dropdown">
+                <div class="theme-option" data-theme="kotor">KOTOR</div>
+                <div class="theme-option" data-theme="jedi">Jedi: Survivor</div>
+                <div class="theme-option" data-theme="professional">Professional</div>
+            </div>
+        </div>
+        
+        <!-- Effects Toggle -->
+        <div class="effects-toggle">
+            <div class="effects-toggle-button">
+                <span class="current-effect">None</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+                </svg>
+            </div>
+            <div class="effects-toggle-dropdown">
+                <div class="effect-option" data-effect="none">None</div>
+            </div>
+        </div>
+        
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Unlock AI Potential with PDT AI</h1>
+                <p>Innovative AI with RPG flair, cinematic immersion, or professional precision</p>
+                <a href="login.html" class="cta-button">Get Started</a>
+            </div>
+        </section>
+        
+        <!-- Feature Section -->
+        <section class="features">
+            <div class="features-container">
+                <h2>Key Features</h2>
+                <div class="feature-cards">
+                    <div class="feature-card">
+                        <div class="feature-icon">🚀</div>
+                        <h3>RPG-Like Flow</h3>
+                        <p>Solve problems with galactic missions and interactive storytelling that makes AI assistance feel like an adventure.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🎨</div>
+                        <h3>Tri-Theme Design</h3>
+                        <p>Switch between KOTOR, Jedi: Survivor, and Professional modes to match your mood or business needs.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🧠</div>
+                        <h3>Advanced AI</h3>
+                        <p>Powered by state-of-the-art NLP technology that understands context and delivers precise, helpful responses.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📈</div>
+                        <h3>Scalable Solutions</h3>
+                        <p>Ideal for individuals and enterprises with customizable workflows and integration capabilities.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Use Case Showcase -->
+        <section class="showcase">
+            <div class="showcase-container">
+                <h2>Use Case Showcase</h2>
+                <div class="carousel" id="showcase-carousel">
+                    <div class="carousel-slide kotor">
+                        <h3>Gaming Community</h3>
+                        <p>Engage with KOTOR-style missions that transform problem-solving into an epic galactic adventure. Perfect for gaming communities, creative writing, and immersive learning experiences.</p>
+                        <img src="https://via.placeholder.com/400x200?text=KOTOR+Theme" alt="KOTOR Theme Preview" style="max-width: 100%; border-radius: 8px;">
+                    </div>
+                    <div class="carousel-slide jedi">
+                        <h3>Creative Storytelling</h3>
+                        <p>Immerse yourself in Jedi: Survivor narratives with cinematic visuals and dynamic interactions. Ideal for content creators, storytellers, and fans of modern Star Wars aesthetics.</p>
+                        <img src="https://via.placeholder.com/400x200?text=Jedi+Survivor+Theme" alt="Jedi Survivor Theme Preview" style="max-width: 100%; border-radius: 8px;">
+                    </div>
+                    <div class="carousel-slide professional">
+                        <h3>Business Support</h3>
+                        <p>Automate workflows with Professional Mode, featuring clean interfaces and business-focused tools. Perfect for enterprises, startups, and professionals seeking efficient AI assistance.</p>
+                        <img src="https://via.placeholder.com/400x200?text=Professional+Theme" alt="Professional Theme Preview" style="max-width: 100%; border-radius: 8px;">
+                    </div>
+                </div>
+                <div class="carousel-nav">
+                    <div class="carousel-dot active" data-slide="0"></div>
+                    <div class="carousel-dot" data-slide="1"></div>
+                    <div class="carousel-dot" data-slide="2"></div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Footer -->
+        <footer>
+            <div class="footer-container">
+                <p>Built for the Future by PDT AI</p>
+                <div class="footer-links">
+                    <a href="login.html">Login</a>
+                    <a href="main-menu.html">Main Menu</a>
+                    <a href="persona-creation.html">Create Persona</a>
+                    <a href="#">Privacy Policy</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- JavaScript Files -->
+    <script src="js/landing-page/main.js"></script>
+    <script src="js/landing-page/theme-switcher.js"></script>
+    <script src="js/landing-page/carousel.js"></script>
+    <script src="js/landing-page/effects-toggle.js"></script>
+    <script src="js/landing-page/background-effects.js"></script>
+</body>
+</html>

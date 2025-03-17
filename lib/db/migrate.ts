@@ -1,37 +1,27 @@
-import { drizzle } from 'drizzle-orm/postgres-js';
-import { migrate } from 'drizzle-orm/postgres-js/migrator';
-import postgres from 'postgres';
+import { drizzle } from 'drizzle-orm/vercel-postgres';
+import { migrate } from 'drizzle-orm/vercel-postgres/migrator';
+import { sql } from '@vercel/postgres';
 
-// Check if we should use mock data
-const USE_MOCK_DB = process.env.USE_MOCK_DB === 'true';
-
-async function main() {
-  if (USE_MOCK_DB) {
-    console.log('Using mock database, skipping migrations');
-    return;
-  }
-
-  console.log('⏳ Running migrations...');
-
-  const connectionString = process.env.POSTGRES_URL;
-  if (!connectionString) {
-    console.error('❌ POSTGRES_URL is not defined');
-    process.exit(1);
-  }
-
-  const sql = postgres(connectionString, { max: 1 });
-  const db = drizzle(sql);
-
-  try {
-    await migrate(db, { migrationsFolder: 'drizzle' });
-    console.log('✅ Migrations completed');
-    await sql.end();
-    process.exit(0);
-  } catch (error) {
-    console.error('❌ Migration failed', error);
-    await sql.end();
-    process.exit(1);
-  }
+// This script should only be run in development
+if (process.env.NODE_ENV === 'production') {
+  throw new Error('This script should not be run in production');
 }
 
-main();
+if (!process.env.POSTGRES_URL) {
+  throw new Error('POSTGRES_URL is not defined');
+}
+
+const db = drizzle(sql);
+
+async function main() {
+  console.log('Running migrations...');
+  await migrate(db, { migrationsFolder: './drizzle' });
+  console.log('Migrations complete!');
+  process.exit(0);
+}
+
+main().catch((err) => {
+  console.error('Migration failed!');
+  console.error(err);
+  process.exit(1);
+});

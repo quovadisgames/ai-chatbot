@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDT AI - Persona Creation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700&family=Inter:wght@300;400;500;600;700&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Main stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+    <!-- Theme stylesheets -->
+    <link rel="stylesheet" href="themes/kotor.css">
+    <link rel="stylesheet" href="themes/jedi.css">
+    <link rel="stylesheet" href="themes/professional.css">
+    <!-- Page-specific styles -->
+    <link rel="stylesheet" href="styles/persona-creation.css">
+    <style>
+        /* Fix for vertical scrolling */
+        html, body {
+            overflow-x: hidden;
+        }
+        
+        .main-container {
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+        
+        .neural-grid, 
+        #neural-nodes, 
+        .particles, 
+        .waves-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="jedi-theme">
+    <div class="main-container">
+        <div class="neural-grid"></div>
+        <div id="neural-nodes"></div>
+        <div class="particles" id="particles"></div>
+        <div class="waves-container" id="waves-container"></div>
+        
+        <a href="main-menu.html" class="back-link">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+            Back to Menu
+        </a>
+        
+        <div class="theme-switcher">
+            <button class="theme-switcher-button">
+                <span class="current-theme">Jedi: Survivor</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
+            <div class="theme-switcher-dropdown">
+                <div class="theme-option" data-theme="kotor">KOTOR</div>
+                <div class="theme-option" data-theme="jedi">Jedi: Survivor</div>
+                <div class="theme-option" data-theme="professional">Professional</div>
+            </div>
+        </div>
+        
+        <div class="persona-container">
+            <div class="persona-header">
+                <h1 class="persona-title">Create Your AI Persona</h1>
+                <p class="persona-subtitle">Design a custom AI assistant tailored to your specific needs and preferences. Complete the following steps to bring your AI persona to life.</p>
+            </div>
+            
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-track">
+                        <div class="progress-fill" style="width: 50%;"></div>
+                    </div>
+                    <div class="progress-steps">
+                        <div class="progress-step active" data-step="1">
+                            <div class="step-number">1</div>
+                            <div class="step-label">Basic Information</div>
+                        </div>
+                        <div class="progress-step" data-step="2">
+                            <div class="step-number">2</div>
+                            <div class="step-label">Personality & Skills</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="persona-form">
+                <div class="form-step active" id="step-1">
+                    <div class="form-section">
+                        <h2 class="section-title">
+                            <span class="icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
+                            </span>
+                            Basic Information
+                        </h2>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="persona-name">Persona Name</label>
+                                <input type="text" id="persona-name" placeholder="Enter a name for your AI persona">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="persona-role">Primary Role</label>
+                                <select id="persona-role">
+                                    <option value="" disabled selected>Select a primary role</option>
+                                    <option value="assistant">Personal Assistant</option>
+                                    <option value="researcher">Research Specialist</option>
+                                    <option value="creative">Creative Collaborator</option>
+                                    <option value="analyst">Data Analyst</option>
+                                    <option value="coach">Learning Coach</option>
+                                    <option value="custom">Custom Role</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="persona-llm">Language Model</label>
+                                <select id="persona-llm">
+                                    <option value="gpt-4" selected>GPT-4 (OpenAI)</option>
+                                    <option value="gpt-3.5-turbo">GPT-3.5 Turbo (OpenAI)</option>
+                                    <option value="claude-2">Claude 2 (Anthropic)</option>
+                                    <option value="claude-instant">Claude Instant (Anthropic)</option>
+                                </select>
+                                <p class="form-description" id="llm-description">Most capable model, best for complex tasks</p>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="persona-description">Brief Description</label>
+                            <textarea id="persona-description" placeholder="Describe your AI persona in a few sentences..."></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="action-button cancel-button" disabled>Back</button>
+                        <button type="button" class="action-button save-button" id="next-step">Next Step</button>
+                    </div>
+                </div>
+                
+                <div class="form-step" id="step-2">
+                    <div class="form-section">
+                        <h2 class="section-title">
+                            <span class="icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                            </span>
+                            Personality & Skills
+                        </h2>
+                        
+                        <div class="form-group">
+                            <label for="persona-personality">Personality Traits</label>
+                            <div class="trait-selectors">
+                                <div class="trait-selector">
+                                    <input type="checkbox" id="trait-analytical" class="trait-checkbox">
+                                    <label for="trait-analytical" class="trait-label">Analytical</label>
+                                </div>
+                                <div class="trait-selector">
+                                    <input type="checkbox" id="trait-creative" class="trait-checkbox">
+                                    <label for="trait-creative" class="trait-label">Creative</label>
+                                </div>
+                                <div class="trait-selector">
+                                    <input type="checkbox" id="trait-empathetic" class="trait-checkbox">
+                                    <label for="trait-empathetic" class="trait-label">Empathetic</label>
+                                </div>
+                                <div class="trait-selector">
+                                    <input type="checkbox" id="trait-precise" class="trait-checkbox">
+                                    <label for="trait-precise" class="trait-label">Precise</label>
+                                </div>
+                                <div class="trait-selector">
+                                    <input type="checkbox" id="trait-proactive" class="trait-checkbox">
+                                    <label for="trait-proactive" class="trait-label">Proactive</label>
+                                </div>
+                                <div class="trait-selector">
+                                    <input type="checkbox" id="trait-humorous" class="trait-checkbox">
+                                    <label for="trait-humorous" class="trait-label">Humorous</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="persona-skills">Key Skills</label>
+                            <div class="skill-selectors">
+                                <div class="skill-selector">
+                                    <input type="checkbox" id="skill-research" class="skill-checkbox">
+                                    <label for="skill-research" class="skill-label">Research</label>
+                                </div>
+                                <div class="skill-selector">
+                                    <input type="checkbox" id="skill-writing" class="skill-checkbox">
+                                    <label for="skill-writing" class="skill-label">Writing</label>
+                                </div>
+                                <div class="skill-selector">
+                                    <input type="checkbox" id="skill-analysis" class="skill-checkbox">
+                                    <label for="skill-analysis" class="skill-label">Data Analysis</label>
+                                </div>
+                                <div class="skill-selector">
+                                    <input type="checkbox" id="skill-planning" class="skill-checkbox">
+                                    <label for="skill-planning" class="skill-label">Planning</label>
+                                </div>
+                                <div class="skill-selector">
+                                    <input type="checkbox" id="skill-coding" class="skill-checkbox">
+                                    <label for="skill-coding" class="skill-label">Coding</label>
+                                </div>
+                                <div class="skill-selector">
+                                    <input type="checkbox" id="skill-teaching" class="skill-checkbox">
+                                    <label for="skill-teaching" class="skill-label">Teaching</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="persona-communication">Communication Style</label>
+                                <select id="persona-communication">
+                                    <option value="" disabled selected>Select a communication style</option>
+                                    <option value="formal">Formal & Professional</option>
+                                    <option value="casual">Casual & Friendly</option>
+                                    <option value="direct">Direct & Concise</option>
+                                    <option value="educational">Educational & Detailed</option>
+                                    <option value="motivational">Motivational & Encouraging</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="persona-specialization">Specialization Area (Optional)</label>
+                                <input type="text" id="persona-specialization" placeholder="Enter a specific area of expertise">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="action-button cancel-button" id="back-step">Back</button>
+                        <button type="button" class="action-button save-button" id="create-persona">Create Persona</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="success-modal" id="success-modal">
+        <div class="modal-content">
+            <div class="modal-icon">✓</div>
+            <h2 class="modal-title">Persona Created Successfully!</h2>
+            <p class="modal-message">Your AI persona has been created and is ready to assist you. You can now return to the main menu to start interacting with your new AI assistant.</p>
+            <button class="modal-button" id="close-modal">Return to Main Menu</button>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="js/theme-switcher.js"></script>
+    <script src="js/background-effects.js"></script>
+    <script>
+        const AVAILABLE_LLMS = [
+            {
+                id: 'gpt-4',
+                name: 'GPT-4',
+                provider: 'OpenAI',
+                model: 'gpt-4',
+                description: 'Most capable model, best for complex tasks',
+                maxTokens: 8192,
+                temperature: 0.7
+            },
+            {
+                id: 'gpt-3.5-turbo',
+                name: 'GPT-3.5 Turbo',
+                provider: 'OpenAI',
+                model: 'gpt-3.5-turbo',
+                description: 'Fast and efficient for most tasks',
+                maxTokens: 4096,
+                temperature: 0.7
+            },
+            {
+                id: 'claude-2',
+                name: 'Claude 2',
+                provider: 'Anthropic',
+                model: 'claude-2',
+                description: 'Advanced reasoning and analysis',
+                maxTokens: 100000,
+                temperature: 0.7
+            },
+            {
+                id: 'claude-instant',
+                name: 'Claude Instant',
+                provider: 'Anthropic',
+                model: 'claude-instant',
+                description: 'Fast responses for simple tasks',
+                maxTokens: 100000,
+                temperature: 0.7
+            }
+        ];
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize form steps
+            initFormSteps();
+            
+            // Initialize LLM selection
+            const llmSelect = document.getElementById('persona-llm');
+            const llmDescription = document.getElementById('llm-description');
+            
+            llmSelect.addEventListener('change', (e) => {
+                const selectedLLM = AVAILABLE_LLMS.find(llm => llm.id === e.target.value);
+                if (selectedLLM) {
+                    llmDescription.textContent = selectedLLM.description;
+                }
+            });
+        });
+        
+        // Form steps functionality
+        function initFormSteps() {
+            const nextButton = document.getElementById('next-step');
+            const backButton = document.getElementById('back-step');
+            const createButton = document.getElementById('create-persona');
+            const step1 = document.getElementById('step-1');
+            const step2 = document.getElementById('step-2');
+            const progressFill = document.querySelector('.progress-fill');
+            const progressSteps = document.querySelectorAll('.progress-step');
+            
+            // Next button click
+            nextButton.addEventListener('click', function() {
+                step1.classList.remove('active');
+                step2.classList.add('active');
+                progressFill.style.width = '100%';
+                progressSteps[1].classList.add('active');
+            });
+            
+            // Back button click
+            backButton.addEventListener('click', function() {
+                step2.classList.remove('active');
+                step1.classList.add('active');
+                progressFill.style.width = '50%';
+                progressSteps[1].classList.remove('active');
+            });
+            
+            // Create button click
+            createButton.addEventListener('click', function() {
+                // Show success modal
+                const successModal = document.getElementById('success-modal');
+                successModal.classList.add('active');
+                
+                // Close modal on button click
+                const closeModalButton = document.getElementById('close-modal');
+                closeModalButton.addEventListener('click', function() {
+                    successModal.classList.remove('active');
+                    // Redirect to main menu
+                    window.location.href = 'main-menu.html';
+                });
+            });
+        }
+    </script>
+</body>
+</html> 

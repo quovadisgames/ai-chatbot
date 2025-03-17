@@ -20,28 +20,23 @@ export const user = pgTable('User', {
 
 export type User = InferSelectModel<typeof user>;
 
-export const chat = pgTable('Chat', {
-  id: uuid('id').primaryKey().notNull().defaultRandom(),
-  createdAt: timestamp('createdAt').notNull(),
-  title: text('title').notNull(),
-  userId: uuid('userId')
-    .notNull()
-    .references(() => user.id),
-  visibility: varchar('visibility', { enum: ['public', 'private'] })
-    .notNull()
-    .default('private'),
+export const chat = pgTable('chat', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  userId: text('user_id').notNull(),
+  title: text('title'),
+  visibility: varchar('visibility', { enum: ['public', 'private'] }).notNull().default('private'),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at').defaultNow().notNull(),
 });
 
 export type Chat = InferSelectModel<typeof chat>;
 
-export const message = pgTable('Message', {
-  id: uuid('id').primaryKey().notNull().defaultRandom(),
-  chatId: uuid('chatId')
-    .notNull()
-    .references(() => chat.id),
-  role: varchar('role').notNull(),
-  content: json('content').notNull(),
-  createdAt: timestamp('createdAt').notNull(),
+export const message = pgTable('message', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  chatId: uuid('chat_id').references(() => chat.id).notNull(),
+  content: text('content').notNull(),
+  role: varchar('role', { enum: ['user', 'assistant', 'system'] }).notNull(),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
 });
 
 export type Message = InferSelectModel<typeof message>;
@@ -132,3 +127,9 @@ export const tokenUsage = pgTable('TokenUsage', {
 });
 
 export type TokenUsage = InferSelectModel<typeof tokenUsage>;
+
+export type ExtendedChat = Chat & {
+  messages?: Message[];
+  visibility: 'public' | 'private';
+  model?: string;
+};

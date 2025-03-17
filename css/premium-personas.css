@@ -1,0 +1,729 @@
+/* Premium Personas Styling */
+
+/* Premium Personas Section */
+.premium-personas-section {
+  margin-top: 20px;
+  padding: 15px;
+  border-radius: 10px;
+  background-color: var(--bg-secondary);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.premium-personas-section h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.premium-personas-section h3::before {
+  content: '⭐';
+  font-size: 1.2rem;
+}
+
+/* Personas Grid */
+.personas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 15px;
+}
+
+/* Persona Card */
+.persona-card.premium {
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: var(--bg-primary);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+  display: flex;
+  flex-direction: column;
+}
+
+.persona-card.premium:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.persona-card.premium.unlocked {
+  border: 2px solid #4caf50;
+}
+
+.persona-card.premium.locked {
+  border: 2px solid #ff9800;
+}
+
+/* Persona Avatar */
+.persona-card.premium .persona-avatar {
+  position: relative;
+  height: 120px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--bg-secondary);
+}
+
+.persona-card.premium .persona-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.persona-card.premium .premium-indicator {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: #ff9800;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.9rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Persona Info */
+.persona-card.premium .persona-info {
+  padding: 15px;
+  flex-grow: 1;
+}
+
+.persona-card.premium .persona-name {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.persona-card.premium .persona-description {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+/* Persona Actions */
+.persona-card.premium .persona-actions {
+  padding: 10px 15px 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.persona-card.premium .persona-use-button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 15px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.persona-card.premium .persona-use-button:hover {
+  background-color: #45a049;
+}
+
+.persona-card.premium .persona-unlock-button {
+  background-color: #ff9800;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 15px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.persona-card.premium .persona-unlock-button:hover {
+  background-color: #f57c00;
+}
+
+.persona-card.premium .persona-use-once-button {
+  background-color: #2196f3;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 15px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.persona-card.premium .persona-use-once-button:hover {
+  background-color: #1e88e5;
+}
+
+.persona-card.premium .premium-access-badge {
+  background-color: #ff9800;
+  color: white;
+  border-radius: 15px;
+  padding: 3px 10px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  display: inline-block;
+  align-self: center;
+}
+
+/* Locked Overlay */
+.persona-card.premium.locked .persona-avatar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .personas-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Premium Persona Details */
+.premium-persona-details {
+  margin-top: 20px;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: var(--bg-secondary);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.premium-persona-details .persona-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.premium-persona-details .persona-avatar-large {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  overflow: hidden;
+  position: relative;
+}
+
+.premium-persona-details .persona-avatar-large img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.premium-persona-details .persona-title {
+  flex-grow: 1;
+}
+
+.premium-persona-details .persona-title h2 {
+  margin: 0 0 5px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.premium-persona-details .persona-title h2::after {
+  content: '⭐';
+  font-size: 1.2rem;
+  color: #ff9800;
+}
+
+.premium-persona-details .persona-subtitle {
+  color: var(--text-secondary);
+}
+
+.premium-persona-details .persona-description-full {
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+.premium-persona-details .persona-capabilities {
+  margin-bottom: 20px;
+}
+
+.premium-persona-details .persona-capabilities h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.premium-persona-details .capability-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+}
+
+.premium-persona-details .capability-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.premium-persona-details .capability-item::before {
+  content: '✓';
+  color: #4caf50;
+  font-weight: bold;
+}
+
+.premium-persona-details .persona-actions-large {
+  display: flex;
+  gap: 15px;
+}
+
+.premium-persona-details .action-button {
+  padding: 10px 20px;
+  border-radius: 25px;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.premium-persona-details .use-button {
+  background-color: #4caf50;
+  color: white;
+}
+
+.premium-persona-details .use-button:hover {
+  background-color: #45a049;
+}
+
+.premium-persona-details .unlock-button {
+  background-color: #ff9800;
+  color: white;
+}
+
+.premium-persona-details .unlock-button:hover {
+  background-color: #f57c00;
+}
+
+.premium-persona-details .cost-indicator {
+  font-size: 0.9rem;
+  margin-left: 5px;
+}
+
+/* Premium Persona Selection in Chat */
+.persona-selector .premium-option {
+  position: relative;
+  padding-right: 25px;
+}
+
+.persona-selector .premium-option::after {
+  content: '⭐';
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.8rem;
+  color: #ff9800;
+}
+
+.persona-selector .premium-option.locked {
+  opacity: 0.7;
+}
+
+.persona-selector .premium-option.locked::before {
+  content: '🔒';
+  margin-right: 5px;
+}
+
+/* Premium Feature Tooltip */
+.premium-feature-tooltip {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 0.8rem;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s, visibility 0.2s;
+  z-index: 100;
+  pointer-events: none;
+}
+
+.premium-feature:hover .premium-feature-tooltip {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Premium Personas Styles */
+
+/* Premium Personas Container */
+.premium-personas-container {
+    margin-top: 20px;
+    border-top: 1px solid var(--border-color);
+    padding-top: 15px;
+}
+
+.premium-personas-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding: 0 15px;
+}
+
+.premium-personas-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.premium-icon {
+    color: var(--current-accent);
+    font-size: 16px;
+}
+
+/* Premium Persona Card */
+.premium-persona-card {
+    position: relative;
+    background-color: var(--bg-tertiary);
+    border-radius: 8px;
+    margin: 0 15px 10px;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1px solid var(--border-color);
+}
+
+.premium-persona-card:hover {
+    border-color: var(--current-accent);
+    transform: translateY(-2px);
+}
+
+.premium-persona-card.locked {
+    opacity: 0.7;
+}
+
+.premium-persona-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: var(--bg-quaternary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.premium-persona-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.premium-persona-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.premium-persona-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 2px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.premium-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--current-accent);
+    color: white;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: 10px;
+    text-transform: uppercase;
+}
+
+.premium-persona-specialty {
+    font-size: 12px;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.premium-persona-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.unlock-button {
+    background-color: var(--current-accent);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 10px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.unlock-button:hover {
+    background-color: rgba(var(--current-accent-rgb), 0.8);
+}
+
+.unlock-button.one-time {
+    background-color: var(--bg-quaternary);
+    color: var(--text-primary);
+}
+
+.unlock-price {
+    font-weight: 600;
+}
+
+/* Lock Overlay */
+.lock-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 20px;
+}
+
+/* Unlock Dialog */
+.unlock-dialog {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.unlock-dialog.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.unlock-dialog-content {
+    background-color: var(--bg-secondary);
+    border-radius: 8px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    animation: dialogSlideIn 0.3s ease;
+}
+
+.unlock-dialog-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.unlock-dialog-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.unlock-dialog-close {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: var(--text-secondary);
+    cursor: pointer;
+}
+
+.unlock-dialog-body {
+    padding: 20px;
+}
+
+.persona-preview {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.persona-preview-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.persona-preview-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.persona-preview-info {
+    flex: 1;
+}
+
+.persona-preview-name {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.persona-preview-specialty {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+
+.persona-preview-description {
+    font-size: 14px;
+    color: var(--text-primary);
+    line-height: 1.5;
+}
+
+.unlock-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.unlock-option {
+    background-color: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.unlock-option:hover {
+    border-color: var(--current-accent);
+}
+
+.unlock-option.selected {
+    border-color: var(--current-accent);
+    box-shadow: 0 0 0 1px var(--current-accent);
+}
+
+.unlock-option-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.unlock-option-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.unlock-option-price {
+    font-size: 14px;
+    color: var(--current-accent);
+    font-weight: 600;
+}
+
+.unlock-option-description {
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.unlock-dialog-footer {
+    padding: 15px 20px;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.credits-balance {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.unlock-confirm-button {
+    background-color: var(--current-accent);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.unlock-confirm-button:hover {
+    background-color: rgba(var(--current-accent-rgb), 0.8);
+}
+
+.unlock-confirm-button:disabled {
+    background-color: var(--bg-quaternary);
+    color: var(--text-tertiary);
+    cursor: not-allowed;
+}
+
+/* Animations */
+@keyframes dialogSlideIn {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .unlock-options {
+        flex-direction: column;
+    }
+    
+    .unlock-dialog-footer {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .unlock-confirm-button {
+        width: 100%;
+    }
+} 

@@ -1,0 +1,122 @@
+/* Star Wars: Jedi Survivor Theme Variables */
+.swjs-theme {
+  /* Theme-specific colors */
+  --theme-bg-primary: rgba(20, 22, 25, 0.95);
+  --theme-bg-secondary: rgba(30, 32, 35, 0.9);
+  --theme-bg-tertiary: rgba(25, 27, 30, 0.95);
+  
+  /* Accent colors */
+  --theme-accent: rgb(255, 136, 0);
+  --theme-accent-rgb: 255, 136, 0;
+  --theme-accent-dark: rgba(200, 100, 0, 1);
+  --theme-accent-light: rgba(255, 160, 0, 1);
+  
+  /* Text colors */
+  --theme-text-primary: rgba(255, 255, 255, 0.95);
+  --theme-text-secondary: rgba(255, 255, 255, 0.8);
+  --theme-text-tertiary: rgba(255, 255, 255, 0.6);
+  
+  /* Border colors */
+  --theme-border-primary: rgba(255, 136, 0, 0.3);
+  --theme-border-secondary: rgba(255, 255, 255, 0.15);
+  
+  /* Glow effects */
+  --theme-glow: 0 0 10px rgba(255, 136, 0, 0.3);
+  --theme-glow-strong: 0 0 20px rgba(255, 136, 0, 0.5);
+  
+  /* Force system colors */
+  --force-light: rgba(255, 136, 0, 0.9);
+  --force-dark: rgba(150, 50, 0, 0.9);
+  --force-neutral: rgba(180, 180, 180, 0.9);
+}
+
+/* Background Effects */
+.swjs-theme .neural-grid {
+  background-image: 
+    linear-gradient(to right, rgba(255, 136, 0, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 136, 0, 0.05) 1px, transparent 1px);
+  background-size: 40px 40px;
+  opacity: 0.4;
+}
+
+.swjs-theme .neural-node {
+  background-color: rgba(255, 136, 0, 0.4);
+  box-shadow: 0 0 8px rgba(255, 136, 0, 0.4);
+}
+
+/* Message Styling */
+.swjs-theme .message {
+  background: var(--theme-bg-secondary);
+  border: 1px solid var(--theme-border-secondary);
+  border-radius: var(--message-border-radius);
+  animation: var(--fade-in);
+}
+
+.swjs-theme .message.assistant {
+  border-left: 2px solid var(--theme-accent);
+}
+
+.swjs-theme .message.user {
+  background: var(--theme-bg-tertiary);
+}
+
+/* Force Display */
+.swjs-theme .force-meter {
+  background: var(--theme-bg-tertiary);
+  border: 1px solid var(--theme-border-primary);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.swjs-theme .force-fill {
+  background: linear-gradient(
+    90deg,
+    var(--force-dark) 0%,
+    var(--force-light) 100%
+  );
+  transition: width var(--transition-normal) ease-in-out;
+}
+
+/* Interactive Elements */
+.swjs-theme .button {
+  background: var(--theme-bg-secondary);
+  border: 1px solid var(--theme-border-primary);
+  color: var(--theme-text-primary);
+  transition: all var(--transition-fast);
+}
+
+.swjs-theme .button:hover {
+  background: var(--theme-accent);
+  border-color: var(--theme-accent-light);
+  box-shadow: var(--theme-glow);
+}
+
+.swjs-theme .input {
+  background: var(--theme-bg-tertiary);
+  border: 1px solid var(--theme-border-secondary);
+  color: var(--theme-text-primary);
+}
+
+.swjs-theme .input:focus {
+  border-color: var(--theme-accent);
+  box-shadow: var(--theme-glow);
+}
+
+/* Scrollbar Styling */
+.swjs-theme ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.swjs-theme ::-webkit-scrollbar-track {
+  background: var(--theme-bg-tertiary);
+}
+
+.swjs-theme ::-webkit-scrollbar-thumb {
+  background: var(--theme-accent);
+  border-radius: var(--radius-sm);
+}
+
+.swjs-theme ::-webkit-scrollbar-thumb:hover {
+  background: var(--theme-accent-light);
+} 

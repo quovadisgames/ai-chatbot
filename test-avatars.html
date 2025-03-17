@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avatar Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #1a1a1a;
+            color: #f0f0f0;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .avatar-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+        .avatar-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #2a2a2a;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        .avatar-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 10px;
+        }
+        .avatar-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .avatar-role {
+            font-size: 0.9em;
+            color: #aaa;
+        }
+    </style>
+</head>
+<body>
+    <h1>Avatar Test Page</h1>
+    
+    <div class="avatar-container">
+        <div class="avatar-item">
+            <img src="avatars/jedi-master.svg" alt="Jedi Master Zex" class="avatar-image">
+            <div class="avatar-name">Jedi Master Zex</div>
+            <div class="avatar-role">Mentor</div>
+        </div>
+        
+        <div class="avatar-item">
+            <img src="avatars/agent.svg" alt="Agent PD-7" class="avatar-image">
+            <div class="avatar-name">Agent PD-7</div>
+            <div class="avatar-role">Scout</div>
+        </div>
+        
+        <div class="avatar-item">
+            <img src="avatars/support.svg" alt="Support Bot" class="avatar-image">
+            <div class="avatar-name">Support Bot</div>
+            <div class="avatar-role">Engineer</div>
+        </div>
+    </div>
+</body>
+</html> 

@@ -1,9 +1,6 @@
 import { trackTokenUsage } from '@/lib/ai/token-tracking';
 import { auth } from '@/auth';
-import { streamText } from 'ai';
-import { openai } from '@ai-sdk/openai';
 import { saveTokenUsage } from './db/queries';
-import { Readable } from 'stream';
 
 interface AIResponse {
   usage: { promptTokens: number; completionTokens: number; totalTokens: number };
@@ -76,33 +73,72 @@ export async function trackAIUsage(userId: string, prompt: string): Promise<AIRe
     };
   }
 
-  // Use the existing AI SDK for real implementation
-  const response = await streamText({
-    model: openai('gpt-3.5-turbo'),
-    prompt,
+  // Use direct OpenAI API instead of AI SDK to avoid type compatibility issues
+  const apiKey = process.env.OPENAI_API_KEY;
+  if (!apiKey) {
+    throw new Error('OPENAI_API_KEY is not defined');
+  }
+
+  // Create a fetch request to OpenAI API
+  const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${apiKey}`,
+    },
+    body: JSON.stringify({
+      model: 'gpt-3.5-turbo',
+      messages: [{ role: 'user', content: prompt }],
+      stream: true,
+    }),
   });
-  
+
+  if (!response.ok) {
+    const error = await response.text();
+    throw new Error(`OpenAI API error: ${error}`);
+  }
+
   // Create a properly formatted SSE stream
   const stream = new ReadableStream({
     async start(controller) {
       const encoder = new TextEncoder();
+      const reader = (response.body as unknown as ReadableStream<Uint8Array>)?.getReader();
       
-      // Handle the response as a stream of events
+      if (!reader) {
+        controller.close();
+        return;
+      }
+      
+      const decoder = new TextDecoder();
+      
       try {
-        // This assumes the AI SDK's response is iterable
-        for await (const chunk of response as any) {
-          const content = chunk?.content || chunk?.delta?.content || '';
-          if (content) {
-            controller.enqueue(encoder.encode(`data: ${content}\n\n`));
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          
+          const chunk = decoder.decode(value);
+          const lines = chunk.split('\n');
+          
+          for (const line of lines) {
+            if (line.startsWith('data: ') && line !== 'data: [DONE]') {
+              try {
+                const data = JSON.parse(line.substring(6));
+                const content = data.choices?.[0]?.delta?.content || '';
+                if (content) {
+                  controller.enqueue(encoder.encode(`data: ${content}\n\n`));
+                }
+              } catch (e) {
+                // Ignore parsing errors
+              }
+            }
           }
         }
       } catch (error) {
-        console.error('Error processing AI stream:', error);
+        console.error('Error processing OpenAI stream:', error);
+      } finally {
+        reader.releaseLock();
+        controller.close();
       }
-      
-      // End the stream
-      controller.enqueue(encoder.encode('\n'));
-      controller.close();
     }
   });
   

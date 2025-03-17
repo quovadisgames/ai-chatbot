@@ -1,0 +1,202 @@
+/* ===== KOTOR Theme Styles ===== */
+/* This file contains styles specific to the KOTOR theme */
+
+/* KOTOR Theme */
+.kotor-theme {
+    /* Apply KOTOR theme variables */
+    --current-bg: var(--kotor-bg);
+    --current-dark: var(--kotor-dark);
+    --current-accent: var(--kotor-accent);
+    --current-accent-rgb: var(--kotor-accent-rgb);
+    --current-text: var(--kotor-text);
+    --current-text-secondary: var(--kotor-text-secondary);
+    --current-border: var(--kotor-border);
+    --current-glow: var(--kotor-glow);
+    --current-font: var(--kotor-font);
+    
+    /* Override base colors */
+    --bg-primary: rgba(26, 37, 38, 0.95);
+    --bg-secondary: rgba(15, 20, 25, 0.9);
+    --bg-tertiary: rgba(10, 15, 20, 0.95);
+    --bg-quaternary: rgba(5, 10, 15, 1);
+    
+    /* Override text colors */
+    --text-primary: var(--kotor-text);
+    --text-secondary: var(--kotor-text-secondary);
+    --text-tertiary: rgba(255, 255, 255, 0.5);
+    
+    /* Override border colors */
+    --border-color: var(--kotor-border);
+    --border-hover: rgba(0, 191, 255, 0.7);
+}
+
+/* KOTOR-specific styles */
+.kotor-theme .neural-grid {
+    background-image: 
+        linear-gradient(to right, rgba(0, 191, 255, 0.07) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 191, 255, 0.07) 1px, transparent 1px);
+    background-size: 50px 50px;
+    opacity: 0.5;
+}
+
+.kotor-theme .neural-node {
+    background-color: rgba(0, 191, 255, 0.5);
+    box-shadow: 0 0 8px rgba(0, 191, 255, 0.5);
+}
+
+.kotor-theme .neural-connection {
+    background-color: rgba(0, 191, 255, 0.3);
+}
+
+.kotor-theme .wave {
+    background: rgba(0, 191, 255, 0.05);
+}
+
+.kotor-theme .message.assistant .message-content {
+    border-left: 2px solid var(--kotor-accent);
+}
+
+.kotor-theme .ai-avatar {
+    background-color: rgba(0, 191, 255, 0.1);
+    border: 1px solid var(--kotor-accent);
+}
+
+.kotor-theme .send-button {
+    background-color: var(--kotor-accent);
+}
+
+.kotor-theme .send-button:hover {
+    background-color: rgba(0, 191, 255, 0.8);
+}
+
+.kotor-theme .chat-input:focus {
+    border-color: var(--kotor-accent);
+    box-shadow: 0 0 0 2px rgba(0, 191, 255, 0.2);
+}
+
+.kotor-theme .message-text pre {
+    border-left: 3px solid var(--kotor-accent);
+}
+
+.kotor-theme .typing-indicator span {
+    background-color: var(--kotor-accent);
+}
+
+.kotor-theme .token-bar-fill {
+    background-color: var(--kotor-accent);
+}
+
+.kotor-theme .rule-option.selected {
+    background-color: rgba(0, 191, 255, 0.15);
+    border-color: var(--kotor-accent);
+    color: var(--kotor-accent);
+}
+
+.kotor-theme .creativity-slider::-webkit-slider-thumb {
+    background-color: var(--kotor-accent);
+}
+
+.kotor-theme .creativity-slider::-moz-range-thumb {
+    background-color: var(--kotor-accent);
+}
+
+.kotor-theme .apply-button {
+    background-color: var(--kotor-accent);
+}
+
+.kotor-theme .apply-button:hover {
+    background-color: rgba(0, 191, 255, 0.8);
+}
+
+/* Scrollbar customization */
+.kotor-theme ::-webkit-scrollbar-thumb {
+    background: rgba(0, 191, 255, 0.5);
+}
+
+.kotor-theme ::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 191, 255, 0.7);
+}
+
+/* KOTOR-specific persona card styling */
+.kotor-theme .persona-card.dragging {
+    box-shadow: 0 0 10px rgba(var(--kotor-accent-rgb), 0.5);
+}
+
+.kotor-theme .persona-avatar {
+    background-color: rgba(var(--kotor-accent-rgb), 0.3);
+    border-color: var(--kotor-accent);
+}
+
+.kotor-theme .add-persona-button {
+    background-color: rgba(var(--kotor-accent-rgb), 0.2);
+}
+
+.kotor-theme .add-persona-button:hover {
+    background-color: rgba(var(--kotor-accent-rgb), 0.4);
+}
+
+/* KOTOR-specific chat rules styling */
+.kotor-theme .rule-option.selected {
+    background-color: rgba(var(--kotor-accent-rgb), 0.2);
+    border-color: var(--kotor-accent);
+}
+
+.kotor-theme .creativity-slider::-webkit-slider-thumb {
+    background-color: var(--kotor-accent);
+}
+
+.kotor-theme .apply-button {
+    background-color: var(--kotor-accent);
+}
+
+.kotor-theme .apply-button:hover {
+    background-color: rgba(var(--kotor-accent-rgb), 0.8);
+}
+
+/* KOTOR-specific XP display styling */
+.kotor-theme .xp-bar-fill {
+    background-color: var(--kotor-accent);
+}
+
+/* KOTOR-specific typing indicator */
+.kotor-theme .typing-indicator span {
+    background-color: var(--kotor-accent);
+}
+
+/* KOTOR-specific drop zone styling */
+.kotor-theme .persona-drop-zone.drop-active {
+    border-color: var(--kotor-accent);
+    background-color: rgba(var(--kotor-accent-rgb), 0.1);
+}
+
+/* KOTOR-specific participant chip styling */
+.kotor-theme .participant-chip {
+    background-color: rgba(var(--kotor-accent-rgb), 0.1);
+    border-color: rgba(var(--kotor-accent-rgb), 0.3);
+}
+
+/* KOTOR-specific scrollbar */
+.kotor-theme .messages-container::-webkit-scrollbar-thumb {
+    background-color: rgba(var(--kotor-accent-rgb), 0.3);
+}
+
+/* KOTOR-specific theme option highlight */
+.kotor-theme .theme-option[data-theme="kotor"] {
+    background-color: rgba(var(--kotor-accent-rgb), 0.2);
+}
+
+/* KOTOR-specific typing indicator */
+.kotor-theme .typing-dots span {
+    background-color: var(--kotor-accent);
+}
+
+/* KOTOR-specific button states */
+.kotor-theme .action-button.copied {
+    background-color: rgba(var(--kotor-accent-rgb), 0.3);
+}
+
+/* KOTOR-specific form elements */
+.kotor-theme .chat-input-wrapper:focus-within {
+    border-color: var(--kotor-accent);
+    box-shadow: 0 0 5px rgba(var(--kotor-accent-rgb), 0.3);
+} 

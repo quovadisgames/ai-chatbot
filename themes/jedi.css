@@ -1,0 +1,139 @@
+/* ===== JEDI Theme Styles ===== */
+/* This file contains styles specific to the Jedi: Survivor theme */
+
+body.jedi-theme {
+    --current-bg: var(--jedi-bg);
+    --current-dark: var(--jedi-dark);
+    --current-accent: var(--jedi-accent);
+    --current-accent-rgb: var(--jedi-accent-rgb);
+    --current-text: var(--jedi-text);
+    --current-text-secondary: var(--jedi-text-secondary);
+    --current-border: var(--jedi-border);
+    --current-glow: var(--jedi-glow);
+    --current-font: var(--jedi-font);
+}
+
+/* Jedi-specific UI adjustments */
+.jedi-theme .neural-grid {
+    background-size: 40px 40px;
+    opacity: 0.4;
+}
+
+.jedi-theme .neural-node {
+    box-shadow: 0 0 8px rgba(var(--jedi-accent-rgb), 0.5);
+}
+
+.jedi-theme .wave {
+    background: rgba(var(--jedi-accent-rgb), 0.08);
+}
+
+/* Jedi-specific message styling */
+.jedi-theme .message.assistant .message-content {
+    border-left-color: var(--jedi-accent);
+}
+
+.jedi-theme .ai-avatar {
+    background-color: rgba(var(--jedi-accent-rgb), 0.3);
+    border-color: var(--jedi-accent);
+}
+
+.jedi-theme .message-text pre {
+    border-left-color: var(--jedi-accent);
+}
+
+/* Jedi-specific button styling */
+.jedi-theme .send-button {
+    background-color: var(--jedi-accent);
+}
+
+.jedi-theme .send-button:hover:not(:disabled) {
+    background-color: rgba(var(--jedi-accent-rgb), 0.8);
+}
+
+/* Jedi-specific persona card styling */
+.jedi-theme .persona-card.dragging {
+    box-shadow: 0 0 10px rgba(var(--jedi-accent-rgb), 0.5);
+}
+
+.jedi-theme .persona-avatar {
+    background-color: rgba(var(--jedi-accent-rgb), 0.3);
+    border-color: var(--jedi-accent);
+}
+
+.jedi-theme .add-persona-button {
+    background-color: rgba(var(--jedi-accent-rgb), 0.2);
+}
+
+.jedi-theme .add-persona-button:hover {
+    background-color: rgba(var(--jedi-accent-rgb), 0.4);
+}
+
+/* Jedi-specific chat rules styling */
+.jedi-theme .rule-option.selected {
+    background-color: rgba(var(--jedi-accent-rgb), 0.2);
+    border-color: var(--jedi-accent);
+}
+
+.jedi-theme .creativity-slider::-webkit-slider-thumb {
+    background-color: var(--jedi-accent);
+}
+
+.jedi-theme .apply-button {
+    background-color: var(--jedi-accent);
+}
+
+.jedi-theme .apply-button:hover {
+    background-color: rgba(var(--jedi-accent-rgb), 0.8);
+}
+
+/* Jedi-specific XP display styling */
+.jedi-theme .xp-bar-fill {
+    background-color: var(--jedi-accent);
+}
+
+/* Jedi-specific typing indicator */
+.jedi-theme .typing-indicator span {
+    background-color: var(--jedi-accent);
+}
+
+/* Jedi-specific drop zone styling */
+.jedi-theme .persona-drop-zone.drop-active {
+    border-color: var(--jedi-accent);
+    background-color: rgba(var(--jedi-accent-rgb), 0.1);
+}
+
+/* Jedi-specific participant chip styling */
+.jedi-theme .participant-chip {
+    background-color: rgba(var(--jedi-accent-rgb), 0.1);
+    border-color: rgba(var(--jedi-accent-rgb), 0.3);
+}
+
+/* Jedi-specific scrollbar */
+.jedi-theme .messages-container::-webkit-scrollbar-thumb {
+    background-color: rgba(var(--jedi-accent-rgb), 0.3);
+}
+
+/* Jedi-specific theme option highlight */
+.jedi-theme .theme-option[data-theme="jedi"] {
+    background-color: rgba(var(--jedi-accent-rgb), 0.2);
+}
+
+/* Jedi-specific button states */
+.jedi-theme .action-button.copied {
+    background-color: rgba(var(--jedi-accent-rgb), 0.3);
+}
+
+/* Jedi-specific form elements */
+.jedi-theme .chat-input:focus {
+    border-color: var(--jedi-accent);
+}
+
+.jedi-theme .chat-input-wrapper:focus-within {
+    border-color: var(--jedi-accent);
+    box-shadow: 0 0 5px rgba(var(--jedi-accent-rgb), 0.3);
+}
+
+/* Jedi-specific accent elements */
+.jedi-theme .chat-main {
+    border-left: 2px solid var(--jedi-accent2);
+} 

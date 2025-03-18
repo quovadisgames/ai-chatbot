@@ -93,33 +93,45 @@ After deploying, check for the following in Vercel build logs:
 2. The `page_client-reference-manifest.js` file for the (chat) route group
 3. No more ENOENT errors for client reference manifests 
 
-### UTF-8 Encoding Fix - March 2024
+### UTF-8 Encoding Fix - March 2024 (Updated)
 To fix the "Failed to read source code from /vercel/path0/app/(chat)/chat/page.tsx due to invalid UTF-8 encoding" error:
 
-1. **Simplified the page.tsx file**
-   - Replaced the client component with a simple server component
-   - Removed all imports and client-side logic that could potentially cause encoding issues
-   - Created a minimal valid React component:
-     ```tsx
-     export default function ChatPage() {
-       return <div>Chat Page</div>;
+1. **Aggressive file replacement**
+   - Completely deleted the problematic file
+   - Created a brand new file with minimal content
+   - Applied explicit UTF-8 encoding via the Node.js fs API
+   - Added a CommonJS script that rewrites the file with proper encoding
+
+2. **Modified Vercel build process**
+   - Updated `vercel.json` to include a custom build command that runs our encoding fix script:
+     ```json
+     {
+       "env": {
+         "VERCEL_FORCE_NO_BUILD_CACHE": "1"
+       },
+       "installCommand": "pnpm install --no-frozen-lockfile",
+       "buildCommand": "node scripts/fix-encoding.cjs && pnpm run build"
      }
      ```
 
-2. **Created backup files**
-   - Saved backup versions of the original file
-   - Created a script to ensure proper UTF-8 encoding
+3. **Added GitHub workflow for automatic encoding fixes**
+   - Created a workflow that automatically fixes the encoding on push
+   - Uses a simple echo command to write the file with guaranteed UTF-8 encoding
+   - Commits and pushes the fixed file back to the repository
 
-3. **Verified encoding**
-   - Ensured all files are saved with UTF-8 encoding
-   - Removed any potential special characters or BOM markers
-
-4. **Next Steps After Deployment**
-   - Once the build succeeds, we can gradually reintroduce the client-side logic
-   - The client-side version with redirection is saved in `client-page.tsx` for reference
+4. **Backup files and documentation**
+   - Retained all the backup files and documentation from previous attempts
+   - Created multiple backup versions with different naming conventions
+   - Added extensive documentation of the issue and resolution steps
 
 ### How to Verify Fix
 After deploying, check for the following in Vercel build logs:
-1. No more "Failed to read source code" or encoding-related errors
-2. Successful build of the app/(chat) route group
-3. The page is accessible in the deployed application 
+1. Successful execution of the encoding fix script
+2. No more "Failed to read source code" or encoding-related errors
+3. Successful build of the app/(chat) route group
+
+### Next Steps After Successful Deployment
+Once the build succeeds and the encoding issue is resolved:
+1. Gradually reintroduce the client-side functionality using the backed-up code
+2. Ensure any future modifications to this file maintain proper UTF-8 encoding
+3. Consider adding a pre-commit hook that verifies encoding of critical files 

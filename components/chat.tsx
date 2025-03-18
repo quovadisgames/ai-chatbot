@@ -12,7 +12,6 @@ import { create } from 'zustand';
 import { usePersona } from '@/hooks/use-persona';
 import { fetcher, generateUUID } from '@/lib/utils';
 import type { Vote } from '@/lib/db/schema';
-import { useTheme, Theme } from '@/hooks/use-theme';
 
 // Import components
 import { SimpleTokenDisplay } from './simple-token-display';
@@ -95,52 +94,6 @@ interface Participant {
   role: string;
   avatarUrl?: string;
 }
-
-// Theme-specific chat backgrounds
-const THEME_BACKGROUNDS: Record<Theme, {
-  pattern: string;
-  overlay: string;
-  accent: string;
-}> = {
-  kotor: {
-    pattern: 'neural-grid',
-    overlay: 'rgba(26, 37, 38, 0.95)',
-    accent: 'rgba(0, 191, 255, 0.1)'
-  },
-  swjs: {
-    pattern: 'hex-grid',
-    overlay: 'rgba(20, 22, 25, 0.95)',
-    accent: 'rgba(255, 136, 0, 0.1)'
-  },
-  professional: {
-    pattern: 'dots',
-    overlay: 'rgba(255, 255, 255, 0.98)',
-    accent: 'rgba(59, 130, 246, 0.1)'
-  }
-};
-
-// Theme-specific animations
-const THEME_ANIMATIONS: Record<Theme, {
-  messageIn: string;
-  transition: string;
-  loading: string;
-}> = {
-  kotor: {
-    messageIn: 'slide-in-bottom',
-    transition: 'glow-pulse',
-    loading: 'scan-line'
-  },
-  swjs: {
-    messageIn: 'fade-in-right',
-    transition: 'saber-flash',
-    loading: 'lightsaber-pulse'
-  },
-  professional: {
-    messageIn: 'fade-in',
-    transition: 'smooth-fade',
-    loading: 'bounce'
-  }
-};
 
 export function Chat({
   chatId,
@@ -464,242 +417,425 @@ export function Chat({
   // Calculate XP progress percentage
   const xpProgressPercentage = (xpLevel.progress / xpLevel.max) * 100;
 
-  const { currentTheme } = useTheme();
-  
-  // Get theme-specific styles
-  const themeBackground = THEME_BACKGROUNDS[currentTheme];
-  const themeAnimations = THEME_ANIMATIONS[currentTheme];
-
   return (
-    <div className="flex h-[100vh] overflow-hidden">
-      {/* Sidebar */}
-      <div 
-        className={`
-          relative
-          ${sidebarCollapsed ? 'w-0' : 'w-64'}
-          transition-all duration-300
-          border-r border-border
-          ${currentTheme}-theme
-        `}
-      >
-        {/* Sidebar content */}
-        <div className="h-full p-4 space-y-4">
-          {/* Chat history */}
-          <div className={`space-y-2 ${historyCollapsed ? 'hidden' : ''}`}>
-            <h2 className="text-lg font-semibold">Mission Log</h2>
-            {filteredHistory.map(chat => (
-              <Link 
-                key={chat.id}
-                href={`/chat/${chat.id}`}
-                className={`
-                  block p-2 rounded-lg
-                  hover:bg-accent/10
-                  transition-colors
-                  ${chat.id === chatId ? 'bg-accent/20' : ''}
-                `}
-              >
-                <div className="font-medium">{chat.title}</div>
-                <div className="text-sm text-muted-foreground">{chat.preview}</div>
-              </Link>
-            ))}
+    <div className="chat-layout">
+      {/* Left Sidebar - Chat History */}
+      <div className={`sidebar history-sidebar ${historyCollapsed ? 'collapsed' : ''}`}>
+        <div className="sidebar-header">
+          <h2 className="sidebar-title">Chat History</h2>
+          <button 
+            className="sidebar-toggle" 
+            onClick={() => setHistoryCollapsed(!historyCollapsed)}
+            aria-label={historyCollapsed ? "Expand history" : "Collapse history"}
+          >
+            {historyCollapsed ? '→' : '←'}
+          </button>
+        </div>
+        
+        <div className="sidebar-search">
+          <input
+            type="text"
+            placeholder="Search chats..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="search-input"
+        />
+      </div>
+        
+        <div className="chat-history-list">
+          {filteredHistory.map(chat => (
+            <div key={chat.id} className="chat-history-item">
+              <div className="chat-history-title">{chat.title}</div>
+              <div className="chat-history-date">{chat.date}</div>
+              <div className="chat-history-preview">{chat.preview}</div>
+            </div>
+          ))}
+        </div>
+        
+        <div className="sidebar-footer">
+          <button className="new-chat-button">
+            <span className="icon">+</span> New Chat
+          </button>
+        </div>
+      </div>
+      
+      {/* Main Chat Area */}
+      <div className="chat-container">
+        {/* Chat Header */}
+        <div className="chat-header">
+          <div className="chat-info">
+            <h1 className="chat-title">
+              {participants[0]?.name || 'AI Assistant'}
+            </h1>
+            <div className="chat-subtitle">
+              {participants.length > 1 
+                ? `${participants.length} participants in this chat` 
+                : 'Private conversation'}
+            </div>
           </div>
-
-          {/* Personas */}
-          <div className="space-y-2">
-            <h2 className="text-lg font-semibold">Squad Members</h2>
+          
+          <div className="chat-actions">
+            <button 
+              className="chat-action-button rules-button"
+              onClick={toggleChatRules}
+              aria-label="Chat Rules"
+            >
+              <span className="icon">⚙️</span>
+              <span className="label">Rules</span>
+            </button>
+            
+            <SimpleTokenDisplay 
+              current={tokenUsage.current} 
+              limit={tokenUsage.limit} 
+              label="Tokens"
+            />
+            
+            <div className="xp-display">
+              <div className="xp-rank">{xpLevel.rank}</div>
+              <div className="xp-bar-container">
+                <div 
+                  className="xp-bar-fill" 
+                  style={{ width: `${xpProgressPercentage}%` }}
+                ></div>
+              </div>
+              <div className="xp-points">{xpPoints} XP</div>
+            </div>
+          </div>
+        </div>
+        
+        {/* Chat Rules Modal */}
+        {chatRules.isOpen && (
+          <div className="chat-rules-modal">
+            <div className="chat-rules-header">
+              <h3>Chat Rules</h3>
+              <button 
+                className="close-button"
+                onClick={toggleChatRules}
+                aria-label="Close rules"
+              >
+                ×
+              </button>
+            </div>
+            
+            <div className="chat-rules-content">
+              <div className="rule-group">
+                <label>Response Length:</label>
+                <div className="rule-options">
+                  {['Short', 'Medium', 'Long'].map(option => (
+                    <button 
+                      key={option}
+                      className={`rule-option ${chatRules.responseLength === option ? 'selected' : ''}`}
+                      onClick={() => useChatRules.setState({ responseLength: option as any })}
+                    >
+                      {option}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              
+              <div className="rule-group">
+                <label>Tone:</label>
+                <div className="rule-options">
+                  {['Casual', 'Formal', 'Technical'].map(option => (
+                    <button 
+                      key={option}
+                      className={`rule-option ${chatRules.tone === option ? 'selected' : ''}`}
+                      onClick={() => useChatRules.setState({ tone: option as any })}
+                    >
+                      {option}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              
+              <div className="rule-group">
+                <label>Creativity: {chatRules.creativity}%</label>
+                <input 
+                  type="range" 
+                  min="0" 
+                  max="100" 
+                  value={chatRules.creativity}
+                  onChange={(e) => useChatRules.setState({ creativity: parseInt(e.target.value) })}
+                  className="creativity-slider"
+                />
+              </div>
+            </div>
+            
+            <div className="chat-rules-footer">
+              <button 
+                className="apply-button"
+                onClick={toggleChatRules}
+              >
+                Apply Rules
+              </button>
+            </div>
+          </div>
+        )}
+        
+        {/* Chat Messages */}
+        <div className="messages-container">
+          <div className="messages-scroll-area">
+            {messages.map((message) => (
+              <div 
+                key={message.id} 
+                className={`message ${message.role}`}
+              >
+                {message.role === 'system' ? (
+                  <div className="system-message">
+                    {message.content}
+                  </div>
+                ) : (
+                  <>
+                    <div className="message-avatar">
+                      {message.role === 'user' ? (
+                        <div className="user-avatar">U</div>
+                      ) : (
+                        <div className="ai-avatar">
+                          {participants[0]?.avatarUrl ? (
+                            <img 
+                              src={participants[0].avatarUrl} 
+                              alt={participants[0].name} 
+                              className="avatar-image"
+                            />
+                          ) : (
+                            participants[0]?.name?.charAt(0) || 'A'
+                          )}
+                        </div>
+                      )}
+                    </div>
+                    <div className="message-content">
+                      <div className="message-header">
+                        <span className="message-sender">
+                          {message.role === 'user' ? 'You' : participants[0]?.name || 'AI Assistant'}
+                        </span>
+                        <span className="message-time">
+                          {message.createdAt ? message.createdAt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ''}
+                        </span>
+                      </div>
+                      <div className="message-text">{message.content}</div>
+                    </div>
+                  </>
+                )}
+              </div>
+            ))}
+            
+            {isLoading && (
+              <div className="message assistant loading">
+                <div className="message-avatar">
+                  <div className="ai-avatar">
+                    {participants[0]?.avatarUrl ? (
+                      <img 
+                        src={participants[0].avatarUrl} 
+                        alt={participants[0].name} 
+                        className="avatar-image"
+                      />
+                    ) : (
+                      participants[0]?.name?.charAt(0) || 'A'
+                    )}
+                  </div>
+                </div>
+                <div className="message-content">
+                  <div className="message-header">
+                    <span className="message-sender">
+                      {participants[0]?.name || 'AI Assistant'}
+                    </span>
+                    <span className="message-time">
+                      {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    </span>
+                  </div>
+                  <div className="typing-indicator">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </div>
+                </div>
+              </div>
+            )}
+            
+            {/* Drop zone for personas */}
             <div 
               ref={dropTargetRef}
+              className="persona-drop-zone"
               onDragOver={handleDragOver}
               onDragLeave={handleDragLeave}
               onDrop={handleDrop}
-              className={`
-                min-h-[100px]
-                rounded-lg
-                border-2 border-dashed
-                border-accent/30
-                p-2
-                transition-colors
-                ${currentTheme}-theme
-              `}
             >
+              <div className="drop-zone-content">
+                <span className="drop-icon">⤓</span>
+                <span className="drop-text">Drop persona here to add to chat</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        {/* Chat Input */}
+        <div className="chat-input-container">
+          <form onSubmit={handleSubmit} className="chat-form">
+            <div className="participants-chips">
               {participants.map(participant => (
-                <div
-                  key={participant.id}
-                  className={`
-                    flex items-center space-x-2 p-2
-                    rounded-lg
-                    ${currentTheme === 'kotor' ? 'bg-[rgba(0,191,255,0.1)]' :
-                      currentTheme === 'swjs' ? 'bg-[rgba(255,136,0,0.1)]' :
-                      'bg-accent/10'}
-                  `}
-                >
-                  {participant.avatarUrl && (
-                    <img
-                      src={participant.avatarUrl}
-                      alt={participant.name}
-                      className="w-8 h-8 rounded-full"
+                <div key={participant.id} className="participant-chip">
+                  {participant.avatarUrl ? (
+                    <img 
+                      src={participant.avatarUrl} 
+                      alt={participant.name} 
+                      className="chip-avatar"
                     />
+                  ) : (
+                    <span className="chip-avatar-text">
+                      {participant.name.charAt(0)}
+                    </span>
                   )}
-                  <div>
-                    <div className="font-medium">{participant.name}</div>
-                    <div className="text-sm text-muted-foreground">{participant.role}</div>
-                  </div>
+                  <span className="chip-name">{participant.name}</span>
+                  {participant.id !== 'ai-assistant' && (
+                    <button 
+                      type="button"
+                      className="chip-remove"
+                      onClick={() => removeParticipant(participant.id)}
+                      aria-label={`Remove ${participant.name}`}
+                    >
+                      ×
+                    </button>
+                  )}
                 </div>
               ))}
             </div>
-          </div>
-
-          {/* Available personas */}
-          <div className="space-y-2">
-            <h2 className="text-lg font-semibold">Available Allies</h2>
-            <div className="space-y-2">
-              {filteredPersonas.map(persona => (
-                <div
-                  key={persona.id}
-                  draggable
-                  onDragStart={(e) => handleDragStart(e, persona)}
-                  onDragEnd={handleDragEnd}
-                  className={`
-                    flex items-center space-x-2 p-2
-                    rounded-lg cursor-move
-                    hover:bg-accent/20
-                    transition-colors
-                    ${currentTheme}-theme
-                  `}
-                >
-                  {persona.avatarUrl && (
-                    <img
-                      src={persona.avatarUrl}
-                      alt={persona.character}
-                      className="w-8 h-8 rounded-full"
-                    />
-                  )}
-                  <div>
-                    <div className="font-medium">{persona.character}</div>
-                    <div className="text-sm text-muted-foreground">{persona.role}</div>
-                  </div>
-                </div>
-              ))}
+            
+            <div className="input-row">
+              <textarea
+                className="chat-input"
+                placeholder={`Message ${participants[0]?.name || 'AI Assistant'}...`}
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    handleSubmit();
+                  }
+                }}
+                disabled={isLoading || isReadonly}
+                rows={1}
+                autoFocus
+              />
+              
+              <div className="input-actions">
+                {isLoading ? (
+                  <button 
+                    type="button" 
+                    className="stop-button"
+                    onClick={stop}
+                  >
+                    Stop
+                  </button>
+                ) : (
+                  <button 
+                    type="submit" 
+                    className="send-button"
+                    disabled={!input.trim() || isReadonly}
+                  >
+                    Send
+                  </button>
+                )}
+              </div>
             </div>
-          </div>
+          </form>
         </div>
       </div>
-
-      {/* Main chat area */}
-      <div className="flex-1 flex flex-col">
-        {/* Chat header */}
-        <div className={`
-          p-4 border-b border-border
-          ${currentTheme}-theme
-        `}>
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <button
-                onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-                className="p-2 rounded-lg hover:bg-accent/10"
-              >
-                {sidebarCollapsed ? '→' : '←'}
-              </button>
-              <h1 className="text-xl font-semibold">
-                Chat with {participants[0]?.name}
-              </h1>
-            </div>
-            <SimpleTokenDisplay
-              current={tokenUsage.current}
-              limit={tokenUsage.limit}
-              savings={tokenSavings}
-            />
-          </div>
+      
+      {/* Right Sidebar - Personas */}
+      <div className={`sidebar personas-sidebar ${sidebarCollapsed ? 'collapsed' : ''}`}>
+        <div className="sidebar-header">
+          <h2 className="sidebar-title">Personas</h2>
+          <button 
+            className="sidebar-toggle" 
+            onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+            aria-label={sidebarCollapsed ? "Expand personas" : "Collapse personas"}
+          >
+            {sidebarCollapsed ? '←' : '→'}
+          </button>
         </div>
-
-        {/* Messages */}
-        <div 
-          className={`
-            flex-1 overflow-y-auto p-4 space-y-4
-            ${themeBackground.pattern}
-            bg-${currentTheme}-theme
-          `}
-        >
-          {messages.map((message) => (
-            <div
-              key={message.id}
-              className={`
-                flex items-start space-x-4
-                ${message.role === 'assistant' ? 'justify-start' : 'justify-end'}
-                animate-${themeAnimations.messageIn}
-              `}
+        
+        <div className="sidebar-search">
+          <input
+            type="text"
+            placeholder="Search personas..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="search-input"
+          />
+        </div>
+        
+        <div className="personas-list">
+          {filteredPersonas.map(persona => (
+            <div 
+              key={persona.id}
+              className="persona-card"
+              draggable
+              onDragStart={(e) => handleDragStart(e, persona)}
+              onDragEnd={handleDragEnd}
             >
-              {message.role === 'assistant' && (
-                <img
-                  src={participants[0]?.avatarUrl}
-                  alt={participants[0]?.name}
-                  className="w-8 h-8 rounded-full"
-                />
-              )}
-              <div
-                className={`
-                  max-w-[70%] p-4 rounded-lg
-                  ${message.role === 'assistant' 
-                    ? 'bg-accent/10 text-foreground' 
-                    : 'bg-primary text-primary-foreground'}
-                  ${themeAnimations.transition}
-                `}
-              >
-                {message.content}
+              <div className="persona-avatar">
+                {persona.avatarUrl ? (
+                  <img 
+                    src={persona.avatarUrl} 
+                    alt={persona.character} 
+                    className="avatar-image"
+                  />
+                ) : (
+                  <div className="avatar-placeholder">
+                    {persona.character.charAt(0)}
+                  </div>
+                )}
               </div>
-              {message.role === 'user' && (
-                <img
-                  src="/avatars/user.png"
-                  alt="You"
-                  className="w-8 h-8 rounded-full"
-                />
-              )}
+              
+              <div className="persona-info">
+                <div className="persona-name">{persona.character}</div>
+                <div className="persona-role">{persona.role}</div>
+                <div className="persona-response-time">
+                  <span className="response-label">Response:</span>
+                  <span className={`response-value ${persona.responseTime.toLowerCase()}`}>
+                    {persona.responseTime}
+                  </span>
+                </div>
+              </div>
+              
+              <div className="persona-actions">
+                <button 
+                  className="add-persona-button"
+                  onClick={() => {
+                    // Simulate drop event
+                    if (!participants.some(p => p.id === persona.id)) {
+                      setParticipants(prev => [...prev, {
+                        id: persona.id,
+                        name: persona.character,
+                        role: persona.role,
+                        avatarUrl: persona.avatarUrl
+                      }]);
+                      
+                      toast.success(`Added ${persona.character} to the chat`);
+                      
+                      const systemMessage: Message = {
+                        id: generateUUID(),
+                        content: `${persona.character} has joined the chat.`,
+                        role: 'system',
+                        createdAt: new Date()
+                      };
+                      setMessages(prev => [...prev, systemMessage]);
+                    } else {
+                      toast.info(`${persona.character} is already in the chat`);
+                    }
+                  }}
+                >
+                  Add
+                </button>
+              </div>
             </div>
           ))}
-          {isLoading && (
-            <div className={`
-              flex items-center justify-center
-              animate-${themeAnimations.loading}
-            `}>
-              <div className="w-8 h-8 rounded-full bg-accent/20" />
-            </div>
-          )}
         </div>
-
-        {/* Input area */}
-        <div className={`
-          p-4 border-t border-border
-          ${currentTheme}-theme
-        `}>
-          <div className="flex items-center space-x-4">
-            <input
-              type="text"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' && !e.shiftKey) {
-                  e.preventDefault();
-                  sendMessage(input);
-                }
-              }}
-              placeholder="Type your message..."
-              className="flex-1 p-2 rounded-lg bg-background border border-border"
-              disabled={isLoading || isReadonly}
-            />
-            <button
-              onClick={() => sendMessage(input)}
-              disabled={isLoading || isReadonly || !input.trim()}
-              className={`
-                px-4 py-2 rounded-lg
-                bg-primary text-primary-foreground
-                hover:bg-primary/90
-                disabled:opacity-50
-                transition-colors
-              `}
-            >
-              Send
-            </button>
-          </div>
+        
+        <div className="sidebar-footer">
+          <button className="create-persona-button">
+            <span className="icon">+</span> Create Persona
+          </button>
         </div>
       </div>
     </div>

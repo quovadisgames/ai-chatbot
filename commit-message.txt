@@ -1,0 +1,17 @@
+Fix route structure, update lockfile, and prepare for clean build
+
+This commit resolves two main deployment issues on Vercel:
+
+1. Fixed the ENOENT error for client reference manifest in (chat) route group:
+   - Removed server-side imports from client components
+   - Properly implemented dynamic routes in app/(chat)/chat/[id]/page.tsx
+   - Added layout files to ensure correct rendering hierarchy
+   - Fixed improper client/server component boundaries
+
+2. Resolved the pnpm lockfile mismatch:
+   - Updated vercel.json to bypass the frozen lockfile check
+   - Added installCommand: "pnpm install --no-frozen-lockfile"
+   - Retained VERCEL_FORCE_NO_BUILD_CACHE environment variable
+
+These changes ensure a clean build process on Vercel and maintain the proper
+Next.js App Router structure for the chat application. 

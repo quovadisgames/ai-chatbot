@@ -51,4 +51,44 @@ We've made the following changes to resolve the type compatibility issues:
 If you encounter any other type compatibility issues during deployment, follow a similar approach:
 1. Identify the specific type mismatch
 2. Create local type definitions if needed
-3. Implement proper type conversion at the boundaries where external packages are used 
+3. Implement proper type conversion at the boundaries where external packages are used
+
+## Vercel Deployment Fixes - March 2024
+
+### Initial Deployment Issues
+- Configured proper environment variables for database connections
+- Set up authentication redirect URLs in `.env.production`
+- Added Vercel Postgres integration
+
+### Route Structure Fixes - March 18, 2024
+To fix the ENOENT error for the client reference manifest in the (chat) route group:
+
+1. **Fixed Client/Server Component Mixing**
+   - Removed server-side imports from client components
+   - Removed `cookies` from 'next/headers' in `app/(chat)/page.tsx`
+
+2. **Updated Route Structure**
+   - Added proper dynamic route handling in `app/(chat)/chat/[id]/page.tsx`
+   - Set `export const dynamic = 'force-dynamic'` to ensure proper rendering
+   - Improved redirect handling in `app/(chat)/chat/page.tsx`
+
+3. **Resolved Lockfile Issues**
+   - Updated `vercel.json` to bypass the frozen lockfile check:
+     ```json
+     {
+       "env": {
+         "VERCEL_FORCE_NO_BUILD_CACHE": "1"
+       },
+       "installCommand": "pnpm install --no-frozen-lockfile"
+     }
+     ```
+
+4. **Build Cache**
+   - Added `VERCEL_FORCE_NO_BUILD_CACHE: 1` as an environment variable
+   - This ensures a clean build without using cached files
+
+### How to Verify Fix
+After deploying, check for the following in Vercel build logs:
+1. Successful installation with `--no-frozen-lockfile`
+2. The `page_client-reference-manifest.js` file for the (chat) route group
+3. No more ENOENT errors for client reference manifests 

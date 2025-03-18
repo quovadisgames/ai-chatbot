@@ -117,17 +117,6 @@
                                     <option value="custom">Custom Role</option>
                                 </select>
                             </div>
-
-                            <div class="form-group">
-                                <label for="persona-llm">Language Model</label>
-                                <select id="persona-llm">
-                                    <option value="gpt-4" selected>GPT-4 (OpenAI)</option>
-                                    <option value="gpt-3.5-turbo">GPT-3.5 Turbo (OpenAI)</option>
-                                    <option value="claude-2">Claude 2 (Anthropic)</option>
-                                    <option value="claude-instant">Claude Instant (Anthropic)</option>
-                                </select>
-                                <p class="form-description" id="llm-description">Most capable model, best for complex tasks</p>
-                            </div>
                         </div>
                         
                         <div class="form-group">
@@ -254,59 +243,9 @@
     <script src="js/theme-switcher.js"></script>
     <script src="js/background-effects.js"></script>
     <script>
-        const AVAILABLE_LLMS = [
-            {
-                id: 'gpt-4',
-                name: 'GPT-4',
-                provider: 'OpenAI',
-                model: 'gpt-4',
-                description: 'Most capable model, best for complex tasks',
-                maxTokens: 8192,
-                temperature: 0.7
-            },
-            {
-                id: 'gpt-3.5-turbo',
-                name: 'GPT-3.5 Turbo',
-                provider: 'OpenAI',
-                model: 'gpt-3.5-turbo',
-                description: 'Fast and efficient for most tasks',
-                maxTokens: 4096,
-                temperature: 0.7
-            },
-            {
-                id: 'claude-2',
-                name: 'Claude 2',
-                provider: 'Anthropic',
-                model: 'claude-2',
-                description: 'Advanced reasoning and analysis',
-                maxTokens: 100000,
-                temperature: 0.7
-            },
-            {
-                id: 'claude-instant',
-                name: 'Claude Instant',
-                provider: 'Anthropic',
-                model: 'claude-instant',
-                description: 'Fast responses for simple tasks',
-                maxTokens: 100000,
-                temperature: 0.7
-            }
-        ];
-
         document.addEventListener('DOMContentLoaded', function() {
             // Initialize form steps
             initFormSteps();
-            
-            // Initialize LLM selection
-            const llmSelect = document.getElementById('persona-llm');
-            const llmDescription = document.getElementById('llm-description');
-            
-            llmSelect.addEventListener('change', (e) => {
-                const selectedLLM = AVAILABLE_LLMS.find(llm => llm.id === e.target.value);
-                if (selectedLLM) {
-                    llmDescription.textContent = selectedLLM.description;
-                }
-            });
         });
         
         // Form steps functionality

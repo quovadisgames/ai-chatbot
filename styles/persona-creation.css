@@ -353,53 +353,6 @@
     text-shadow: 0 0 10px var(--prof-accent);
 }
 
-/* Theme-specific select styles */
-select {
-    background-color: rgba(0, 0, 0, 0.2);
-    color: var(--current-text);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 0.25rem;
-    padding: 0.5rem;
-    width: 100%;
-    cursor: pointer;
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 0.5rem center;
-    background-size: 1rem;
-    padding-right: 2rem;
-}
-
-select:focus {
-    outline: none;
-    border-color: var(--current-accent);
-    box-shadow: 0 0 0 2px rgba(var(--current-accent-rgb), 0.2);
-}
-
-/* Base option styles */
-select option {
-    background-color: rgba(0, 0, 0, 0.8);
-    color: var(--current-text);
-    padding: 0.75rem;
-    font-size: 1rem;
-}
-
-/* Disabled option styles */
-select option:disabled {
-    color: rgba(255, 255, 255, 0.4);
-    background-color: rgba(0, 0, 0, 0.4);
-    font-style: italic;
-}
-
-/* Hover state for options */
-select option:hover,
-select option:focus {
-    background-color: rgba(var(--current-accent-rgb), 0.2);
-    color: var(--current-text);
-}
-
 /* Responsive Styles */
 @media (max-width: 768px) {
     .persona-container {

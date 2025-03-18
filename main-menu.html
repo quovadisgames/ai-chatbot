@@ -48,6 +48,11 @@
         <div class="particles" id="particles"></div>
         <div class="waves-container" id="waves-container"></div>
         
+        <a href="index.html" class="back-link">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+            Back to Home
+        </a>
+        
         <div class="theme-switcher">
             <button class="theme-switcher-button">
                 <span class="current-theme">Jedi: Survivor</span>
@@ -61,107 +66,553 @@
         </div>
         
         <div class="menu-container">
-            <div class="menu-header">
-                <h1 class="menu-title">PDT AI Assistant</h1>
-                <p class="menu-subtitle">Your intelligent companion for productivity and creativity</p>
+            <h1 class="menu-title">PDT AI Command Center</h1>
+            
+            <div class="menu-buttons">
+                <a href="persona-creation.html" class="menu-button">Create New Persona</a>
+                <button class="menu-button" id="open-chat-btn">Open Chat</button>
             </div>
             
-            <div class="menu-grid">
-                <a href="chat.html" class="menu-item">
-                    <div class="menu-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            <div class="chat-card" id="chat-card">
+                <div class="chat-card-header">
+                    <div class="chat-card-title">Mission: Support Query #1</div>
+                    <div class="chat-card-status">Active</div>
+                </div>
+                <div class="chat-card-content">
+                    <div class="chat-message ai">
+                        Welcome, Commander. I've analyzed your request regarding the optimization of neural network parameters. Based on my calculations, I recommend adjusting the learning rate to 0.001 and implementing batch normalization between layers.
                     </div>
-                    <h3 class="menu-item-title">Chat</h3>
-                    <p class="menu-item-description">Start a conversation with your AI assistant</p>
-                </a>
-                
-                <a href="persona-creation.html" class="menu-item">
-                    <div class="menu-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    <div class="chat-message user">
+                        Thanks for the analysis. Can you explain why batch normalization would help in this specific case?
                     </div>
-                    <h3 class="menu-item-title">Create Persona</h3>
-                    <p class="menu-item-description">Design a custom AI assistant</p>
-                </a>
-                
-                <a href="settings.html" class="menu-item">
-                    <div class="menu-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+                    <div class="chat-message ai">
+                        Certainly. In your architecture, the deep layers are experiencing vanishing gradient issues. Batch normalization will stabilize the distribution of inputs to each layer, allowing for faster training and reducing the internal covariate shift. This is particularly important given the high dimensionality of your input data.
                     </div>
-                    <h3 class="menu-item-title">Settings</h3>
-                    <p class="menu-item-description">Configure your AI assistant</p>
-                </a>
-                
-                <a href="help.html" class="menu-item">
-                    <div class="menu-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-                    </div>
-                    <h3 class="menu-item-title">Help</h3>
-                    <p class="menu-item-description">Get support and documentation</p>
-                </a>
+                </div>
             </div>
         </div>
     </div>
 
+    <!-- JavaScript -->
+    <script src="js/theme-switcher.js"></script>
+    <script src="js/background-effects.js"></script>
     <script>
-        // Theme switching functionality
-        document.querySelectorAll('.theme-option').forEach(option => {
-            option.addEventListener('click', () => {
-                const theme = option.dataset.theme;
-                document.body.className = `${theme}-theme`;
-                localStorage.setItem('theme', theme);
-                document.querySelector('.current-theme').textContent = 
-                    theme === 'kotor' ? 'KOTOR' : 
-                    theme === 'jedi' ? 'Jedi: Survivor' : 
-                    'Professional';
-            });
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize theme switcher
+            initThemeSwitcher();
+            
+            // Create background effects
+            createNeuralNetwork();
+            createParticles();
+            createWaves();
+            
+            // Initialize chat card
+            initChatCard();
         });
-
-        // Load saved theme
-        const savedTheme = localStorage.getItem('theme') || 'jedi';
-        document.body.className = `${savedTheme}-theme`;
-        document.querySelector('.current-theme').textContent = 
-            savedTheme === 'kotor' ? 'KOTOR' : 
-            savedTheme === 'jedi' ? 'Jedi: Survivor' : 
-            'Professional';
-
-        // Neural grid animation
-        const neuralGrid = document.querySelector('.neural-grid');
-        const gridSize = 20;
-        const cellSize = 30;
         
-        for (let i = 0; i < gridSize; i++) {
-            for (let j = 0; j < gridSize; j++) {
-                const cell = document.createElement('div');
-                cell.className = 'grid-cell';
-                cell.style.left = `${i * cellSize}px`;
-                cell.style.top = `${j * cellSize}px`;
-                neuralGrid.appendChild(cell);
+        // Theme switcher functionality
+        function initThemeSwitcher() {
+            const savedTheme = localStorage.getItem('pdtAiTheme') || 'jedi';
+            setTheme(savedTheme);
+            
+            const themeSwitcher = document.querySelector('.theme-switcher');
+            const themeButton = document.querySelector('.theme-switcher-button');
+            const themeOptions = document.querySelectorAll('.theme-option');
+            
+            // Toggle dropdown
+            themeButton.addEventListener('click', function() {
+                themeSwitcher.classList.toggle('active');
+            });
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(event) {
+                if (!themeSwitcher.contains(event.target)) {
+                    themeSwitcher.classList.remove('active');
+                }
+            });
+            
+            // Theme selection
+            themeOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    const theme = this.getAttribute('data-theme');
+                    setTheme(theme);
+                    themeSwitcher.classList.remove('active');
+                });
+            });
+        }
+        
+        function setTheme(theme) {
+            // Create transition overlay
+            const overlay = document.createElement('div');
+            overlay.style.position = 'fixed';
+            overlay.style.top = '0';
+            overlay.style.left = '0';
+            overlay.style.width = '100%';
+            overlay.style.height = '100%';
+            overlay.style.backgroundColor = theme === 'kotor' ? '#00BFFF' : 
+                                           theme === 'jedi' ? '#00D4FF' : '#0078D4';
+            overlay.style.zIndex = '9999';
+            overlay.style.transformOrigin = 'left';
+            overlay.style.transform = 'scaleX(0)';
+            overlay.style.opacity = '0';
+            overlay.style.pointerEvents = 'none';
+            document.body.appendChild(overlay);
+            
+            // Animate the overlay
+            overlay.animate([
+                { transform: 'scaleX(0)', opacity: 0.3 },
+                { transform: 'scaleX(1)', opacity: 0.3 },
+                { transform: 'scaleX(1)', opacity: 0 }
+            ], {
+                duration: 500,
+                easing: 'ease-in-out'
+            }).onfinish = function() {
+                overlay.remove();
+            };
+            
+            // Remove all theme classes
+            document.body.classList.remove('kotor-theme', 'jedi-theme', 'professional-theme');
+            
+            // Add selected theme class
+            document.body.classList.add(`${theme}-theme`);
+            
+            // Update current theme text
+            document.querySelector('.current-theme').textContent = 
+                theme === 'kotor' ? 'KOTOR' : 
+                theme === 'jedi' ? 'Jedi: Survivor' : 
+                'Professional';
+            
+            // Save to localStorage
+            localStorage.setItem('pdtAiTheme', theme);
+            
+            // Update UI elements based on theme
+            updateUIForTheme(theme);
+            
+            // Recreate background effects with theme-specific styling
+            createParticles();
+            updateNeuralNetworkColors(theme);
+            updateWaveColors(theme);
+        }
+        
+        function updateUIForTheme(theme) {
+            // Update menu buttons
+            const menuButtons = document.querySelectorAll('.menu-button');
+            menuButtons.forEach(button => {
+                if (theme === 'kotor') {
+                    button.style.border = '2px solid var(--kotor-accent)';
+                    button.style.fontFamily = 'var(--kotor-font)';
+                } else if (theme === 'jedi') {
+                    button.style.border = '2px solid var(--jedi-accent)';
+                    button.style.fontFamily = 'var(--jedi-font)';
+                } else {
+                    button.style.border = '2px solid var(--prof-accent)';
+                    button.style.fontFamily = 'var(--prof-font)';
+                }
+            });
+            
+            // Update chat card
+            const chatCard = document.querySelector('.chat-card');
+            const chatTitle = document.querySelector('.chat-card-title');
+            const chatMessages = document.querySelectorAll('.chat-message');
+            
+            if (theme === 'kotor') {
+                chatCard.style.border = '2px solid var(--kotor-accent)';
+                chatTitle.style.color = 'var(--kotor-accent)';
+                chatMessages.forEach(msg => {
+                    if (msg.classList.contains('ai')) {
+                        msg.style.borderLeft = '3px solid var(--kotor-accent)';
+                        msg.style.backgroundColor = 'rgba(var(--kotor-accent-rgb), 0.1)';
+                    }
+                });
+            } else if (theme === 'jedi') {
+                chatCard.style.border = '2px solid var(--jedi-accent)';
+                chatTitle.style.color = 'var(--jedi-accent)';
+                chatMessages.forEach(msg => {
+                    if (msg.classList.contains('ai')) {
+                        msg.style.borderLeft = '3px solid var(--jedi-accent)';
+                        msg.style.backgroundColor = 'rgba(var(--jedi-accent-rgb), 0.1)';
+                    }
+                });
+            } else {
+                chatCard.style.border = '2px solid var(--prof-accent)';
+                chatTitle.style.color = 'var(--prof-accent)';
+                chatMessages.forEach(msg => {
+                    if (msg.classList.contains('ai')) {
+                        msg.style.borderLeft = '3px solid var(--prof-accent)';
+                        msg.style.backgroundColor = 'rgba(var(--prof-accent-rgb), 0.1)';
+                    }
+                });
+            }
+            
+            // Update back link and theme switcher button styling
+            const backLink = document.querySelector('.back-link');
+            const themeButton = document.querySelector('.theme-switcher-button');
+            const themeDropdown = document.querySelector('.theme-switcher-dropdown');
+            
+            if (theme === 'kotor') {
+                backLink.style.border = '1px solid var(--kotor-accent)';
+                themeButton.style.border = '1px solid var(--kotor-accent)';
+                themeDropdown.style.border = '1px solid var(--kotor-accent)';
+                document.querySelector('.menu-title').style.textShadow = '0 0 8px var(--kotor-accent)';
+            } else if (theme === 'jedi') {
+                backLink.style.border = '1px solid var(--jedi-accent)';
+                themeButton.style.border = '1px solid var(--jedi-accent)';
+                themeDropdown.style.border = '1px solid var(--jedi-accent)';
+                document.querySelector('.menu-title').style.textShadow = '0 0 8px var(--jedi-accent)';
+            } else {
+                backLink.style.border = '1px solid var(--prof-accent)';
+                themeButton.style.border = '1px solid var(--prof-accent)';
+                themeDropdown.style.border = '1px solid var(--prof-accent)';
+                document.querySelector('.menu-title').style.textShadow = '0 0 8px var(--prof-accent)';
             }
         }
-
-        // Particle animation
-        const particlesContainer = document.getElementById('particles');
-        const particleCount = 50;
         
-        for (let i = 0; i < particleCount; i++) {
-            const particle = document.createElement('div');
-            particle.className = 'particle';
-            particle.style.left = `${Math.random() * 100}%`;
-            particle.style.top = `${Math.random() * 100}%`;
-            particle.style.animationDuration = `${2 + Math.random() * 3}s`;
-            particle.style.animationDelay = `${Math.random() * 2}s`;
-            particlesContainer.appendChild(particle);
+        // Create neural network nodes and connections
+        function createNeuralNetwork() {
+            const nodesContainer = document.getElementById('neural-nodes');
+            nodesContainer.innerHTML = '';
+            const nodeCount = 13; // Reduced count as requested
+            const nodes = [];
+            
+            // Create nodes
+            for (let i = 0; i < nodeCount; i++) {
+                const node = document.createElement('div');
+                node.className = 'neural-node';
+                
+                // Random position
+                const x = Math.random() * 100;
+                const y = Math.random() * 100;
+                node.style.left = `${x}%`;
+                node.style.top = `${y}%`;
+                
+                nodes.push({
+                    element: node,
+                    x: x,
+                    y: y
+                });
+                
+                nodesContainer.appendChild(node);
+            }
+            
+            // Create connections between nodes
+            for (let i = 0; i < nodeCount; i++) {
+                const sourceNode = nodes[i];
+                
+                // Connect to 1-2 other nodes (reduced from 2-4)
+                const connectionCount = Math.floor(Math.random() * 2) + 1;
+                
+                for (let j = 0; j < connectionCount; j++) {
+                    // Select a random target node
+                    const targetIndex = Math.floor(Math.random() * nodeCount);
+                    if (targetIndex !== i) {
+                        const targetNode = nodes[targetIndex];
+                        
+                        const connection = document.createElement('div');
+                        connection.className = 'neural-connection';
+                        
+                        // Position at source node
+                        connection.style.left = `${sourceNode.x}%`;
+                        connection.style.top = `${sourceNode.y}%`;
+                        
+                        // Calculate length and angle
+                        const dx = targetNode.x - sourceNode.x;
+                        const dy = targetNode.y - sourceNode.y;
+                        const length = Math.sqrt(dx * dx + dy * dy);
+                        const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+                        
+                        // Set width (length) and rotation
+                        connection.style.width = `${length}%`;
+                        connection.style.transform = `rotate(${angle}deg)`;
+                        
+                        nodesContainer.appendChild(connection);
+                    }
+                }
+            }
+            
+            // Update colors based on current theme
+            const currentTheme = localStorage.getItem('pdtAiTheme') || 'jedi';
+            updateNeuralNetworkColors(currentTheme);
         }
-
-        // Wave animation
-        const wavesContainer = document.getElementById('waves-container');
-        const waveCount = 3;
         
-        for (let i = 0; i < waveCount; i++) {
-            const wave = document.createElement('div');
-            wave.className = 'wave';
-            wave.style.animationDelay = `${i * 0.5}s`;
-            wavesContainer.appendChild(wave);
+        // Update neural network colors based on theme
+        function updateNeuralNetworkColors(theme) {
+            const nodes = document.querySelectorAll('.neural-node');
+            const connections = document.querySelectorAll('.neural-connection');
+            
+            let nodeColor, connectionColor, nodeShadow;
+            
+            if (theme === 'kotor') {
+                nodeColor = 'rgba(var(--kotor-accent-rgb, 0, 191, 255), 0.5)';
+                connectionColor = 'rgba(var(--kotor-accent-rgb, 0, 191, 255), 0.2)';
+                nodeShadow = '0 0 4px rgba(var(--kotor-accent-rgb, 0, 191, 255), 0.3)';
+            } else if (theme === 'jedi') {
+                nodeColor = 'rgba(var(--jedi-accent-rgb, 0, 212, 255), 0.5)';
+                connectionColor = 'rgba(var(--jedi-accent-rgb, 0, 212, 255), 0.2)';
+                nodeShadow = '0 0 4px rgba(var(--jedi-accent-rgb, 0, 212, 255), 0.3)';
+            } else {
+                nodeColor = 'rgba(var(--prof-accent-rgb, 0, 120, 212), 0.5)';
+                connectionColor = 'rgba(var(--prof-accent-rgb, 0, 120, 212), 0.2)';
+                nodeShadow = '0 0 4px rgba(var(--prof-accent-rgb, 0, 120, 212), 0.3)';
+            }
+            
+            nodes.forEach(node => {
+                node.style.backgroundColor = nodeColor;
+                node.style.boxShadow = nodeShadow;
+            });
+            
+            connections.forEach(connection => {
+                connection.style.backgroundColor = connectionColor;
+            });
+        }
+        
+        // Create particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            particlesContainer.innerHTML = '';
+            
+            // Determine particle count and style based on theme
+            let particleCount, particleColor, particleOpacity, particleSize, particleGlow;
+            
+            // Get current theme
+            const currentTheme = localStorage.getItem('pdtAiTheme') || 'jedi';
+            
+            if (currentTheme === 'kotor') {
+                particleCount = 35;
+                particleColor = '#00BFFF';
+                particleOpacity = 0.45;
+                particleSize = 4;
+                particleGlow = '0 0 8px #00BFFF';
+            } else if (currentTheme === 'jedi') {
+                particleCount = 30;
+                particleColor = '#00D4FF';
+                particleOpacity = 0.35;
+                particleSize = 3.5;
+                particleGlow = '0 0 7px #00D4FF';
+            } else if (currentTheme === 'professional') {
+                particleCount = 25;
+                particleColor = '#0078D4';
+                particleOpacity = 0.28;
+                particleSize = 2.5;
+                particleGlow = '0 0 5px #0078D4';
+            }
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                // Apply theme-specific styling
+                particle.style.backgroundColor = particleColor;
+                particle.style.opacity = particleOpacity;
+                particle.style.width = `${particleSize}px`;
+                particle.style.height = `${particleSize}px`;
+                particle.style.boxShadow = particleGlow;
+                
+                // Random position
+                const x = Math.random() * 100;
+                const y = Math.random() * 100;
+                particle.style.left = `${x}%`;
+                particle.style.top = `${y}%`;
+                
+                // Random drift direction and speed
+                const xDrift = (Math.random() - 0.5) * 400;
+                const yDrift = (Math.random() - 0.5) * 400;
+                particle.style.setProperty('--x-drift', `${xDrift}px`);
+                particle.style.setProperty('--y-drift', `${yDrift}px`);
+                
+                // Random animation duration
+                const duration = 2 + Math.random() * 5;
+                particle.style.setProperty('--drift-duration', `${duration}s`);
+                
+                // Random delay
+                const delay = Math.random() * 5;
+                particle.style.animationDelay = `${delay}s`;
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+        
+        // Create waves
+        function createWaves() {
+            const wavesContainer = document.getElementById('waves-container');
+            wavesContainer.innerHTML = '';
+            
+            // Create 3 wave layers
+            for (let i = 0; i < 3; i++) {
+                const wave = document.createElement('div');
+                wave.className = `wave wave-${i+1}`;
+                wavesContainer.appendChild(wave);
+            }
+            
+            // Update wave colors based on theme
+            const currentTheme = localStorage.getItem('pdtAiTheme') || 'jedi';
+            updateWaveColors(currentTheme);
+        }
+        
+        // Update wave colors based on theme
+        function updateWaveColors(theme) {
+            const waves = document.querySelectorAll('.wave');
+            let waveColor;
+            
+            if (theme === 'kotor') {
+                waveColor = 'rgba(var(--kotor-accent-rgb, 0, 191, 255), ';
+            } else if (theme === 'jedi') {
+                waveColor = 'rgba(var(--jedi-accent-rgb, 0, 212, 255), ';
+            } else {
+                waveColor = 'rgba(var(--prof-accent-rgb, 0, 120, 212), ';
+            }
+            
+            waves.forEach((wave, index) => {
+                const opacity = 0.09 - (index * 0.015);
+                wave.style.background = `${waveColor}${opacity})`;
+            });
+        }
+        
+        // Initialize chat card functionality
+        function initChatCard() {
+            const chatCard = document.getElementById('chat-card');
+            const openChatBtn = document.getElementById('open-chat-btn');
+            
+            // Toggle chat card expansion on click
+            chatCard.addEventListener('click', function() {
+                if (!this.classList.contains('expanded')) {
+                    expandChatCard();
+                }
+            });
+            
+            // Open chat button functionality
+            openChatBtn.addEventListener('click', function() {
+                expandChatCard();
+                // For future implementation: 
+                // Uncomment the line below to navigate to a dedicated chat page instead of expanding the chat card
+                // window.location.href = 'chat.html';
+            });
+            
+            // Add close button to chat card
+            const closeButton = document.createElement('button');
+            closeButton.innerHTML = '×';
+            closeButton.style.position = 'absolute';
+            closeButton.style.top = '10px';
+            closeButton.style.right = '10px';
+            closeButton.style.background = 'none';
+            closeButton.style.border = 'none';
+            closeButton.style.color = 'var(--pdt-light)';
+            closeButton.style.fontSize = '24px';
+            closeButton.style.cursor = 'pointer';
+            closeButton.style.display = 'none';
+            closeButton.style.zIndex = '5';
+            
+            chatCard.appendChild(closeButton);
+            
+            // Close button functionality
+            closeButton.addEventListener('click', function(event) {
+                event.stopPropagation();
+                collapseChatCard();
+            });
+            
+            function expandChatCard() {
+                chatCard.classList.add('expanded');
+                closeButton.style.display = 'block';
+                
+                // Add chat input when expanded
+                if (!document.getElementById('chat-input-container')) {
+                    const inputContainer = document.createElement('div');
+                    inputContainer.id = 'chat-input-container';
+                    inputContainer.style.display = 'flex';
+                    inputContainer.style.marginTop = '1rem';
+                    inputContainer.style.position = 'absolute';
+                    inputContainer.style.bottom = '1rem';
+                    inputContainer.style.left = '1rem';
+                    inputContainer.style.right = '1rem';
+                    
+                    const chatInput = document.createElement('input');
+                    chatInput.type = 'text';
+                    chatInput.placeholder = 'Type your message...';
+                    chatInput.style.flex = '1';
+                    chatInput.style.padding = '0.75rem';
+                    chatInput.style.backgroundColor = 'rgba(0, 0, 0, 0.3)';
+                    chatInput.style.border = '1px solid rgba(255, 255, 255, 0.1)';
+                    chatInput.style.borderRadius = '4px';
+                    chatInput.style.color = 'var(--pdt-light)';
+                    chatInput.style.fontFamily = 'var(--current-font)';
+                    
+                    const sendButton = document.createElement('button');
+                    sendButton.innerHTML = 'Send';
+                    sendButton.style.marginLeft = '0.5rem';
+                    sendButton.style.padding = '0.75rem 1rem';
+                    sendButton.style.backgroundColor = 'rgba(var(--current-accent-rgb), 0.3)';
+                    sendButton.style.border = '1px solid var(--current-accent)';
+                    sendButton.style.borderRadius = '4px';
+                    sendButton.style.color = 'var(--pdt-light)';
+                    sendButton.style.fontFamily = 'var(--current-font)';
+                    sendButton.style.cursor = 'pointer';
+                    
+                    inputContainer.appendChild(chatInput);
+                    inputContainer.appendChild(sendButton);
+                    chatCard.appendChild(inputContainer);
+                    
+                    // Send message functionality
+                    sendButton.addEventListener('click', sendMessage);
+                    chatInput.addEventListener('keypress', function(event) {
+                        if (event.key === 'Enter') {
+                            sendMessage();
+                        }
+                    });
+                    
+                    function sendMessage() {
+                        const messageText = chatInput.value.trim();
+                        if (messageText) {
+                            // Create user message
+                            const userMessage = document.createElement('div');
+                            userMessage.className = 'chat-message user';
+                            userMessage.textContent = messageText;
+                            
+                            // Add to chat content
+                            const chatContent = document.querySelector('.chat-card-content');
+                            chatContent.appendChild(userMessage);
+                            
+                            // Clear input
+                            chatInput.value = '';
+                            
+                            // Scroll to bottom
+                            chatContent.scrollTop = chatContent.scrollHeight;
+                            
+                            // Simulate AI response after a delay
+                            setTimeout(function() {
+                                const aiMessage = document.createElement('div');
+                                aiMessage.className = 'chat-message ai';
+                                aiMessage.textContent = getAIResponse();
+                                
+                                chatContent.appendChild(aiMessage);
+                                chatContent.scrollTop = chatContent.scrollHeight;
+                            }, 1000);
+                        }
+                    }
+                    
+                    // Simple AI response generator
+                    function getAIResponse() {
+                        const responses = [
+                            "I've analyzed your request and have prepared a detailed report on the findings.",
+                            "Based on my calculations, the optimal approach would be to implement a hybrid algorithm that combines both methods.",
+                            "Your hypothesis is interesting. My simulations suggest a 78% probability of success with the parameters you've specified.",
+                            "I've detected a potential anomaly in the data pattern. Would you like me to investigate further?",
+                            "The neural network architecture you've proposed shows promise, but I recommend adjusting the hidden layer configuration for better performance."
+                        ];
+                        
+                        return responses[Math.floor(Math.random() * responses.length)];
+                    }
+                }
+            }
+            
+            function collapseChatCard() {
+                chatCard.classList.remove('expanded');
+                closeButton.style.display = 'none';
+                
+                // Remove chat input when collapsed
+                const inputContainer = document.getElementById('chat-input-container');
+                if (inputContainer) {
+                    inputContainer.remove();
+                }
+            }
         }
     </script>
 </body>

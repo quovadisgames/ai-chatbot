@@ -1,6 +1,5 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { cookies } from 'next/headers';
 
 import { Chat } from '@/components/chat';
 import { PersonaCreator } from '@/components/persona-creator';

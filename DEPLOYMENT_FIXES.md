@@ -135,3 +135,45 @@ Once the build succeeds and the encoding issue is resolved:
 1. Gradually reintroduce the client-side functionality using the backed-up code
 2. Ensure any future modifications to this file maintain proper UTF-8 encoding
 3. Consider adding a pre-commit hook that verifies encoding of critical files 
+
+### Client Reference Manifest Fix - March 2024
+
+After fixing the UTF-8 encoding issue, we encountered another error:
+```
+Error: ENOENT: no such file or directory, lstat '/vercel/path0/.next/server/app/(chat)/page_client-reference-manifest.js'
+```
+
+This error indicates that the build system is expecting a client reference manifest for the `app/(chat)/page.tsx` file, but none is being generated. This typically happens when:
+
+1. A file is marked as a client component ('use client') but has issues that prevent proper client reference manifest generation
+2. There's a mismatch between server/client components in the route structure
+
+We fixed this issue by:
+
+1. **Simplifying both page components**
+   - Replaced the `app/(chat)/page.tsx` client component with a simple server component
+   - Similarly simplified the `app/(chat)/chat/page.tsx` file
+   - Removed all client-side hooks, imports, and state management temporarily
+
+2. **Updated the fix-encoding script**
+   - Modified the script to handle both files:
+     - `app/(chat)/chat/page.tsx`
+     - `app/(chat)/page.tsx`
+   - Used a function to standardize the file fixing process
+
+3. **Added redundant build safety**
+   - Created placeholder files for both pages
+   - Updated GitHub workflow to fix both files
+   - Ensured proper UTF-8 encoding for all components
+
+### How to Verify Fix
+After deploying, check for the following in Vercel build logs:
+1. Both files are successfully recreated during the build
+2. No more "ENOENT" errors for client reference manifests
+3. Successful completion of the build process
+
+### Next Steps After Successful Deployment
+Once the build succeeds with these minimal server components:
+1. Gradually reintroduce the client-side functionality, starting with the most critical features
+2. Convert each component back to a client component one at a time, testing after each change
+3. Maintain proper separation between server and client code 

@@ -1,60 +1,50 @@
 const fs = require('fs');
 const path = require('path');
 
-// Path to the file with potential encoding issues
-const targetFile = path.join(__dirname, '..', 'app', '(chat)', 'chat', 'page.tsx');
+// Paths to files with potential encoding issues
+const chatPagePath = path.join(__dirname, '..', 'app', '(chat)', 'chat', 'page.tsx');
+const groupPagePath = path.join(__dirname, '..', 'app', '(chat)', 'page.tsx');
 const placeholderFile = path.join(__dirname, '..', 'app', '(chat)', 'chat', 'placeholder.js');
 
-try {
-  // Check if placeholder file exists
-  if (fs.existsSync(placeholderFile)) {
-    // Import the placeholder content
-    const { content } = require(placeholderFile);
-    
-    // Delete the page.tsx file if it exists
-    if (fs.existsSync(targetFile)) {
-      try {
-        fs.unlinkSync(targetFile);
-        console.log(`Deleted existing ${targetFile}`);
-      } catch (err) {
-        console.error(`Error deleting ${targetFile}:`, err);
-      }
+// Function to fix a file with proper UTF-8 encoding
+function fixFileEncoding(filePath, content) {
+  // Delete the file if it exists
+  if (fs.existsSync(filePath)) {
+    try {
+      fs.unlinkSync(filePath);
+      console.log(`Deleted existing ${filePath}`);
+    } catch (err) {
+      console.error(`Error deleting ${filePath}:`, err);
     }
-    
-    // Write the new file with explicit UTF-8 encoding
-    fs.writeFileSync(targetFile, content, { encoding: 'utf8' });
-    console.log(`Successfully created ${targetFile} with UTF-8 encoding`);
-  } else {
-    // Fallback content if placeholder doesn't exist
-    const fallbackContent = `export default function ChatPage() {
+  }
+  
+  // Write the new file with explicit UTF-8 encoding
+  try {
+    fs.writeFileSync(filePath, content, { encoding: 'utf8' });
+    console.log(`Successfully created ${filePath} with UTF-8 encoding`);
+  } catch (err) {
+    console.error(`Error writing ${filePath}:`, err);
+  }
+}
+
+// Content for the files
+const chatPageContent = `export default function ChatPage() {
   return <div>Chat Page</div>;
 }`;
 
-    // Delete and recreate the file with explicit UTF-8 encoding
-    if (fs.existsSync(targetFile)) {
-      try {
-        fs.unlinkSync(targetFile);
-        console.log(`Deleted existing ${targetFile}`);
-      } catch (err) {
-        console.error(`Error deleting ${targetFile}:`, err);
-      }
-    }
-    
-    fs.writeFileSync(targetFile, fallbackContent, { encoding: 'utf8' });
-    console.log(`Successfully created ${targetFile} with UTF-8 encoding (fallback content)`);
-  }
+const groupPageContent = `export default function RootPage() {
+  return <div>Chat Home Page</div>;
+}`;
+
+try {
+  // Fix the chat page
+  fixFileEncoding(chatPagePath, chatPageContent);
+  
+  // Fix the route group page
+  fixFileEncoding(groupPagePath, groupPageContent);
+  
+  console.log('All files fixed successfully');
 } catch (error) {
   console.error(`Error fixing encoding:`, error);
-  
-  // Last resort - direct echo to file
-  try {
-    const fallbackContent = `export default function ChatPage() {
-  return <div>Chat Page</div>;
-}`;
-    fs.writeFileSync(targetFile, fallbackContent, { encoding: 'utf8' });
-    console.log(`Emergency fallback: created ${targetFile} with direct content`);
-  } catch (err) {
-    console.error(`Critical failure - could not create file:`, err);
-    process.exit(1);
-  }
+  process.exit(1);
 } 

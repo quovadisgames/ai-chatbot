@@ -17,16 +17,22 @@ jobs:
         with:
           node-version: '18'
           
-      - name: Fix file encoding
+      - name: Fix file encoding for chat page
         run: |
           echo 'export default function ChatPage() {
             return <div>Chat Page</div>;
           }' > app/\(chat\)/chat/page.tsx
           
+      - name: Fix file encoding for group page
+        run: |
+          echo 'export default function RootPage() {
+            return <div>Chat Home Page</div>;
+          }' > app/\(chat\)/page.tsx
+          
       - name: Commit and push changes
         run: |
           git config --global user.name 'GitHub Actions Bot'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git add app/\(chat\)/chat/page.tsx
-          git commit -m "Fix UTF-8 encoding for chat page" || echo "No changes to commit"
+          git add app/\(chat\)/chat/page.tsx app/\(chat\)/page.tsx
+          git commit -m "Fix UTF-8 encoding for chat pages" || echo "No changes to commit"
           git push 
